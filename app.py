@@ -26,6 +26,17 @@ def webhook():
     # endpoint for processing incoming messaging events
 
     data = request.get_json()
+    
+    #  This is used to save data to the database
+    #  massage = models.Message(json.dumps(data, ensure_ascii=False))
+    #  models.db.session.add(massage)
+    #  models.db.session.commit()
+    
+    #   this gets data from the database
+    #   messages = models.Message.query.all()
+    #   new = json.loads(str(messages[0]))
+    
+    
     log(data)  # you may not want to log every incoming message in production, but it's good for testing
 
     if data["object"] == "page":

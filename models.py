@@ -1,7 +1,6 @@
 from app import db
 from sqlalchemy.dialects.postgresql import JSON
 
-
 class AllAccount(db.Model):
     __tablename__ = 'all_accounts'
 
