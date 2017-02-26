@@ -56,7 +56,7 @@ def webhook():
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                 
                     
-                    send_message(sender_id, "got it, thanks!")
+                    send_message(sender_id, message_text)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
