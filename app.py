@@ -12,6 +12,7 @@ def getIDofUser(someText):
     if 'pay josh' in someText:
         usrID = str(985245348244242)
     
+    userID = False
     return usrID
 
 @app.route('/', methods=['GET'])
@@ -62,10 +63,12 @@ def webhook():
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                     
                     payed_id = getIDofUser(message_text)
+                    if payed_id is not False:
+                        #send message
+                        send_message(payed_id, "got payed by "+str(sender_id))
                     
-                    
-                    #send message
-                    send_message(payed_id, "got payed by "+str(sender_id))
+                    else:
+                        send_message(sender_id, "sup")
                     
                     #send share button
                     #send_share_button(sender_id)
