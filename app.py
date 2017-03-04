@@ -83,6 +83,9 @@ def webhook():
                     else:
                         send_message(sender_id, "sup")
                     
+                    #get user's info
+                    getUserInfo(sender_id)
+                    
                     #send share button
                     #send_share_button(sender_id)
 
@@ -121,6 +124,24 @@ def send_message(recipient_id, message_text):
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
+        
+def getUserInfo(anId):
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+        
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        str(985245348244242)
+    })
+    r = requests.get("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
+    else:
+        log("SUCCESS  "+r.text)
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
