@@ -62,13 +62,13 @@ def webhook():
                     #message_timestamp = messaging_event["timestamp"]  # the message's timestamp
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                     
-                    payed_id = getIDofUser(message_text)
-                    if payed_id is not False:
+                    #payed_id = getIDofUser(message_text)
+                    #if payed_id is not False:
                         #send message
-                        send_message(payed_id, "got payed by "+str(sender_id))
+                    #    send_message(payed_id, "got payed by "+str(sender_id))
                     
-                    else:
-                        send_message(sender_id, "sup")
+                    #else:
+                    send_message(sender_id, "sup")
                     
                     #send share button
                     #send_share_button(sender_id)
