@@ -56,10 +56,10 @@ def webhook():
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                 
                     #send message
-                    #send_message(sender_id, message_text)
+                    send_message(sender_id, message_text)
                     
                     #send share button
-                    send_share_button(sender_id)
+                    #send_share_button(sender_id)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -92,45 +92,6 @@ def send_message(recipient_id, message_text):
             "text": message_text
         }
     })
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
-    if r.status_code != 200:
-        log(r.status_code)
-        log(r.text)
-
-#send share button
-def send_share_button(user_id):
-    params = {
-        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
-    }
-    headers = {
-        "Content-Type": "application/json"
-    }
-    
-    b = {
-        "type":"element_share"
-    }
-    a = {
-                        "subtitle": "tehee",
-                        "image_url": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
-                        "buttons": b
-                            
-        }
-    
-    data = json.dumps({
-        "recipient": {
-            "id": user_id
-        },
-        "message": {
-            "attachment":{
-                "type": "template",
-                "payload":{
-                    "template_type":"generic",
-                    "elements": a
-            }
-        }
-        }
-    })
-    
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
         log(r.status_code)
