@@ -134,9 +134,9 @@ def getUserInfo(anId):
         "Content-Type": "application/json"
     }
     data = json.dumps({
-        str(985245348244242)
+        str(anId)
     })
-    r = requests.get("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    r = requests.get("https://graph.facebook.com/v2.6/", params=params, headers=headers, data=data)
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
