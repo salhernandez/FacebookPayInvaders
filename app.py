@@ -76,7 +76,7 @@ def webhook():
                     amount = getAmount(message_text)
                     
                     #get the amount from the string
-                    if payed_id is not False:
+                    if payed_id is not False and amount is not False:
                         #let the user know that they payed the person
                         send_message(sender_id, "you payed $"+str(amount)+" to "+userFirst)
                         
