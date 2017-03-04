@@ -24,6 +24,20 @@ def getIDofUser(someText):
     
     return usrID, userFirst
 
+
+def getNameOfUser(anID):
+    userFirst = False
+    if str(985245348244242) in anID:
+        userFirst = "josh"
+    
+    elif str(1596606567017003) in anID:
+        userFirst = "sal"
+    
+    elif str(1204927079622878) in anID:
+        userFirst = "anna"
+    
+    return userFirst
+
 @app.route('/', methods=['GET'])
 def verify():
     # when the endpoint is registered as a webhook, it must echo back
@@ -71,6 +85,9 @@ def webhook():
                     #message_timestamp = messaging_event["timestamp"]  # the message's timestamp
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                     
+                    #get the name of the sender
+                    senderName = getNameOfUser(str(sender_id))
+                    
                     #loooks for the user id
                     payed_id, userFirst = getIDofUser(message_text)
                     
@@ -80,12 +97,12 @@ def webhook():
                     #if there is no name and amount, it will reply to the user with a static response
                     
                     #checks that the user and the amount is there
-                    if payed_id is not False and amount is not False:
+                    if payed_id is not False and amount is not False and senderName is not False:
                         #let the user know that they payed the person
-                        send_message(sender_id, "you payed $"+str(amount)+" to "+userFirst)
+                        send_message(sender_id, "you paid $"+str(amount)+" to "+userFirst)
                         
                         #sned the message to the person who got payed
-                        send_message(payed_id, "got payed $"+str(amount)+" by "+userFirst)
+                        send_message(payed_id, "got paid $"+str(amount)+" by "+senderName)
                     
                     else:
                         send_message(sender_id, "sup")
