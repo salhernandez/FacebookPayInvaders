@@ -7,6 +7,12 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+def getIDofUser(someText):
+    usrID = ""
+    if 'pay josh' in someText:
+        usrID = str(985245348244242)
+    
+    return usrID
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -47,16 +53,19 @@ def webhook():
                 if messaging_event.get("message"):  # someone sent us a message
                     
                     #hardcode josh's fb id
-                    sender_id = str(985245348244242)
-                    #sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
+                    #sender_id = str(985245348244242)
+                    sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     
                     message_text = messaging_event["message"]["text"]  # the message's text
                     #message_timestamp = messaging_event["timestamp"]  # the message's timestamp
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
-                
+                    
+                    payed_id = getIDofUser(message_text)
+                    
+                    
                     #send message
-                    send_message(sender_id, message_text)
+                    send_message(payed_id, "got payed by "+str(sender_id))
                     
                     #send share button
                     #send_share_button(sender_id)
