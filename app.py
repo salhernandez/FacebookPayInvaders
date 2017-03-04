@@ -106,18 +106,15 @@ def send_share_button(user_id):
         "Content-Type": "application/json"
     }
     
-    b = json.dumps({
-        
-                                "type":"element_share"
-                            
-        
-    })
-    a = json.dumps({
+    b = {
+        "type":"element_share"
+    }
+    a = {
                         "subtitle": "tehee",
                         "image_url": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
                         "buttons": b
                             
-        })
+        }
     
     data = json.dumps({
         "recipient": {
