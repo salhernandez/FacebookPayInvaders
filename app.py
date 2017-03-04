@@ -1,11 +1,16 @@
 import os
 import sys
 import json
-
 import requests
 from flask import Flask, request
-
+from sqlalchemy.orm import load_only
+import flask_sqlalchemy
 app = Flask(__name__)
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
+db = flask_sqlalchemy.SQLAlchemy(app)
+import models
 
 def getIDofUser(someText):
     usrID = False
@@ -40,6 +45,10 @@ def getNameOfUser(anID):
 
 @app.route('/', methods=['GET'])
 def verify():
+    
+    # models.db.session.add()
+    # models.db.session.commit()
+        
     # when the endpoint is registered as a webhook, it must echo back
     # the 'hub.challenge' value it receives in the query arguments
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
