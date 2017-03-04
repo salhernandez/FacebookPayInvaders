@@ -105,6 +105,20 @@ def send_share_button(user_id):
     headers = {
         "Content-Type": "application/json"
     }
+    
+    b = json.dumps({
+        
+                                "type":"element_share"
+                            
+        
+    })
+    a = json.dumps({
+                        "subtitle": "tehee",
+                        "image_url": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+                        "buttons": b
+                            
+        })
+    
     data = json.dumps({
         "recipient": {
             "id": user_id
@@ -114,18 +128,11 @@ def send_share_button(user_id):
                 "type": "template",
                 "payload":{
                     "template_type":"generic",
-                    "elements":[{
-                        "subtitle": "tehee",
-                        "image_url": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
-                        "buttons":
-                            [{
-                                "type":"element_share"
-                            }]
-                }]
+                    "elements": a
             }
         }
         }
-    }, sort_keys=True)
+    })
     
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
