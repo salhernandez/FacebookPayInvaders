@@ -84,7 +84,7 @@ def webhook():
                         send_message(sender_id, "sup")
                     
                     #get user's info
-                    getUserInfo(sender_id)
+                    #getUserInfo(sender_id)
                     
                     #send share button
                     #send_share_button(sender_id)
