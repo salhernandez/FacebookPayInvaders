@@ -8,11 +8,13 @@ from flask import Flask, request
 app = Flask(__name__)
 
 def getIDofUser(someText):
-    usrID = ""
+    usrID = False
     if 'pay josh' in someText:
         usrID = str(985245348244242)
     
-    userID = False
+    elif 'pay sal' in someText:
+        usrID = str(1596606567017003)
+    
     return usrID
 
 @app.route('/', methods=['GET'])
@@ -62,13 +64,13 @@ def webhook():
                     #message_timestamp = messaging_event["timestamp"]  # the message's timestamp
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                     
-                    #payed_id = getIDofUser(message_text)
-                    #if payed_id is not False:
-                        #send message
-                    #    send_message(payed_id, "got payed by "+str(sender_id))
+                    #if the user wants to pay someone else it should be picked up here
+                    payed_id = getIDofUser(message_text)
+                    if payed_id is not False:
+                        send_message(payed_id, "got payed by "+str(sender_id))
                     
-                    #else:
-                    send_message(sender_id, "sup")
+                    else:
+                        send_message(sender_id, "sup")
                     
                     #send share button
                     #send_share_button(sender_id)
