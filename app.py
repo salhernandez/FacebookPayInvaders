@@ -78,7 +78,7 @@ def webhook():
                     #get the amount from the string
                     if payed_id is not False:
                         #let the user know that they payed the person
-                        send_message(sender_id, "you payed $"+str(amount)+" to"+userFirst)
+                        send_message(sender_id, "you payed $"+str(amount)+" to "+userFirst)
                         
                         #sned the message to the person who got payed
                         send_message(payed_id, "got payed $"+str(amount)+" by "+userFirst)
@@ -137,7 +137,7 @@ def getAmount(data):
         if '$' in word:
             #get number
             amount =  word[1:]
-        break
+            break
     
     return amount
     
