@@ -71,11 +71,15 @@ def webhook():
                     #message_timestamp = messaging_event["timestamp"]  # the message's timestamp
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                     
-                    #if the user wants to pay someone else it should be picked up here
+                    #loooks for the user id
                     payed_id, userFirst = getIDofUser(message_text)
+                    
+                    #gets the amount from the string
                     amount = getAmount(message_text)
                     
-                    #get the amount from the string
+                    #if there is no name and amount, it will reply to the user with a static response
+                    
+                    #checks that the user and the amount is there
                     if payed_id is not False and amount is not False:
                         #let the user know that they payed the person
                         send_message(sender_id, "you payed $"+str(amount)+" to "+userFirst)
