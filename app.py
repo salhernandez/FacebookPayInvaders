@@ -114,19 +114,18 @@ def send_share_button(user_id):
                 "type": "template",
                 "payload":{
                     "template_type":"generic",
-                    "elements":{
-                        "title":"some title",
+                    "elements":[{
                         "subtitle": "tehee",
                         "image_url": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
                         "buttons":
-                            {
+                            [{
                                 "type":"element_share"
-                            }
-                }
+                            }]
+                }]
             }
         }
         }
-    })
+    }, sort_keys=True)
     
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
