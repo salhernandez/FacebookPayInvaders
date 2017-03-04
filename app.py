@@ -15,6 +15,9 @@ def getIDofUser(someText):
     elif 'pay sal' in someText:
         usrID = str(1596606567017003)
     
+    elif 'pay anna' in someText:
+        usrID = str(1204927079622878)
+    
     return usrID
 
 @app.route('/', methods=['GET'])
