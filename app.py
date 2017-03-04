@@ -73,12 +73,15 @@ def webhook():
                     
                     #if the user wants to pay someone else it should be picked up here
                     payed_id, userFirst = getIDofUser(message_text)
-                    if payed_id is not False:
+                    amount = getAmount(message_text)
+                    
+                    #get the amount from the string
+                    if payed_id is not False and amount is not False:
                         #let the user know that they payed the person
-                        send_message(sender_id, "you payed "+userFirst)
+                        send_message(sender_id, "you payed $"+amount+" to"+userFirst)
                         
                         #sned the message to the person who got payed
-                        send_message(payed_id, "got payed by "+userFirst)
+                        send_message(payed_id, "got payed $"+amount+" by "+userFirst)
                     
                     else:
                         send_message(sender_id, "sup")
@@ -125,6 +128,19 @@ def send_message(recipient_id, message_text):
         log(r.status_code)
         log(r.text)
         
+def getAmount(data):
+    #get words in string
+    splits = data.split(" ")
+    amount  = False
+    #grab the word that has the $ char
+    for word in splits:
+        if '$' in word:
+            #get number
+            amount =  word[1:]
+        break
+    
+    return amount
+    
 def getUserInfo(anId):
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
