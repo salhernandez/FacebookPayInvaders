@@ -9,16 +9,20 @@ app = Flask(__name__)
 
 def getIDofUser(someText):
     usrID = False
+    userFirst = ""
     if 'pay josh' in someText:
         usrID = str(985245348244242)
+        userFirst = "josh"
     
     elif 'pay sal' in someText:
         usrID = str(1596606567017003)
+        userFirst = "sal"
     
     elif 'pay anna' in someText:
         usrID = str(1204927079622878)
+        userFirst = "anna"
     
-    return usrID
+    return usrID, userFirst
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -68,9 +72,9 @@ def webhook():
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                     
                     #if the user wants to pay someone else it should be picked up here
-                    payed_id = getIDofUser(message_text)
+                    payed_id, userFirst = getIDofUser(message_text)
                     if payed_id is not False:
-                        send_message(payed_id, "got payed by "+str(sender_id))
+                        send_message(payed_id, "got payed by "+userFirst)
                     
                     else:
                         send_message(sender_id, "sup")
