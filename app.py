@@ -74,6 +74,10 @@ def webhook():
                     #if the user wants to pay someone else it should be picked up here
                     payed_id, userFirst = getIDofUser(message_text)
                     if payed_id is not False:
+                        #let the user know that they payed the person
+                        send_message(sender_id, "you payed"+userFirst)
+                        
+                        #sned the message to the person who got payed
                         send_message(payed_id, "got payed by "+userFirst)
                     
                     else:
