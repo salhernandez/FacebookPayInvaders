@@ -1,0 +1,61 @@
+//starts postgres
+sudo service postgresql start
+
+//drops all tables
+models.db.drop_all()
+
+//creates all tables
+models.db.create_all()
+
+//to get current timestamp (unix epoch)
+import time
+ts = time.time()
+ts = int(ts)
+print ts
+
+//to convert unix timestamp to human readable
+>>> import datetime
+>>> st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+>>> print st
+2012-12-15 01:21:05
+
+//sample of how to add to database
+
+//Pay
+ts = int(time.time())
+payment = models.Pay("985245348244242", "1596606567017003", 15.99, ts)
+models.db.session.add(payment)
+models.db.session.commit()
+
+//Payed
+ts = int(time.time())
+payment = models.Payed("985245348244242", "1596606567017003", 15.99, ts)
+models.db.session.add(payment)
+models.db.session.commit()
+
+//Friends
+add_friendship = models.Friends("985245348244242", "1596606567017003")
+models.db.session.add(add_friendship)
+models.db.session.commit()
+
+//Users
+new_user = models.Users("Joshua Smith", "joshua@gmail.com", "nope.png")
+models.db.session.add(new_user)
+
+
+new_user = models.Users("Salvador Hernandez", "salvador@gmail.com", "nope.png")
+models.db.session.add(new_user)
+
+
+new_user = models.Users("Anna Pomelov", "anna@gmail.com", "nope.png")
+models.db.session.add(new_user)
+
+models.db.session.commit()
+
+//// to check database data
+psql
+\c postgres
+\dt
+
+select * from pay_table
+select * from payed_table
