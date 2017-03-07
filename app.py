@@ -17,11 +17,11 @@ def hello():
     
     message = models.Users.query.all()
     print message
-    message = models.Pay.query.all()
+    message2 = models.Pay.query.all()
     print message2
-    message = models.Payed.query.all()
+    message3 = models.Payed.query.all()
     print message3
-    message = models.Friends.query.all()
+    message4 = models.Friends.query.all()
     print message4
     return render_template('index.html', user_info = message, pay = message2, payed = message3, friends = message4)
 
