@@ -8,9 +8,11 @@ import flask_sqlalchemy
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 db = flask_sqlalchemy.SQLAlchemy(app)
 import models
+
 
 def getIDofUser(someText):
     usrID = False
@@ -46,10 +48,10 @@ def getNameOfUser(anID):
 @app.route('/data')
 def hello():
     
-    messages = models.users.query.all()
-    print messages
-    new = json.loads(str(messages[0]))
-    return render_template('index.html')
+    recent = models.db.session.query(models.Users).order_by(models.Users.id.desc()).limit(100)
+    #new = json.loads(str(messages[0]))
+    #return render_template('index.html')
+    log(str(recent))
     
 
 @app.route('/', methods=['GET'])
