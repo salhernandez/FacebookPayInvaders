@@ -1,5 +1,9 @@
-from app import db
-from sqlalchemy.dialects.postgresql import JSON
+import flask_sqlalchemy, app
+
+#for heroku
+app.app.config['SQLALCHEMY_DATABASE_URI'] = app.os.getenv('DATABASE_URL')
+db = flask_sqlalchemy.SQLAlchemy(app.app)
+
 
 class Users(db.Model):
     __tablename__ = 'users_table'
