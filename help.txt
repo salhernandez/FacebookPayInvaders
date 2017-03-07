@@ -1,3 +1,8 @@
+//to access db on heroku
+heroku pg:psql
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
+
 //starts postgres
 sudo service postgresql start
 
@@ -39,15 +44,15 @@ models.db.session.add(add_friendship)
 models.db.session.commit()
 
 //Users
-new_user = models.Users("Joshua Smith", "joshua@gmail.com", "nope.png")
+new_user = models.Users("Joshua Smith", "josmith@csumb.edu", "nope.png")
 models.db.session.add(new_user)
 
 
-new_user = models.Users("Salvador Hernandez", "salvador@gmail.com", "nope.png")
+new_user = models.Users("Salvador Hernandez", "salvhernandez@csumb.edu", "nope.png")
 models.db.session.add(new_user)
 
 
-new_user = models.Users("Anna Pomelov", "anna@gmail.com", "nope.png")
+new_user = models.Users("Anna Pomelov", "apomelovz@csumb.edu", "nope.png")
 models.db.session.add(new_user)
 
 models.db.session.commit()
