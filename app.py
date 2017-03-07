@@ -3,14 +3,13 @@ import sys
 import json
 import requests
 from flask import Flask, render_template, request
-from sqlalchemy.orm import load_only
 import flask_sqlalchemy
 app = Flask(__name__)
 
 
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-db = flask_sqlalchemy.SQLAlchemy(app)
+#db = flask_sqlalchemy.SQLAlchemy(app)
 import models
 
 
@@ -45,14 +44,6 @@ def getNameOfUser(anID):
     
     return userFirst
 
-@app.route('/data')
-def hello():
-    
-    recent = models.db.session.query(models.Users).order_by(models.Users.id.desc()).limit(100)
-    #new = json.loads(str(messages[0]))
-    #return render_template('index.html')
-    log(str(recent))
-    
 
 @app.route('/', methods=['GET'])
 def verify():
