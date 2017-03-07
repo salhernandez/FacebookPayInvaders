@@ -10,7 +10,7 @@ app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 #db = flask_sqlalchemy.SQLAlchemy(app)
-#import models
+import models
 
 
 def getIDofUser(someText):
@@ -57,6 +57,8 @@ def verify():
         if not request.args.get("hub.verify_token") == os.environ["VERIFY_TOKEN"]:
             return "Verification token mismatch", 403
         return request.args["hub.challenge"], 200
+    
+    return "Hello world", 200
 
 @app.route('/', methods=['POST'])
 def webhook():
