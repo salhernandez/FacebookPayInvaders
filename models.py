@@ -35,7 +35,7 @@ class Friends(db.Model):
         self.friend_id = friend_id
 
     def __repr__(self):
-        return '<Friends text: %s %s>' % self.user_id % self.friend_id
+        return '%s %s' % (self.user_id, self.friend_id)
         
 class Pay(db.Model):
     __tablename__ = 'pay_table'
@@ -55,7 +55,7 @@ class Pay(db.Model):
         
     
     def __repr__(self):
-        return '<Pay text: %s %s %f %s>' % self.owed_ID % self.pay_ID % self.amount % self.time_stamp
+        return '%s %s %f %s' % (self.owed_ID, self.pay_ID, self.amount, self.time_stamp)
         
 class Payed(db.Model):
     __tablename__ = 'payed_table'
@@ -74,4 +74,4 @@ class Payed(db.Model):
         self.time_stamp = time_stamp
     
     def __repr__(self):
-        return '<Payed text: %s %s %f %s>' % self.pay_ID % self.payee_ID % self.amount % self.time_stamp
+        return '%s %s %f %s' % (self.pay_ID, self.payee_ID, self.amount, self.time_stamp)
