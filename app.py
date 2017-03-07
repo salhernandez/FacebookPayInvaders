@@ -8,10 +8,16 @@ app = Flask(__name__)
 
 
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 #db = flask_sqlalchemy.SQLAlchemy(app)
 import models
 
+@app.route('/data')
+def hello():
+    
+    message = models.Users.query.all()
+    print message
+    return render_template('index.html')
 
 def getIDofUser(someText):
     usrID = False
@@ -191,4 +197,8 @@ def log(message):  # simple wrapper for logging to stdout on heroku
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(
+
+        host=os.getenv('IP', '0.0.0.0'),
+        port=int(os.getenv('PORT', 8080))
+    )

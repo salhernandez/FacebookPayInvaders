@@ -20,7 +20,7 @@ class Users(db.Model):
         self.imgUrl = imgUrl
 
     def __repr__(self):
-        return '<UsersTable text: %s %s %s>' % self.name % self.email % self.imgUrl
+        return '%s %s %s' % (self.name, self.email, self.imgUrl)
         
 class Friends(db.Model):
     __tablename__ = 'friends_table'
