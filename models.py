@@ -66,12 +66,12 @@ class Payed(db.Model):
     amount = db.Column(db.Float)
     time_stamp = db.Column(db.String(30))
     
-    def __init__(self, owed_ID, pay_ID, amount, time_stamp):
+    def __init__(self, payed_ID, payee_ID, amount, time_stamp):
     
-        self.payed_ID = owed_ID
-        self.payee_ID = pay_ID
+        self.payed_ID = payed_ID
+        self.payee_ID = payee_ID
         self.amount = amount
         self.time_stamp = time_stamp
     
     def __repr__(self):
-        return '%s %s %f %s' % (self.pay_ID, self.payee_ID, self.amount, self.time_stamp)
+        return '%s %s %f %s' % (self.payed_ID, self.payee_ID, self.amount, self.time_stamp)
