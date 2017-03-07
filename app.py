@@ -9,8 +9,11 @@ app = Flask(__name__)
 
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+
 #db = flask_sqlalchemy.SQLAlchemy(app)
 import models
+
+db = flask_sqlalchemy.SQLAlchemy(app)
 
 @app.route('/data')
 def hello():
@@ -115,6 +118,14 @@ def webhook():
                     
                     #checks that the user and the amount is there
                     if payed_id is not False and amount is not False and senderName is not False:
+                        #record data in payed table
+                        #Payed
+                        ts = int(time.time())
+                        #first ID is the person who got PAYED, second is PAYEE
+                        payment = models.Payed(payed_id, sender_id, float(amount), ts)
+                        models.db.session.add(payment)
+                        models.db.session.commit()
+                        
                         #let the user know that they payed the person
                         send_message(sender_id, "you paid $"+str(amount)+" to "+userFirst)
                         
