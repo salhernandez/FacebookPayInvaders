@@ -64,3 +64,13 @@ psql
 
 select * from pay_table
 select * from payed_table
+
+
+//to relink db to heroku..AFTER THE DB HAS BEEN NUKED FROM HEROKU
+heroku addons:create heroku-postgresql:hobby-dev
+heroku pg:wait
+PGUSER=payinvader heroku pg:push postgres DATABASE_URL
+heroku pg:psql
+
+//to dro table
+DROP TABLE table_name;
