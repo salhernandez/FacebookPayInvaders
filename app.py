@@ -5,6 +5,8 @@ import requests
 import time
 from flask import Flask, render_template, request
 import flask_sqlalchemy
+#import graphRequests
+
 app = Flask(__name__)
 
 
@@ -60,6 +62,12 @@ def getNameOfUser(anID):
     
     return userFirst
 
+def isUserInDB(userID):
+     message = models.Users.query.all()
+     for i in message:
+         print i.name
+    
+    
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -94,16 +102,23 @@ def webhook():
 
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
-
-                if messaging_event.get("message"):  # someone sent us a message
+                
+                # someone sent us a message
+                if messaging_event.get("message"):
+                    # the facebook ID of the person sending you the message
+                    sender_id = messaging_event["sender"]["id"]
                     
-                    #hardcode josh's fb id
-                    #sender_id = str(985245348244242)
-                    sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
-                    recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
+                    # the recipient's ID, which should be your page's facebook ID
+                    recipient_id = messaging_event["recipient"]["id"]
                     
-                    message_text = messaging_event["message"]["text"]  # the message's text
-                    #message_timestamp = messaging_event["timestamp"]  # the message's timestamp
+                    #check if the user is already in the Users db
+                    
+                    
+                    # the message's text
+                    message_text = messaging_event["message"]["text"]
+                    
+                    # the message's timestamp
+                    #message_timestamp = messaging_event["timestamp"]  
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                     
                     #get the name of the sender
@@ -150,7 +165,11 @@ def webhook():
 
                 if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
                     pass
-
+                
+    #for testing locally
+    #isUserInDB()
+    
+    ##################################
     return "ok", 200
 
 

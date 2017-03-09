@@ -11,18 +11,20 @@ class Users(db.Model):
     __tablename__ = 'users_table'
 
     id = db.Column(db.Integer, primary_key=True)  # key
+    user_id = db.Column(db.String(200))
     name = db.Column(db.String(120))
     email = db.Column(db.String(200))
     imgUrl = db.Column(db.String(120))
 
-    def __init__(self, name, email, imgUrl):
+    def __init__(self, user_id, name, email, imgUrl):
         
+        self.user_id = user_id
         self.name = name
         self.email = email
         self.imgUrl = imgUrl
 
     def __repr__(self):
-        return '%s %s %s' % (self.name, self.email, self.imgUrl)
+        return '%s %s %s %s' % (self.user_id, self.name, self.email, self.imgUrl)
         
 class Friends(db.Model):
     __tablename__ = 'friends_table'
