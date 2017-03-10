@@ -62,10 +62,16 @@ def getNameOfUser(anID):
     
     return userFirst
 
+#check if user is in db, if it is burp return the data
+#else False
 def isUserInDB(userID):
-     message = models.Users.query.all()
-     for i in message:
-         print i.name
+    data = False
+    message = models.Users.query.all()
+    for row in message:
+        if userID == row.user_id:
+            data = row
+            break
+    return data
     
     
 
@@ -77,6 +83,28 @@ def verify():
         if not request.args.get("hub.verify_token") == os.environ["VERIFY_TOKEN"]:
             return "Verification token mismatch", 403
         return request.args["hub.challenge"], 200
+    
+    #for testing locally
+    ##################################
+    # lookupID = str(1404067442998973) #cody
+    
+    # user = isUserInDB(lookupID)
+    
+    # #if the user does not exist in the db, make graph call
+    # if user is False:
+    #     newUser = graphRequests.requestUserInfo(lookupID)
+        
+    #     print newUser
+    #     #preprocess data
+    #     fullName = newUser['first_name'] +" "+ newUser['last_name']
+        
+    #     #add data to the db
+    #     new_user = models.Users(lookupID, fullName, "google@gmail.com", newUser['profile_pic'])
+    #     models.db.session.add(new_user)
+    #     models.db.session.commit()
+        
+    ##################################
+    
     return "Hello world", 200
 
 @app.route('/', methods=['POST'])
@@ -165,11 +193,6 @@ def webhook():
 
                 if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
                     pass
-                
-    #for testing locally
-    #isUserInDB()
-    
-    ##################################
     return "ok", 200
 
 
@@ -184,14 +207,26 @@ def send_message(recipient_id, message_text):
     headers = {
         "Content-Type": "application/json"
     }
-    data = json.dumps({
-        "recipient": {
-            "id": recipient_id
-        },
-        "message": {
-            "text": message_text
-        }
-    })
+    
+    # data = json.dumps({
+    #     "recipient": {
+    #         "id": recipient_id
+    #     },
+    #     "message": {
+    #         "text": message_text
+    #     }
+    # })
+    
+    #convert data into 
+    dataDict = {}
+    dataDict['recipient'] = {}
+    dataDict['message'] = {}
+    
+    dataDict['recipient']['id'] = str(recipient_id)
+    dataDict['message']['text'] = str(message_text)
+    
+    data = json.dumps(dataDict)
+
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
         log(r.status_code)
