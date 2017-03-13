@@ -176,8 +176,15 @@ def webhook():
                         #sned the message to the person who got payed
                         send_message(payed_id, "got paid $"+str(amount)+" by "+senderName)
                     
+                    #if there is an amount but no user in system, it will ask them share the link so that they can be in the system
+                    elif payed_id is False and amount is not False and senderName is not False:
+                        #let the user know that they payed the person
+                        send_message(sender_id, "The user you are trying to pay is not in the system, make sure they interact with me at "+
+                        "https://www.facebook.com/IAmPayBot/")
+                        
                     else:
                         send_message(sender_id, "sup")
+                    
                     
                     #get user's info
                     #getUserInfo(sender_id)
@@ -253,7 +260,7 @@ def send_message(recipient_id, message_text):
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
-        
+
 def getAmount(data):
     #get words in string
     splits = data.split(" ")
