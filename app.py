@@ -32,6 +32,37 @@ def hello():
     print message4
     return render_template('index.html', user_info = message, pay = message2, payed = message3, friends = message4)
 
+def getIDofUser(someText):
+    usrID = False
+    userFirst = ""
+    if 'pay josh' in someText:
+        usrID = str(985245348244242)
+        userFirst = "josh"
+    
+    elif 'pay sal' in someText:
+        usrID = str(1596606567017003)
+        userFirst = "sal"
+    
+    elif 'pay anna' in someText:
+        usrID = str(1204927079622878)
+        userFirst = "anna"
+    
+    return usrID, userFirst
+
+
+def getNameOfUser(anID):
+    userFirst = False
+    if str(985245348244242) in anID:
+        userFirst = "josh"
+    
+    elif str(1596606567017003) in anID:
+        userFirst = "sal"
+    
+    elif str(1204927079622878) in anID:
+        userFirst = "anna"
+    
+    return userFirst
+
 #check if user is in db, if it is burp return the data
 #else False
 def isUserInDB(userID):
@@ -234,19 +265,6 @@ def send_message(recipient_id, message_text):
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
-
-def getAmount(data):
-    #get words in string
-    splits = data.split(" ")
-    amount  = False
-    #grab the word that has the $ char
-    for word in splits:
-        if '$' in word:
-            #get number
-            amount =  word[1:]
-            break
-    
-    return amount
     
 def getUserInfo(anId):
     params = {
