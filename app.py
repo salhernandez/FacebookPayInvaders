@@ -5,6 +5,7 @@ import requests
 import time
 from flask import Flask, render_template, request
 import flask_sqlalchemy
+import classes.MsgParser as MsgParser
 #import graphRequests
 
 app = Flask(__name__)
@@ -30,37 +31,6 @@ def hello():
     message4 = models.Friends.query.all()
     print message4
     return render_template('index.html', user_info = message, pay = message2, payed = message3, friends = message4)
-
-def getIDofUser(someText):
-    usrID = False
-    userFirst = ""
-    if 'pay josh' in someText:
-        usrID = str(985245348244242)
-        userFirst = "josh"
-    
-    elif 'pay sal' in someText:
-        usrID = str(1596606567017003)
-        userFirst = "sal"
-    
-    elif 'pay anna' in someText:
-        usrID = str(1204927079622878)
-        userFirst = "anna"
-    
-    return usrID, userFirst
-
-
-def getNameOfUser(anID):
-    userFirst = False
-    if str(985245348244242) in anID:
-        userFirst = "josh"
-    
-    elif str(1596606567017003) in anID:
-        userFirst = "sal"
-    
-    elif str(1204927079622878) in anID:
-        userFirst = "anna"
-    
-    return userFirst
 
 #check if user is in db, if it is burp return the data
 #else False
@@ -152,11 +122,15 @@ def webhook():
                     #get the name of the sender
                     senderName = getNameOfUser(str(sender_id))
                     
-                    #loooks for the user id
-                    payed_id, userFirst = getIDofUser(message_text)
+                    #dump string into message parser and it will grab everything it needs
+                    msgObj = MsgParser.MessageParser(message_text)
+
+                    print msgObj.getMessage()
                     
-                    #gets the amount from the string
-                    amount = getAmount(message_text)
+                    amount  = msgObj.amount
+                    userFirst  = msgObj.userFirst
+                    payed_id =  msgObj.userID
+                    
                     
                     #if there is no name and amount, it will reply to the user with a static response
                     
