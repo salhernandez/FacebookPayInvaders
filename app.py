@@ -3,7 +3,7 @@ import sys
 import json
 import requests
 import time
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import flask_sqlalchemy
 import classes.MsgParser as MsgParser
 #import graphRequests
@@ -231,34 +231,35 @@ def send_message(recipient_id, message_text):
     
     #convert dict into json
     #####################################
-    dataDict = {}
-    dataDict['recipient'] = {}
-    dataDict['message'] = {}
-    
-    dataDict['recipient']['id'] = str(recipient_id)
-    dataDict['message']['text'] = str(message_text)
-    
-    data = json.dumps(dataDict)
-    #######################################
-    
-    #send share button
-    #########################################
     # dataDict = {}
     # dataDict['recipient'] = {}
     # dataDict['message'] = {}
     
     # dataDict['recipient']['id'] = str(recipient_id)
-    # dataDict['message']['attachment'] = {}
-    # dataDict['message']['attachment']['type'] =  "template"
-    # dataDict['message']['attachment']['payload'] = {}
-    # dataDict['message']['attachment']['payload']['template_type'] = "generic"
-    # dataDict['message']['attachment']['payload']['elements'] = {}
-    # dataDict['message']['attachment']['payload']['elements']['title'] = "teheee"
-    # dataDict['message']['attachment']['payload']['elements']['subtitle'] = "ayeee"
-    # dataDict['message']['attachment']['payload']['elements']['image_url'] = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
-    # dataDict['message']['attachment']['payload']['elements']['buttons'] = {}
-    # dataDict['message']['attachment']['payload']['elements']['buttons']['type'] = "element_share"
+    # dataDict['message']['text'] = str(message_text)
     
+    #data = json.dumps(dataDict)
+    #######################################
+    
+    #send share button
+    #########################################
+    dataDict = {}
+    dataDict['recipient'] = {}
+    dataDict['message'] = {}
+    
+    dataDict['recipient']['id'] = str(recipient_id)
+    dataDict['message']['attachment'] = {}
+    dataDict['message']['attachment']['type'] =  "template"
+    dataDict['message']['attachment']['payload'] = {}
+    dataDict['message']['attachment']['payload']['template_type'] = "generic"
+    dataDict['message']['attachment']['payload']['elements'] = {}
+    dataDict['message']['attachment']['payload']['elements']['title'] = "teheee"
+    dataDict['message']['attachment']['payload']['elements']['subtitle'] = "ayeee"
+    dataDict['message']['attachment']['payload']['elements']['image_url'] = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+    dataDict['message']['attachment']['payload']['elements']['buttons'] = {}
+    dataDict['message']['attachment']['payload']['elements']['buttons']['type'] = "element_share"
+    
+    data = jsonify(dataDict)
     #data = json.dumps(dataDict)
 
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
