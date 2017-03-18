@@ -5,7 +5,9 @@ import requests
 import time
 from flask import Flask, render_template, request, jsonify
 import flask_sqlalchemy
+
 import classes.MsgParser as MsgParser
+import classes.UserInfo as UserInfo
 #import graphRequests
 
 app = Flask(__name__)
@@ -159,30 +161,29 @@ def webhook():
                     print msgObj.getMessage()
                     
                     amount  = msgObj.amount
-                    userFirst  = msgObj.userFirst
-                    payed_id =  msgObj.userID
                     
                     
+                    payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
                     #if there is no name and amount, it will reply to the user with a static response
                     
                     #checks that the user and the amount is there
-                    if payed_id is not False and amount is not False and senderName is not False:
+                    if payedUser.ID is not False and amount is not False and senderName is not False:
                         #record data in payed table
                         #Payed
                         ts = int(time.time())
                         #first ID is the person who got PAYED, second is PAYEE
-                        payment = models.Payed(payed_id, sender_id, float(amount), ts)
+                        payment = models.Payed(payedUser.ID, sender_id, float(amount), ts)
                         models.db.session.add(payment)
                         models.db.session.commit()
                         
                         #let the user know that they payed the person
-                        send_message(sender_id, "you paid $"+str(amount)+" to "+userFirst)
+                        send_message(sender_id, "you paid $"+str(amount)+" to "+payedUser.name)
                         
                         #sned the message to the person who got payed
-                        send_message(payed_id, "got paid $"+str(amount)+" by "+senderName)
+                        send_message(payedUser.ID, "got paid $"+str(amount)+" by "+senderName)
                     
                     #if there is an amount but no user in system, it will ask them share the link so that they can be in the system
-                    elif payed_id is False and amount is not False and senderName is not False:
+                    elif payedUser.ID is False and amount is not False and senderName is not False:
                         #let the user know that they payed the person
                         send_message(sender_id, "The user you are trying to pay is not in the system, make sure they interact with me at "+
                         "https://www.facebook.com/IAmPayBot/")
