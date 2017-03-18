@@ -4,7 +4,7 @@ import json, os, sys, requests
 class MessageBuilder(object):
     def __init__(self, **kwargs):
         self.fromUser = kwargs.get('fromUser', None)
-        self.toUser = kwargs.get('toUser', "default value")
+        self.toUser = kwargs.get('toUser', None)
         self.messageType = kwargs.get('messageType', "default value")
         self.messageText = kwargs.get('messageText', "default value")
         self.amount = kwargs.get('amount', 0.0)
