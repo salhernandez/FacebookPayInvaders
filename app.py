@@ -174,7 +174,7 @@ def webhook():
                     
                     sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = msgObj.amount)
                     #checks that the user and the amount is there
-                    if payedUser.ID is not False and msgObj.amount is not False and senderUser.name is not False:
+                    if payedUser.name is not False and msgObj.amount is not False and senderUser.name is not False:
                         log("notify both of payment")
                         #record data in payed table
                         #Payed
@@ -193,7 +193,7 @@ def webhook():
                         sendMsg.notify_payee_and_payer_of_payment()
                     
                     #if there is an amount but no user in system, it will ask them share the link so that they can be in the system
-                    elif sendMsg.toUser is None and sendMsg.fromUser is not None:
+                    elif sendMsg.toUser is None and sendMsg.fromUser is not None and msgObj.amount is not None:
                         #let the user know that they payed the person
                         log("share link message")
                         sendMsg.send_share_link_message()
