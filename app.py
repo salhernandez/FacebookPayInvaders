@@ -174,7 +174,7 @@ def webhook():
                     
                     sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = msgObj.amount)
                     #checks that the user and the amount is there
-                    if sendMsg.toUser.name is not False and msgObj.amount is not False and senderUser.name is not False:
+                    if sendMsg.toID is not False and msgObj.amount is not False and senderUser.name is not False:
                         log("notify both of payment")
                         #record data in payed table
                         #Payed
