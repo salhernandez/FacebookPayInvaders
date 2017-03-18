@@ -163,7 +163,7 @@ def webhook():
                     #dump string into message parser and it will grab everything it needs
                     msgObj = MsgParser.MessageParser(message_text)
                     
-                    amount  = msgObj.amount
+                    log("amount from string"+ msgObj.amount)
                     
                     
                     payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
@@ -180,7 +180,7 @@ def webhook():
                         #Payed
                         ts = int(time.time())
                         #first ID is the person who got PAYED, second is PAYEE
-                        payment = models.Payed(payedUser.ID, senderUser.ID, float(amount), ts)
+                        payment = models.Payed(payedUser.ID, senderUser.ID, float(msgObj.amount), ts)
                         models.db.session.add(payment)
                         models.db.session.commit()
                         
@@ -193,7 +193,7 @@ def webhook():
                         sendMsg.notify_payee_and_payer_of_payment()
                     
                     #if there is an amount but no user in system, it will ask them share the link so that they can be in the system
-                    elif sendMsg.toUser is None and msgObj.amount is not False and senderUser.name is not False:
+                    elif sendMsg.toUser is None and sendMsg.fromUser is not None:
                         #let the user know that they payed the person
                         log("share link message")
                         sendMsg.send_share_link_message()
