@@ -1,4 +1,6 @@
 import json, inspect
+
+#stores user info
 class UserInfo(object):
     def __init__(self, name, id):
         self.name = str(name)

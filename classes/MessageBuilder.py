@@ -1,5 +1,21 @@
 import json, os, sys, requests
 
+#all in order to send a message to a user, you need to initialize the MessageBuilder witht the user objects,
+#the sendUser object will always be there, but not the payedUser. The class is based on kwargs
+#after initializing the class you can call on the send functions to either share a link or notify of payments
+
+#if all you want to do is initialize the object to send a simple message, make
+#sure to initialize the object with a fromUser UserInfo object
+#otherwise it will not have the neccesaruy information to send a message
+
+## simple sample
+## create userInfo object
+#senderUser = UserInfo.UserInfo("sal", str(1596606567017003))
+## pass it into MessageBuilder 
+#sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser)
+## send message to user
+#sendMsg.send_default_message()
+
 
 class MessageBuilder(object):
     def __init__(self, **kwargs):
@@ -54,7 +70,9 @@ class MessageBuilder(object):
         if r.status_code != 200:
             self.log(r.status_code)
             self.log(r.text)
-
+    
+    ##send message to user 
+    ############################################################################
     def send_default_message(self):
         self.message_template_simple(self.fromID, self.defaultMessage)
 
@@ -72,7 +90,7 @@ class MessageBuilder(object):
     def notify_payee_and_payer_of_payment(self):
         self.send_payment_made_message()
         self.send_payment_log_message()
-
+    ############################################################################
     def log(self, text):  # simple wrapper for __log__ging to stdout on heroku
         print str(text)
         sys.stdout.flush()

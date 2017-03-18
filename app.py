@@ -175,6 +175,9 @@ def webhook():
                     
                     #messageBuilder takes in kwargs as arguments, its up to the developer to keep track of the variables that have been used or not
                     #and make the proper calls for now
+                    
+                    
+                    #initialze message builder
                     sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = msgObj.amount)
                     
                     

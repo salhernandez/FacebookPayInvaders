@@ -1,4 +1,8 @@
 import json
+
+#This class is used specidifcally for taking apart the message and get the info
+#we want from it. 
+
 class MessageParser(object):
     def __init__(self, msg):
         self.ogMsg = msg
