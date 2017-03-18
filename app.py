@@ -8,6 +8,7 @@ import flask_sqlalchemy
 
 import classes.MsgParser as MsgParser
 import classes.UserInfo as UserInfo
+import classes.MessageBuilder as MsgBuilder
 #import graphRequests
 
 app = Flask(__name__)
@@ -161,8 +162,6 @@ def webhook():
                     
                     #dump string into message parser and it will grab everything it needs
                     msgObj = MsgParser.MessageParser(message_text)
-
-                    print msgObj.getMessage()
                     
                     amount  = msgObj.amount
                     
@@ -170,6 +169,10 @@ def webhook():
                     payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
                     #if there is no name and amount, it will reply to the user with a static response
                     
+                    #messageBuilder takes in kwargs as arguments, its up to the developer to keep track of the variables that have been used or not
+                    #and make the proper calls for now
+                    
+                    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = msgObj.amount)
                     #checks that the user and the amount is there
                     if payedUser.ID is not False and amount is not False and senderName is not False:
                         #record data in payed table
@@ -181,19 +184,20 @@ def webhook():
                         models.db.session.commit()
                         
                         #let the user know that they payed the person
-                        send_message(senderUser.ID, "you paid $"+str(amount)+" to "+payedUser.name)
+                        #send_message(senderUser.ID, "you paid $"+str(amount)+" to "+payedUser.name)
                         
                         #sned the message to the person who got payed
-                        send_message(payedUser.ID, "got paid $"+str(amount)+" by "+senderUser.name)
+                        #send_message(payedUser.ID, "got paid $"+str(amount)+" by "+senderUser.name)
+                        
+                        sendMsg.notify_payee_and_payer_of_payment()
                     
                     #if there is an amount but no user in system, it will ask them share the link so that they can be in the system
                     elif payedUser.ID is False and amount is not False and senderUser.name is not False:
                         #let the user know that they payed the person
-                        send_message(senderUser.ID, "The user you are trying to pay is not in the system, make sure they interact with me at "+
-                        "https://www.facebook.com/IAmPayBot/")
+                        sendMsg.send_share_link_message()
                         
                     else:
-                        send_message(senderUser.ID, "sup")
+                        sendMsg.send_default_message()
                     
                     
                     #get user's info
