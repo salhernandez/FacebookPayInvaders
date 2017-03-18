@@ -68,6 +68,7 @@ class MessageBuilder(object):
         self.message_template_simple(self.toID,
                                      "The user you are trying to pay is not in the system, make sure they interact with me at " +
                                      "https://www.facebook.com/IAmPayBot/")
+    
     def notify_payee_and_payer_of_payment(self):
         self.send_payment_made_message()
         self.send_payment_log_message()
