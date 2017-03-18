@@ -56,7 +56,7 @@ class MessageBuilder(object):
             self.__log__(r.text)
 
     def send_default_message(self):
-        self.message_template_simple(self.toID, self.defaultMessage)
+        self.message_template_simple(self.fromID, self.defaultMessage)
 
     def send_payment_log_message(self):
         self.message_template_simple(self.fromID, "you paid $" + self.amount + " to " + self.toName)
@@ -65,7 +65,7 @@ class MessageBuilder(object):
         self.message_template_simple(self.toID, "got paid $" + self.amount + " from " + self.fromName)
 
     def send_share_link_message(self):
-        self.message_template_simple(self.toID,
+        self.message_template_simple(self.fromID,
                                      "The user you are trying to pay is not in the system, make sure they interact with me at " +
                                      "https://www.facebook.com/IAmPayBot/")
     
