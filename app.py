@@ -152,8 +152,12 @@ def webhook():
                     #message_timestamp = messaging_event["timestamp"]  
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                     
+                    #if the user is not in the database is should be handled here
                     #get the name of the sender
                     senderName = getNameOfUser(str(sender_id))
+                    
+                    #create a user object with the information obtained t from the sender
+                    senderUser = UserInfo.UserInfo(senderName, sender_id)
                     
                     #dump string into message parser and it will grab everything it needs
                     msgObj = MsgParser.MessageParser(message_text)
@@ -172,24 +176,24 @@ def webhook():
                         #Payed
                         ts = int(time.time())
                         #first ID is the person who got PAYED, second is PAYEE
-                        payment = models.Payed(payedUser.ID, sender_id, float(amount), ts)
+                        payment = models.Payed(payedUser.ID, senderUser.ID, float(amount), ts)
                         models.db.session.add(payment)
                         models.db.session.commit()
                         
                         #let the user know that they payed the person
-                        send_message(sender_id, "you paid $"+str(amount)+" to "+payedUser.name)
+                        send_message(senderUser.ID, "you paid $"+str(amount)+" to "+payedUser.name)
                         
                         #sned the message to the person who got payed
-                        send_message(payedUser.ID, "got paid $"+str(amount)+" by "+senderName)
+                        send_message(payedUser.ID, "got paid $"+str(amount)+" by "+senderUser.name)
                     
                     #if there is an amount but no user in system, it will ask them share the link so that they can be in the system
-                    elif payedUser.ID is False and amount is not False and senderName is not False:
+                    elif payedUser.ID is False and amount is not False and senderUser.name is not False:
                         #let the user know that they payed the person
-                        send_message(sender_id, "The user you are trying to pay is not in the system, make sure they interact with me at "+
+                        send_message(senderUser.ID, "The user you are trying to pay is not in the system, make sure they interact with me at "+
                         "https://www.facebook.com/IAmPayBot/")
                         
                     else:
-                        send_message(sender_id, "sup")
+                        send_message(senderUser.ID, "sup")
                     
                     
                     #get user's info
