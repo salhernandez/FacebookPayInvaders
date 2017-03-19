@@ -1,4 +1,4 @@
-import json, os, sys, requests
+import json, os, sys, requests, time, flask_sqlalchemy, app
 
 #all in order to send a message to a user, you need to initialize the MessageBuilder witht the user objects,
 #the sendUser object will always be there, but not the payedUser. The class is based on kwargs
@@ -16,6 +16,11 @@ import json, os, sys, requests
 ## send message to user
 #sendMsg.send_default_message()
 
+#for heroku
+app.app.config['SQLALCHEMY_DATABASE_URI'] = app.os.getenv('DATABASE_URL')
+#app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
+
+db = flask_sqlalchemy.SQLAlchemy(app.app)
 
 class MessageBuilder(object):
     def __init__(self, **kwargs):
@@ -81,6 +86,11 @@ class MessageBuilder(object):
 
     def send_payment_made_message(self):
         self.message_template_simple(self.toID, "got paid $" + self.amount + " from " + self.fromName)
+        ts = int(time.time())
+        #first ID is the person who got PAYED, second is PAYEE
+        payment = models.Payed(toID, fromID, float(self.amount), ts)
+        models.db.session.add(payment)
+        models.db.session.commit()
 
     def send_share_link_message(self):
         self.message_template_simple(self.fromID,
