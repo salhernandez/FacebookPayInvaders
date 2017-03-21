@@ -79,11 +79,18 @@ def hello():
     #                   columns=data[0,1:]))
     
     df = pd.DataFrame(columns=('','owed','owed_id','needs_to_pay','needs_to_pay_id', 'amount', 'time'))
+    
+    df2 = pd.DataFrame(columns=('','payer','payer_id','payed_to','payed_to_id', 'amount', 'time'))
 
     for i in range(len(message2)):
         the_account = str(message2[i]).split()
         df.loc[i] = [i, names[int(the_account[0])], the_account[0], names[int(the_account[1])], the_account[0], the_account[2], the_account[3]]
     print(df)
+
+    for i in range(len(message3)):
+        the_account2 = str(message3[i]).split()
+        df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[0], the_account2[2], the_account2[3]]
+    print(df2)
     
     return render_template('index.html', user_info = message, pay = message2, payed = message3, friends = message4)
 
