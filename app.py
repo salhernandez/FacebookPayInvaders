@@ -73,6 +73,9 @@ def hello():
     # create columns for the payed table
     df2 = pd.DataFrame(columns=('','payer','payer_id','payed_to','payed_to_id', 'amount', 'time'))
 
+    # make columns for the friends table
+    df3 = pd.DataFrame(columns=('','id','fname', 'lname','email','pic_url'))
+    
     # populate the pay dataframe
     for i in range(len(message2)):
         the_account = str(message2[i]).split()
@@ -84,6 +87,12 @@ def hello():
         the_account2 = str(message3[i]).split()
         df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[0], float(the_account2[2]), the_account2[3]]
     # print(df2)
+    
+    # populate the friends dataframe
+    for i in range(len(message)):
+        the_account3 = str(message[i]).split()
+        df3.loc[i] = [i, the_account3[0], the_account3[1], the_account3[2], the_account3[3], the_account3[4]]
+    print(df3)
     
     # group and sum the pay table
     g1 = df.groupby(["owed", "needs_to_pay"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
@@ -99,7 +108,7 @@ def hello():
     
     # print g3
     
-    return render_template('index.html', user_info = message, pay = df.to_html(), payed = df2.to_html(), owed = g3.to_html(), friends = message4)
+    return render_template('index.html', user_info = df3.to_html(), pay = df.to_html(), payed = df2.to_html(), owed = g3.to_html(), friends = message4)
 
 def getIDofUser(someText):
     usrID = False
