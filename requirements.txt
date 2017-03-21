@@ -11,3 +11,4 @@ flask_sqlalchemy
 Flask-SQLAlchemy
 psycopg2
 pandas
+numpy

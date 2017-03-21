@@ -3,9 +3,11 @@ import sys
 import json
 import requests
 import time
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import flask_sqlalchemy
 import classes.MsgParser as MsgParser
+import classes.UserInfo as UserInfo
+import classes.MessageBuilder as MsgBuilder
 #import graphRequests
 import numpy as np
 import pandas as pd
@@ -20,6 +22,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 import models
 
 db = flask_sqlalchemy.SQLAlchemy(app)
+
+SENTINEL = "-1"
+SENTINEL_FLOAT = -1.0
 
 @app.route('/data')
 def hello():
@@ -228,52 +233,44 @@ def webhook():
                     #message_timestamp = messaging_event["timestamp"]  
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                     
+                    #dump string into message parser and it will grab everything it needs
+                    msgObj = MsgParser.MessageParser(message_text)
+                    
                     #get the name of the sender
                     senderName = getNameOfUser(str(sender_id))
+                    
+                    #create a user object with the information obtained t from the sender
+                    senderUser = UserInfo.UserInfo(senderName, sender_id)
+                    
+                    log("amount from string $"+ msgObj.amount)
                     
                     #dump string into message parser and it will grab everything it needs
                     msgObj = MsgParser.MessageParser(message_text)
 
                     print msgObj.getMessage()
                     
-                    amount  = msgObj.amount
-                    userFirst  = msgObj.userFirst
-                    payed_id =  msgObj.userID
+                    payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
                     
+                    #messageBuilder takes in kwargs as arguments, its up to the developer to keep track of the variables that have been used or not
+                    #and make the proper calls for now
+                    #initialze message builder
+                    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = msgObj.amount)
                     
                     #if there is no name and amount, it will reply to the user with a static response
                     #josh stuff is beklow here
                     #checks that the user and the amount is there
-                    if payed_id is not False and amount is not False and senderName is not False:
-                        #record data in payed table
-                        #Payed
-                        ts = int(time.time())
-                        #first ID is the person who got PAYED, second is PAYEE
-                        payment = models.Payed(payed_id, sender_id, float(amount), ts)
-                        models.db.session.add(payment)
-                        models.db.session.commit()
-                        
-                        #let the user know that they payed the person
-                        send_message(sender_id, "you paid $"+str(amount)+" to "+userFirst)
-                        
-                        #sned the message to the person who got payed
-                        send_message(payed_id, "got paid $"+str(amount)+" by "+senderName)
+                    if sendMsg.toID not in SENTINEL and sendMsg.amount is not SENTINEL_FLOAT and senderUser.name not in SENTINEL:
+                        log("notify both of payment")
+                        sendMsg.notify_payee_and_payer_of_payment()
+                    # if there is an amount but no user in system, it will ask them share the link so that they can be in the system
+                    elif sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
+                        # let the user know that they payed the person
+                        log("share link message")
+                        sendMsg.send_share_link_message()
                     
-                    #if there is an amount but no user in system, it will ask them share the link so that they can be in the system
-                    elif payed_id is False and amount is not False and senderName is not False:
-                        #let the user know that they payed the person
-                        send_message(sender_id, "The user you are trying to pay is not in the system, make sure they interact with me at "+
-                        "https://www.facebook.com/IAmPayBot/")
-                        
                     else:
-                        send_message(sender_id, "sup")
-                    
-                    
-                    #get user's info
-                    #getUserInfo(sender_id)
-                    
-                    #send share button
-                    #send_share_button(sender_id)
+                        log("default message")
+                        sendMsg.send_default_message()
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
