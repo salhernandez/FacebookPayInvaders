@@ -84,13 +84,16 @@ def hello():
 
     for i in range(len(message2)):
         the_account = str(message2[i]).split()
-        df.loc[i] = [i, names[int(the_account[0])], the_account[0], names[int(the_account[1])], the_account[0], the_account[2], the_account[3]]
+        df.loc[i] = [i, names[int(the_account[0])], the_account[0], names[int(the_account[1])], the_account[0], float(the_account[2]), the_account[3]]
     print(df)
 
     for i in range(len(message3)):
         the_account2 = str(message3[i]).split()
         df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[0], the_account2[2], the_account2[3]]
     print(df2)
+    
+    g1 = df.groupby(["owed", "needs_to_pay"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
+    print g1
     
     return render_template('index.html', user_info = message, pay = message2, payed = message3, friends = message4)
 
