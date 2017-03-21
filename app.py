@@ -63,16 +63,27 @@ def hello():
     names = {985245348244242: "Josh", 1596606567017003: "Sal", 1204927079622878: "Anna"}
     print message2[0]
     print str(message2[0]).split()
+    the_account = str(message2[0]).split()
     
     print names[985245348244242]
     
-    data = np.array([['','Col1','Col2'],
-                ['Row1',1,2],
-                ['Row2',3,4]])
+    
+    
+    # data = np.array([['','owed','needs_to_pay', 'amount', 'one more'],
+    #             ['Row1',1,2, 15, 19],
+    #             ['Row2',3,4, 20, 23],
+    #             ['Row2',3,3, 30, 32]])
                 
-    print(pd.DataFrame(data=data[1:,1:],
-                      index=data[1:,0],
-                      columns=data[0,1:]))
+    # print(pd.DataFrame(data=data[1:,1:],
+    #                   index=data[1:,0],
+    #                   columns=data[0,1:]))
+    
+    df = pd.DataFrame(columns=('','owed','needs_to_pay', 'amount', 'time'))
+
+    for i in range(len(message2)):
+        the_account = str(message2[i]).split()
+        df.loc[i] = [i, names[int(the_account[0])], names[int(the_account[1])], the_account[2], the_account[3]]
+    print(df)
     
     return render_template('index.html', user_info = message, pay = message2, payed = message3, friends = message4)
 
