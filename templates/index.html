@@ -11,11 +11,15 @@
         </div>
         <div>
             <h2>pay</h2>
-            <p>{{pay}}</p>
+            {{pay | safe}}
         </div>
         <div>
             <h2>paid</h2>
-            <p>{{payed}}</p>
+            <p>{{payed | safe}}</p>
+        </div>
+        <div>
+            <h2>owes</h2>
+            <p>{{owed | safe}}</p>
         </div>
         <div>
             <h2>friends</h2>

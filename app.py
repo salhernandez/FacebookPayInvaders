@@ -67,17 +67,6 @@ def hello():
     
     print names[985245348244242]
     
-    
-    
-    # data = np.array([['','owed','needs_to_pay', 'amount', 'one more'],
-    #             ['Row1',1,2, 15, 19],
-    #             ['Row2',3,4, 20, 23],
-    #             ['Row2',3,3, 30, 32]])
-                
-    # print(pd.DataFrame(data=data[1:,1:],
-    #                   index=data[1:,0],
-    #                   columns=data[0,1:]))
-    
     df = pd.DataFrame(columns=('','owed','owed_id','needs_to_pay','needs_to_pay_id', 'amount', 'time'))
     
     df2 = pd.DataFrame(columns=('','payer','payer_id','payed_to','payed_to_id', 'amount', 'time'))
@@ -89,13 +78,21 @@ def hello():
 
     for i in range(len(message3)):
         the_account2 = str(message3[i]).split()
-        df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[0], the_account2[2], the_account2[3]]
+        df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[0], float(the_account2[2]), the_account2[3]]
     print(df2)
     
     g1 = df.groupby(["owed", "needs_to_pay"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
     print g1
     
-    return render_template('index.html', user_info = message, pay = message2, payed = message3, friends = message4)
+    g2 = df2.groupby(["payer", "payed_to"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
+    print g2
+    
+    g3 = g1[['owed', 'needs_to_pay']]
+    g3['amount_to_pay'] = g1.amount - g2.amount
+    
+    print g3
+    
+    return render_template('index.html', user_info = message, pay = df.to_html(), payed = df2.to_html(), owed = g3.to_html(), friends = message4)
 
 def getIDofUser(someText):
     usrID = False
