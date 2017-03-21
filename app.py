@@ -24,7 +24,8 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 @app.route('/data')
 def hello():
     
-
+    # used to insert values into database
+    ########################################################################
     # # Pay
     # ts = int(time.time())
     # payment = models.Pay("985245348244242", "1596606567017003", 25.99, ts)
@@ -50,7 +51,9 @@ def hello():
     # models.db.session.add(new_user)
     
     # models.db.session.commit()
+    ##############################################################################################
     
+    # get data from database
     message = models.Users.query.all()
     print message
     message2 = models.Pay.query.all()
@@ -60,37 +63,41 @@ def hello():
     message4 = models.Friends.query.all()
     print message4
     
+    # give ID's a name
     names = {985245348244242: "Josh", 1596606567017003: "Sal", 1204927079622878: "Anna"}
     print message2[0]
     print str(message2[0]).split()
-    the_account = str(message2[0]).split()
     
-    print names[985245348244242]
-    
+    # create columns for the pay table
     df = pd.DataFrame(columns=('','owed','owed_id','needs_to_pay','needs_to_pay_id', 'amount', 'time'))
-    
+    # create columns for the payed table
     df2 = pd.DataFrame(columns=('','payer','payer_id','payed_to','payed_to_id', 'amount', 'time'))
 
+    # populate the pay dataframe
     for i in range(len(message2)):
         the_account = str(message2[i]).split()
         df.loc[i] = [i, names[int(the_account[0])], the_account[0], names[int(the_account[1])], the_account[0], float(the_account[2]), the_account[3]]
-    print(df)
+    # print(df)
 
+    # populate the payed dataframe
     for i in range(len(message3)):
         the_account2 = str(message3[i]).split()
         df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[0], float(the_account2[2]), the_account2[3]]
-    print(df2)
+    # print(df2)
     
+    # group and sum the pay table
     g1 = df.groupby(["owed", "needs_to_pay"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
-    print g1
+    # print g1
     
+    # group and sum the payed table
     g2 = df2.groupby(["payer", "payed_to"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
-    print g2
+    # print g2
     
+    # subtract and see who owes who
     g3 = g1[['owed', 'needs_to_pay']]
     g3['amount_to_pay'] = g1.amount - g2.amount
     
-    print g3
+    # print g3
     
     return render_template('index.html', user_info = message, pay = df.to_html(), payed = df2.to_html(), owed = g3.to_html(), friends = message4)
 
