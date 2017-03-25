@@ -8,10 +8,28 @@ class MessageParser(object):
         self.ogMsg = msg
         self.__getAmount__(self.ogMsg)
         self.__getIDofUser__(self.ogMsg)
+        self.__identifyTypeOfMessage__(self.ogMsg)
 
     def getMessage(self):
         return self.ogMsg
 
+    def __identifyTypeOfMessage__(self,someText):
+        msgType = ""
+       
+        if 'pay' in someText:
+            msgType = "pay"
+        
+        elif 'request' in someText:
+            msgType = "request"
+        
+        elif 'split' in someText:
+            msgType = "split"
+        
+        else:
+            msgType = "unknown"
+        
+        self.msgType = msgType
+            
     def __getIDofUser__(self,someText):
         someText = someText.lower()
         userID = "-1"
@@ -27,6 +45,9 @@ class MessageParser(object):
         elif 'anna' or 'pay anna' or 'make payment to anna' in someText:
             userID = str(1204927079622878)
             userFirst = "anna"
+        else:
+            userID = "-1"
+            userFirst = ""
 
         self.userID = userID
         self.userFirst = userFirst

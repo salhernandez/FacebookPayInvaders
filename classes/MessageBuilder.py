@@ -25,7 +25,7 @@ class MessageBuilder(object):
         self.messageText = kwargs.get('messageText', "-1")
         self.amount = kwargs.get('amount', -1)
 
-        self.defaultMessage = "sup"
+        self.defaultMessage = "Some things you can ask me to pay someone, request money from someone, or split a bill"
         # checks if the fromUser object was passed or not
         # if not it would bean that the message is strictly from the bot to the user
 
