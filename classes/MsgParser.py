@@ -13,6 +13,7 @@ class MessageParser(object):
         return self.ogMsg
 
     def __getIDofUser__(self,someText):
+        someText = someText.lower()
         userID = "-1"
         userFirst = ""
         if 'pay josh' in someText:
