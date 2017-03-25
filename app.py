@@ -116,6 +116,7 @@ def hello():
     return render_template('index.html', user_info = df3.to_html(), pay = df.to_html(), payed = df2.to_html(), owed = g3.to_html(), friends = message4)
 
 def getIDofUser(someText):
+    someText = someText.toLower()
     usrID = False
     userFirst = ""
     if 'pay josh' or 'make payment to josh' in someText:
