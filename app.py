@@ -26,12 +26,12 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
 
-@app.route('/data')
+@app.route('/data', methods=['GET'])
 def hello():
-    payedUser = UserInfo.UserInfo("anna", "1204927079622878")
-    senderUser = UserInfo.UserInfo("Josh", "985245348244242")
-    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = "20")
-    sendMsg.notify_payee_and_payer_of_payment()
+    # payedUser = UserInfo.UserInfo("anna", "1204927079622878")
+    # senderUser = UserInfo.UserInfo("Josh", "985245348244242")
+    # sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = "20")
+    # sendMsg.notify_payee_and_payer_of_payment()
     # used to insert values into database
     ########################################################################
     # # Pay
