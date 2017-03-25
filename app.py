@@ -28,7 +28,10 @@ SENTINEL_FLOAT = -1.0
 
 @app.route('/data')
 def hello():
-    
+    payedUser = UserInfo.UserInfo("anna", "1204927079622878")
+    senderUser = UserInfo.UserInfo("Josh", "985245348244242")
+    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = "20")
+    sendMsg.notify_payee_and_payer_of_payment()
     # used to insert values into database
     ########################################################################
     # # Pay
@@ -98,7 +101,7 @@ def hello():
         the_account3 = str(message[i]).split()
         df3.loc[i] = [i, the_account3[0], the_account3[1], the_account3[2], the_account3[3], the_account3[4]]
     print(df3)
-    
+
     # group and sum the pay table
     g1 = df.groupby(["owed", "needs_to_pay"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
     # print g1
