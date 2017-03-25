@@ -26,7 +26,7 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
 
-@app.route('/data', methods=['GET'])
+@app.route('/data')
 def hello():
     # payedUser = UserInfo.UserInfo("anna", "1204927079622878")
     # senderUser = UserInfo.UserInfo("Josh", "985245348244242")
