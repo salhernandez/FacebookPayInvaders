@@ -13,6 +13,7 @@ class MessageParser(object):
     def getMessage(self):
         return self.ogMsg
 
+    #unused so far
     def __identifyTypeOfMessage__(self,someText):
         msgType = ""
        
@@ -45,12 +46,14 @@ class MessageParser(object):
         elif 'anna' or 'pay anna' or 'make payment to anna' in someText:
             userID = str(1204927079622878)
             userFirst = "anna"
-        else:
-            userID = "-1"
-            userFirst = ""
+        # else:
+        #     userID = "-1"
+        #     userFirst = ""
 
         self.userID = userID
         self.userFirst = userFirst
+        
+        self.__identifyTypeOfMessage__(someText)
 
     def __getAmount__(self,data):
         # get words in string
