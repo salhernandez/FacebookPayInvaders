@@ -16,15 +16,15 @@ class MessageParser(object):
         someText = someText.lower()
         userID = "-1"
         userFirst = ""
-        if 'pay josh' in someText:
+        if 'pay josh' or 'make payment to josh' in someText:
             userID = str(985245348244242)
             userFirst = "josh"
 
-        elif 'pay sal' in someText:
+        elif 'sal' or 'pay sal' or 'make payment to sal' in someText:
             userID = str(1596606567017003)
             userFirst = "sal"
 
-        elif 'pay anna' in someText:
+        elif 'anna' or 'pay anna' or 'make payment to anna' in someText:
             userID = str(1204927079622878)
             userFirst = "anna"
 
