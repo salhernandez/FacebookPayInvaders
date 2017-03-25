@@ -116,18 +116,19 @@ def hello():
     return render_template('index.html', user_info = df3.to_html(), pay = df.to_html(), payed = df2.to_html(), owed = g3.to_html(), friends = message4)
 
 def getIDofUser(someText):
+    #convert string to all lower case for easier processing 
     someText = someText.lower()
     usrID = False
     userFirst = ""
-    if 'pay josh' or 'make payment to josh' in someText:
+    if 'josh' or 'pay josh' or 'make payment to josh' in someText:
         usrID = str(985245348244242)
         userFirst = "josh"
     
-    elif 'pay sal' or 'make payment to sal' in someText:
+    elif 'sal' or 'pay sal' or 'make payment to sal' in someText:
         usrID = str(1596606567017003)
         userFirst = "sal"
     
-    elif 'pay anna' or 'make payment to anna' in someText:
+    elif 'anna' or 'pay anna' or 'make payment to anna' in someText:
         usrID = str(1204927079622878)
         userFirst = "anna"
     
