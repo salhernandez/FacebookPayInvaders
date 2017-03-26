@@ -33,7 +33,7 @@ def hello():
     names = {985245348244242: "Josh", 1596606567017003: "Sal", 1204927079622878: "Anna"}
     if request.method == 'POST':
         result = request.form
-        print "---------------------->" + result
+        print "---------------------->" + str(result['pid'])
             # payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
             # senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
             # sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
