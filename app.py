@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI1'] = os.getenv('DATABASE_URL')
 
 #db = flask_sqlalchemy.SQLAlchemy(app)
 import models
