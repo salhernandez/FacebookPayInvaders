@@ -46,14 +46,11 @@ def hello():
     # models.db.session.add(payment)
     # models.db.session.commit()
     
-
     # new_user = models.Users("985245348244242", "Joshua Smith", "josmith@csumb.edu", "nope.png")
     # models.db.session.add(new_user)
     
-    
     # new_user = models.Users("1596606567017003", "Salvador Hernandez", "salvhernandez@csumb.edu", "nope.png")
     # models.db.session.add(new_user)
-    
     
     # new_user = models.Users("1204927079622878", "Anna Pomelov", "apomelovz@csumb.edu", "nope.png")
     # models.db.session.add(new_user)
