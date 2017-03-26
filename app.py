@@ -38,6 +38,11 @@ def hello():
         senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
         sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
         sendMsg.notify_payee_and_payer_of_payment()
+      
+        ts = int(time.time())
+        payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
+        models.db.session.add(payment)
+        models.db.session.commit()
 
     # used to insert values into database
     ########################################################################
