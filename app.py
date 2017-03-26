@@ -34,10 +34,10 @@ def hello():
     if request.method == 'POST':
         result = request.form
         print "---------------------->" + str(result['pid'])
-            # payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
-            # senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
-            # sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
-            # sendMsg.notify_payee_and_payer_of_payment()
+        payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
+        senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
+        sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
+        sendMsg.notify_payee_and_payer_of_payment()
 
     # used to insert values into database
     ########################################################################
