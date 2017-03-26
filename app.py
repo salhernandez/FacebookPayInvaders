@@ -26,11 +26,15 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
 
-@app.route('/data')
+@app.route('/data', methods=['POST'])
 def hello():
-    payedUser = UserInfo.UserInfo("anna", "1204927079622878")
-    senderUser = UserInfo.UserInfo("Josh", "985245348244242")
-    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = "20")
+    
+    # give ID's a name
+    names = {985245348244242: "Josh", 1596606567017003: "Sal", 1204927079622878: "Anna"}
+    
+    payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
+    senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
+    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
     sendMsg.notify_payee_and_payer_of_payment()
     # used to insert values into database
     ########################################################################
@@ -68,8 +72,7 @@ def hello():
     message4 = models.Friends.query.all()
     print message4
     
-    # give ID's a name
-    names = {985245348244242: "Josh", 1596606567017003: "Sal", 1204927079622878: "Anna"}
+
     print message2[0]
     print str(message2[0]).split()
     
