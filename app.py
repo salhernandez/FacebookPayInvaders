@@ -26,7 +26,7 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
 
-@app.route('/data')
+@app.route('/data', methods=['GET'])
 def hello():
     
     # give ID's a name
