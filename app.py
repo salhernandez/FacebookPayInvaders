@@ -33,7 +33,6 @@ def hello():
     names = {985245348244242: "Josh", 1596606567017003: "Sal", 1204927079622878: "Anna"}
     if request.method == 'POST':
         result = request.form
-        print result
             # payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
             # senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
             # sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
@@ -119,7 +118,7 @@ def hello():
     
     # print g3
     
-    return render_template('index.html', user_info = df3.to_html(), pay = df.to_html(), payed = df2.to_html(), owed = g3.to_html(), friends = message4)
+    return render_template('index.html', user_info = df3.to_html(), pay = df.to_html(), payed = df2.to_html(), owed = g3.to_html(), friends = message4, result = result)
 
 # def getIDofUser(someText):
 #     #convert string to all lower case for easier processing 
