@@ -26,17 +26,18 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
 
-@app.route('/data', methods=['GET'])
+@app.route('/data', methods = ['POST', 'GET'])
 def hello():
     
     # give ID's a name
     names = {985245348244242: "Josh", 1596606567017003: "Sal", 1204927079622878: "Anna"}
-    if request.method == 'GET':
-        if request.form['pid']:
-            payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
-            senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
-            sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
-            sendMsg.notify_payee_and_payer_of_payment()
+    if request.method == 'POST':
+        result = request.form
+        print result
+            # payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
+            # senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
+            # sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
+            # sendMsg.notify_payee_and_payer_of_payment()
 
     # used to insert values into database
     ########################################################################
