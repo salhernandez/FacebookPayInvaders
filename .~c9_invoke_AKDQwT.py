@@ -34,7 +34,7 @@ def hello():
     
     payedUser = UserInfo.UserInfo(names[int(request.form.get['pid'])], str(request.form.get['pid']))
     senderUser = UserInfo.UserInfo(names[int(request.form.get['fid'])], str(request.form.get['fid']))
-    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form.get['amount']))
+    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form.['amount']))
     sendMsg.notify_payee_and_payer_of_payment()
     # used to insert values into database
     ########################################################################
