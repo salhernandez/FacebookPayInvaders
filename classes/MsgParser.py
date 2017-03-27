@@ -16,7 +16,8 @@ class MessageParser(object):
     #unused so far
     def __identifyTypeOfMessage__(self,someText):
         msgType = ""
-       
+        someText = str(someText.lower())
+
         if 'pay' in someText:
             msgType = "pay"
         
