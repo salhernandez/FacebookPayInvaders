@@ -277,11 +277,11 @@ def webhook():
                     #if there is no name and amount, it will reply to the user with a static response
                     #josh stuff is beklow here
                     #checks that the user and the amount is there
-                    # if sendMsg.toID not in SENTINEL and sendMsg.amount is not SENTINEL_FLOAT and senderUser.name not in SENTINEL:
-                    #     log("notify both of payment")
-                    #     sendMsg.notify_payee_and_payer_of_payment()
-                    # # if there is an amount but no user in system, it will ask them share the link so that they can be in the system
-                    if sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
+                    if sendMsg.toID not in SENTINEL and sendMsg.amount is not SENTINEL_FLOAT and senderUser.name not in SENTINEL:
+                        log("notify both of payment")
+                        sendMsg.notify_payee_and_payer_of_payment()
+                    # if there is an amount but no user in system, it will ask them share the link so that they can be in the system
+                    elif sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
                         # let the user know that they payed the person
                         log("share link message")
                         sendMsg.send_share_link_message()
