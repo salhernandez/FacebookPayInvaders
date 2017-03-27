@@ -286,7 +286,7 @@ def webhook():
                         # let the user know that they payed the person
                         log("share link message")
                         sendMsg.send_share_link_message()
-                    elif sendMsg.messageType is "request"
+                    elif sendMsg.messageType is "request":
                         sendMsg.send_request_message()
                     else:
                         log("default message")
