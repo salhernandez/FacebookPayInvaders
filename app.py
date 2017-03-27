@@ -270,10 +270,11 @@ def webhook():
                     
                     payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
                     
+                    messType = str(msgObj.msgType)
                     #messageBuilder takes in kwargs as arguments, its up to the developer to keep track of the variables that have been used or not
                     #and make the proper calls for now
                     #initialze message builder
-                    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = msgObj.amount)
+                    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType=messType, amount = msgObj.amount)
                     
                     log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS: "+str(sendMsg))
                     #if there is no name and amount, it will reply to the user with a static response
@@ -282,12 +283,22 @@ def webhook():
                     if sendMsg.toID not in SENTINEL and sendMsg.amount is not SENTINEL_FLOAT and senderUser.name not in SENTINEL:
                         log("notify both of payment")
                         sendMsg.notify_payee_and_payer_of_payment()
+                        
+                    
                     # if there is an amount but no user in system, it will ask them share the link so that they can be in the system
                     elif sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
                         # let the user know that they payed the person
                         log("share link message")
                         sendMsg.send_share_link_message()
-                    
+                        
+                    elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) in SENTINEL:
+                        sendMsg.send_pay_who_message()
+                        
+                    elif sendMsg.messageType is "request":
+                        sendMsg.send_request_message()
+                        
+                    elif sendMsg.messageType is "split":
+                        sendMsg.send_split_message()
                     else:
                         log("default message")
                         sendMsg.send_default_message()

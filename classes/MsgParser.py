@@ -16,7 +16,8 @@ class MessageParser(object):
     #unused so far
     def __identifyTypeOfMessage__(self,someText):
         msgType = ""
-       
+        someText = str(someText.lower())
+
         if 'pay' in someText:
             msgType = "pay"
         
@@ -26,8 +27,11 @@ class MessageParser(object):
         elif 'split' in someText:
             msgType = "split"
         
+        elif 'clear' in someText:
+            msgType = "clear"
+        
         else:
-            msgType = "unknown"
+            msgType = "default"
         
         self.msgType = msgType
             
