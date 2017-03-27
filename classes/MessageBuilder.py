@@ -76,11 +76,14 @@ class MessageBuilder(object):
     def send_default_message(self):
         self.message_template_simple(self.fromID, self.defaultMessage)
 
+    def send_requst_message(self):
+        self.message_template_simple(self.fromID, "Who would you like to request money from?")
+
     def send_payment_log_message(self):
-        self.message_template_simple(self.fromID, "you paid $" + self.amount + " to " + self.toName)
+        self.message_template_simple(self.fromID, "You paid $" + self.amount + " to " + self.toName)
 
     def send_payment_made_message(self):
-        self.message_template_simple(self.toID, "got paid $" + self.amount + " from " + self.fromName)
+        self.message_template_simple(self.toID, "You got paid $" + self.amount + " from " + self.fromName)
 
     def send_share_link_message(self):
         self.message_template_simple(self.fromID,

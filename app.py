@@ -271,7 +271,7 @@ def webhook():
                     #messageBuilder takes in kwargs as arguments, its up to the developer to keep track of the variables that have been used or not
                     #and make the proper calls for now
                     #initialze message builder
-                    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = msgObj.amount)
+                    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType=msgObj.msgType, amount = msgObj.amount)
                     
                     log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS: "+str(sendMsg))
                     #if there is no name and amount, it will reply to the user with a static response
@@ -285,7 +285,8 @@ def webhook():
                         # let the user know that they payed the person
                         log("share link message")
                         sendMsg.send_share_link_message()
-                    
+                    elif sendMsg.messageType in "request"
+                        sendMsg.send_requst_message()
                     else:
                         log("default message")
                         sendMsg.send_default_message()
