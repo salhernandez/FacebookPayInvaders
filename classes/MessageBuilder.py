@@ -76,7 +76,7 @@ class MessageBuilder(object):
     def send_default_message(self):
         self.message_template_simple(self.fromID, self.defaultMessage)
 
-    def send_requst_message(self):
+    def send_request_message(self):
         self.message_template_simple(self.fromID, "Who would you like to request money from?")
 
     def send_payment_log_message(self):
