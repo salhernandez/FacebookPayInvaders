@@ -80,7 +80,10 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "Who would you like to request money from?")
     
     def send_pay_who_message(self):
-        self.message_template_simple(self.fromID, "Who would you like to pay $" + self.amount + "?")
+        if self.amount is -1.0:
+            self.message_template_simple(self.fromID, "Who would you like to pay?")
+        else:
+            self.message_template_simple(self.fromID, "Who would you like to pay $" + self.amount + "?")
     
     def send_split_message(self):
         self.message_template_simple(self.fromID, "Who would you like to split the bill with?")
