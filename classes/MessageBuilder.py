@@ -85,6 +85,9 @@ class MessageBuilder(object):
     def send_split_message(self):
         self.message_template_simple(self.fromID, "Who would you like to split the bill with?")
 
+    def send_how_much_message(self):
+        self.message_template_simple(self.fromID, "How much would you like to pay " + self.toID)
+
     def send_payment_log_message(self):
         self.message_template_simple(self.fromID, "You paid $" + self.amount + " to " + self.toName)
 

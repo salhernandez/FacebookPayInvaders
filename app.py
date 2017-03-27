@@ -283,7 +283,9 @@ def webhook():
                     if sendMsg.toID not in SENTINEL and sendMsg.amount is not SENTINEL_FLOAT and senderUser.name not in SENTINEL:
                         log("notify both of payment")
                         sendMsg.notify_payee_and_payer_of_payment()
-                        
+                    
+                    elif sendMsg.toID not in SENTINEL and sendMsg.amount is SENTINEL_FLOAT and senderUser.name not in SENTINEL:
+                        sendMsg.send_how_much_message()
                     
                     # if there is an amount but no user in system, it will ask them share the link so that they can be in the system
                     elif sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
