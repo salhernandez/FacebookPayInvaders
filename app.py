@@ -270,6 +270,7 @@ def webhook():
                     #initialze message builder
                     sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = msgObj.amount)
                     
+                    log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS: "+str(sendMsg))
                     #if there is no name and amount, it will reply to the user with a static response
                     #josh stuff is beklow here
                     #checks that the user and the amount is there
