@@ -289,6 +289,9 @@ def webhook():
                         log("share link message")
                         sendMsg.send_share_link_message()
                         
+                    elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) in SENTINEL:
+                        sendMsg.send_pay_who_message()
+                        
                     elif sendMsg.messageType is "request":
                         sendMsg.send_request_message()
                         
