@@ -260,8 +260,11 @@ def webhook():
                     
                     #dump string into message parser and it will grab everything it needs
                     msgObj = MsgParser.MessageParser(message_text)
-
-                    print msgObj.getMessage()
+                    
+                    
+                    log("WHAT THE MSG OBJECT CONTAINS: "+str(msgObj))
+                    
+                    #print msgObj.getMessage()
                     
                     payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
                     
