@@ -32,9 +32,10 @@ class MessageParser(object):
         self.msgType = msgType
             
     def __getIDofUser__(self,someText):
-        someText = someText.lower()
+        #someText = someText.lower()
         userID = "-1"
         userFirst = ""
+        
         if 'pay josh' or 'make payment to josh' in someText:
             userID = str(985245348244242)
             userFirst = "josh"
@@ -70,3 +71,4 @@ class MessageParser(object):
 
     def __str__(self):
         return str(self.__dict__)
+        
