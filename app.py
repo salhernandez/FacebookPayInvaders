@@ -23,6 +23,8 @@ import models
 
 db = flask_sqlalchemy.SQLAlchemy(app)
 
+import classes.DBLink as DBLink
+
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
 
