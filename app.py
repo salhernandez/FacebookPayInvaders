@@ -268,10 +268,11 @@ def webhook():
                     
                     payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
                     
+                    messType = str(msgObj.msgType)
                     #messageBuilder takes in kwargs as arguments, its up to the developer to keep track of the variables that have been used or not
                     #and make the proper calls for now
                     #initialze message builder
-                    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType=msgObj.msgType, amount = msgObj.amount)
+                    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType=messType, amount = msgObj.amount)
                     
                     log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS: "+str(sendMsg))
                     #if there is no name and amount, it will reply to the user with a static response
