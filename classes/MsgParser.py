@@ -45,17 +45,19 @@ class MessageParser(object):
         print someText
         
         
-        if 'pay josh' in someText:
+        if 'josh' in someText:
             userID = str(985245348244242)
             userFirst = "josh"
 
-        elif 'pay sal' in someText:
+        elif 'sal' in someText:
             userID = str(1596606567017003)
             userFirst = "sal"
 
-        elif 'pay anna' in someText:
+        elif 'anna' in someText:
             userID = str(1204927079622878)
             userFirst = "anna"
+        
+
         # else:
         #     userID = "-1"
         #     userFirst = ""
