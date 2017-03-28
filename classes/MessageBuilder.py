@@ -76,7 +76,7 @@ class MessageBuilder(object):
     def send_default_message(self):
         self.message_template_simple(self.fromID, self.defaultMessage)
 
-    def send_request_message(self):
+    def send_request_from_who_message(self):
         self.message_template_simple(self.fromID, "Who would you like to request money from?")
     
     def send_pay_who_message1(self):
@@ -96,6 +96,12 @@ class MessageBuilder(object):
 
     def send_payment_made_message(self):
         self.message_template_simple(self.toID, "You got paid $" + self.amount + " from " + self.fromName)
+        
+    def send_request_log_message(self):
+        self.message_template_simple(self.fromID, "You requested $" + self.amount + " from " + self.toName)
+
+    def send_request_made_message(self):
+        self.message_template_simple(self.toID, self.fromName + " requested $" + self.amount + " from you")    
 
     def send_share_link_message(self):
         self.message_template_simple(self.fromID,
@@ -105,6 +111,10 @@ class MessageBuilder(object):
     def notify_payee_and_payer_of_payment(self):
         self.send_payment_made_message()
         self.send_payment_log_message()
+        
+    def notify_requestee_and_requester_of_request(self):
+        self.send_request_made_message()
+        self.send_request_log_message()
     ############################################################################
     def log(self, text):  # simple wrapper for __log__ging to stdout on heroku
         print str(text)
