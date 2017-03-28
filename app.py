@@ -95,13 +95,13 @@ def hello():
     # populate the pay dataframe
     for i in range(len(message2)):
         the_account = str(message2[i]).split()
-        df.loc[i] = [i, names[int(the_account[0])], the_account[0], names[int(the_account[1])], the_account[0], float(the_account[2]), the_account[3]]
+        df.loc[i] = [i, names[int(the_account[0])], the_account[0], names[int(the_account[1])], the_account[1], float(the_account[2]), the_account[3]]
     # print(df)
 
     # populate the payed dataframe
     for i in range(len(message3)):
         the_account2 = str(message3[i]).split()
-        df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[0], float(the_account2[2]), the_account2[3]]
+        df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[1], float(the_account2[2]), the_account2[3]]
     # print(df2)
     
     # populate the friends dataframe
