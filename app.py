@@ -296,10 +296,10 @@ def webhook():
                         else:
                             #if amount is not -1
                             if sendMsg.amount is not SENTINEL_FLOAT:
-                                sendMsg.send_pay_who_message()
+                                sendMsg.send_pay_who_message2()
                             #if amount is blank (-1)
                             else:
-                                sendMsg.send_pay_who_message()
+                                sendMsg.send_pay_who_message1()
                                 sendMsg.send_how_much_message()
                     
                     # elif sendMsg.messageType is "request":
