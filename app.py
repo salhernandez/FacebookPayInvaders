@@ -283,7 +283,7 @@ def webhook():
                     
                     if sendMsg.messageType is "pay":
                         #if id is not blank and sender name isn't blank
-                        if sendMsg.toID not in SENTINEL and senderUser.name not in SENTINEL:
+                        if sendMsg.toID not in SENTINEL:
                             #if amount is specified
                             if sendMsg.amount is not SENTINEL_FLOAT:
                                 sendMsg.notify_payee_and_payer_of_payment()
@@ -293,7 +293,7 @@ def webhook():
                                 sendMsg.send_how_much_message()
                                 
                         #if id or? name are blank
-                        elif sendMsg.toID in SENTINEL and senderUser.name in SENTINEL:
+                        elif sendMsg.toID in SENTINEL:
                             #if amount is not -1
                             if sendMsg.amount is not SENTINEL_FLOAT:
                                 sendMsg.send_pay_who_message2()
