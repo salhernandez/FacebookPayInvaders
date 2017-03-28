@@ -281,7 +281,10 @@ def webhook():
                     #josh stuff is beklow here
                     #checks that the user and the amount is there
                     
-                    if sendMsg.messageType is "pay":
+                    if sendMsg.messageType is "default":
+                        sendMsg.send_default_message()
+                    
+                    elif sendMsg.messageType is "pay":
                         #if id is not blank and sender name isn't blank
                         if sendMsg.toID not in SENTINEL:
                             #if amount is specified
@@ -305,8 +308,7 @@ def webhook():
                         
                     # elif sendMsg.messageType is "split":
                     
-                    # elif sendMsg.messageType is "default":
-                        
+
                     # elif sendMsg.messageType is "clear":
                     
     
