@@ -16,7 +16,8 @@ class MessageParser(object):
     #unused so far
     def __identifyTypeOfMessage__(self,someText):
         msgType = ""
-       
+        someText = str(someText.lower())
+
         if 'pay' in someText:
             msgType = "pay"
         
@@ -26,26 +27,37 @@ class MessageParser(object):
         elif 'split' in someText:
             msgType = "split"
         
+        elif 'clear' in someText:
+            msgType = "clear"
+        
         else:
-            msgType = "unknown"
+            msgType = "default"
         
         self.msgType = msgType
             
     def __getIDofUser__(self,someText):
-        someText = someText.lower()
+        
+        print type(someText.lower())
+        someText = str(someText.lower())
         userID = "-1"
         userFirst = ""
-        if 'pay josh' or 'make payment to josh' in someText:
+        
+        print someText
+        
+        
+        if 'josh' in someText:
             userID = str(985245348244242)
             userFirst = "josh"
 
-        elif 'sal' or 'pay sal' or 'make payment to sal' in someText:
+        elif 'sal' in someText:
             userID = str(1596606567017003)
             userFirst = "sal"
 
-        elif 'anna' or 'pay anna' or 'make payment to anna' in someText:
+        elif 'anna' in someText:
             userID = str(1204927079622878)
             userFirst = "anna"
+        
+
         # else:
         #     userID = "-1"
         #     userFirst = ""
@@ -70,3 +82,4 @@ class MessageParser(object):
 
     def __str__(self):
         return str(self.__dict__)
+        

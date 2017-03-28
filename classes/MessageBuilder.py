@@ -25,7 +25,7 @@ class MessageBuilder(object):
         self.messageText = kwargs.get('messageText', "-1")
         self.amount = kwargs.get('amount', -1)
 
-        self.defaultMessage = "Some things you can ask me to pay someone, request money from someone, or split a bill"
+        self.defaultMessage = "You can ask me to pay someone, request money from someone, split a bill, or clear all previous commands"
         # checks if the fromUser object was passed or not
         # if not it would bean that the message is strictly from the bot to the user
 
@@ -76,20 +76,58 @@ class MessageBuilder(object):
     def send_default_message(self):
         self.message_template_simple(self.fromID, self.defaultMessage)
 
+    def send_request_from_who_message(self):
+        self.message_template_simple(self.fromID, "Who would you like to request money from?")
+    
+    def send_pay_who_message1(self):
+        self.message_template_simple(self.fromID, "Who would you like to pay?")
+    
+    def send_pay_who_message2(self):
+        self.message_template_simple(self.fromID, "Who would you like to pay $" + self.amount + "?")
+
+    def send_split_message(self):
+        self.message_template_simple(self.fromID, "Who would you like to split the bill with?")
+
+    def send_how_much_message(self):
+        self.message_template_simple(self.fromID, "How much would you like to pay " + self.toID)
+
     def send_payment_log_message(self):
-        self.message_template_simple(self.fromID, "you paid $" + self.amount + " to " + self.toName)
+        self.message_template_simple(self.fromID, "You paid $" + self.amount + " to " + self.toName)
 
     def send_payment_made_message(self):
-        self.message_template_simple(self.toID, "got paid $" + self.amount + " from " + self.fromName)
+        self.message_template_simple(self.toID, "You got paid $" + self.amount + " from " + self.fromName)
+        
+    def send_split_log_message(self):
+        self.message_template_simple(self.fromID, "You requested to split the bill with " + self.toName)
+        
+    def send_split_made_message(self):
+        self.message_template_simple(self.toID, self.fromName + " requested to split the bill with you")    
+        
+    def send_request_log_message(self):
+        self.message_template_simple(self.fromID, "You requested $" + self.amount + " from " + self.toName)
+
+    def send_request_made_message(self):
+        self.message_template_simple(self.toID, self.fromName + " requested $" + self.amount + " from you")    
 
     def send_share_link_message(self):
         self.message_template_simple(self.fromID,
                                      "The user you are trying to pay is not in the system, make sure they interact with me at " +
                                      "https://www.facebook.com/IAmPayBot/")
 
+    def send_split_with_who_message(self):
+        self.message_template_simple(self.fromID, "Who would you like to split the bill with?")
+
     def notify_payee_and_payer_of_payment(self):
         self.send_payment_made_message()
         self.send_payment_log_message()
+        
+    def notify_requestee_and_requester_of_request(self):
+        self.send_request_made_message()
+        self.send_request_log_message()
+        
+    def notify_bill_splitters_of_request(self):
+        self.send_split_made_message()
+        self.send_split_log_message()
     ############################################################################
     def log(self, text):  # simple wrapper for __log__ging to stdout on heroku
         print str(text)
