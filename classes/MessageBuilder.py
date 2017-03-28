@@ -97,6 +97,12 @@ class MessageBuilder(object):
     def send_payment_made_message(self):
         self.message_template_simple(self.toID, "You got paid $" + self.amount + " from " + self.fromName)
         
+    def send_split_log_message(self):
+        self.message_template_simple(self.fromID, "You requested to split the bill with " + self.toName)
+        
+    def send_split_made_message(self):
+        self.message_template_simple(self.toID, self.fromName + " requested to split the bill with you")    
+        
     def send_request_log_message(self):
         self.message_template_simple(self.fromID, "You requested $" + self.amount + " from " + self.toName)
 
@@ -108,6 +114,9 @@ class MessageBuilder(object):
                                      "The user you are trying to pay is not in the system, make sure they interact with me at " +
                                      "https://www.facebook.com/IAmPayBot/")
 
+    def send_split_with_who_message(self):
+        self.message_template_simple(self.fromID, "Who would you like to split the bill with?")
+
     def notify_payee_and_payer_of_payment(self):
         self.send_payment_made_message()
         self.send_payment_log_message()
@@ -115,6 +124,10 @@ class MessageBuilder(object):
     def notify_requestee_and_requester_of_request(self):
         self.send_request_made_message()
         self.send_request_log_message()
+        
+    def notify_bill_splitters_of_request(self):
+        self.send_split_made_message()
+        self.send_split_log_message()
     ############################################################################
     def log(self, text):  # simple wrapper for __log__ging to stdout on heroku
         print str(text)

@@ -315,8 +315,13 @@ def webhook():
                         else:
                             sendMsg.send_request_from_who_message()
                         
-                    # elif sendMsg.messageType is "split":
-                    
+                    elif sendMsg.messageType is "split":
+                        #id blank
+                        if sendMsg.toID in SENTINEL:
+                            sendMsg.send_split_with_who_message()
+                        #id not blank
+                        else:
+                            sendMsg.notify_bill_splitters_of_request()
 
                     # elif sendMsg.messageType is "clear":
                     
