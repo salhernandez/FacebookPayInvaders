@@ -293,15 +293,14 @@ def webhook():
                                 sendMsg.send_how_much_message()
                                 
                         #if id or? name are blank
-                        else:
+                        elif sendMsg.toID in SENTINEL and senderUser.name in SENTINEL:
                             #if amount is not -1
                             if sendMsg.amount is not SENTINEL_FLOAT:
                                 sendMsg.send_pay_who_message2()
                             #if amount is blank (-1)
                             else:
                                 sendMsg.send_pay_who_message1()
-                                sendMsg.send_how_much_message()
-                    
+
                     # elif sendMsg.messageType is "request":
                         
                     # elif sendMsg.messageType is "split":
