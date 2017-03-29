@@ -312,6 +312,9 @@ def webhook():
                     elif sendMsg.messageType is "amount":
                         sendMsg.send_confirmation_message()
                         
+                    elif sendMsg.messageType is "clear":
+                        sendMsg.send_clear_message()
+                        
                     
                         
                     
