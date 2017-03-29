@@ -296,10 +296,10 @@ def webhook():
                         else:
                             sendMsg.send_pay_who_message1()
 
-                    elif sendMsg.messageType is "name":
+                    elif sendMsg.messageType is "knownName":
                         sendMsg.send_how_much_message()
                     
-                    elif sendMsg.messageType is "unknownname":
+                    elif sendMsg.messageType is "unknownName":
                         sendMsg.send_share_link_message()
                         
                     elif sendMsg.messageType is "amount":

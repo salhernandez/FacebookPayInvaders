@@ -29,17 +29,11 @@ class MessageParser(object):
         elif 'clear' in someText:
             msgType = "clear"
             
-        elif 'josh' == someText:
-            msgType = "name"
-            
-        elif 'sal' == someText:
-            msgType = "name"
-            
-        elif 'anna' == someText:
-            msgType = "name"
+        elif 'josh' == someText or 'sal' == someText or 'anna' == someText:
+            msgType = "knownName"
         
-        elif 'tala' == someText:
-            msgType = "unknownname"
+        elif 'tala' == someText or 'miranda' == someText:
+            msgType = "unknownName"
         
         elif '$' in someText:
             msgType = "amount"
