@@ -74,17 +74,17 @@ def hello():
     
     # get data from database
     message = models.Users.query.all()
-    print message
+    # print message
     message2 = models.Pay.query.all()
-    print message2
+    # print message2
     message3 = models.Payed.query.all()
-    print message3
+    # print message3
     message4 = models.Friends.query.all()
-    print message4
+    # print message4
     
 
-    print message2[0]
-    print str(message2[0]).split()
+    # print message2[0]
+    # print str(message2[0]).split()
     
     # create columns for the pay table
     df = pd.DataFrame(columns=('','owed','owed_id','needs_to_pay','needs_to_pay_id', 'amount', 'time'))
@@ -114,7 +114,7 @@ def hello():
 
     # group and sum the pay table
     g1 = df.groupby(["owed", "needs_to_pay"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
-    # print g1
+    print g1
     
     # group and sum the payed table
     g2 = df2.groupby(["payer", "payed_to"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
