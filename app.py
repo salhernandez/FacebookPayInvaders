@@ -283,6 +283,19 @@ def webhook():
                     
                     if sendMsg.messageType is "default":
                         sendMsg.send_default_message()
+                        
+                    elif sendMsg.messageType is "pay":
+                        if sendMsg.toID not in SENTINEL:
+                            if sendMsg.amount is not SENTINEL_FLOAT:
+                                sendMsg.notify_payee_and_payer_of_payment()
+                        else:
+                            sendMsg.send_pay_who_message1()
+                    
+                    elif sendMsg.messageType is "name":
+                        sendMsg.send_how_much_message()
+                        
+                    elif sendMsg.messageType is "amount":
+                        sendMsg.send_confirmation_message()
                     
                     elif sendMsg.messageType is "pay":
                         #if id is not blank and sender name isn't blank
@@ -295,37 +308,41 @@ def webhook():
                             else:
                                 sendMsg.send_how_much_message()
                                 
-                        #if id or? name are blank
-                        elif sendMsg.toID in SENTINEL:
-                            #if amount is not -1
-                            if sendMsg.amount is not SENTINEL_FLOAT:
-                                sendMsg.send_pay_who_message2()
-                            #if amount is blank (-1)
-                            else:
-                                sendMsg.send_pay_who_message1()
+                    #     #if id or? name are blank
+                    #     elif sendMsg.toID in SENTINEL:
+                    #         #if amount is not -1
+                    #         if sendMsg.amount is not SENTINEL_FLOAT:
+                    #             sendMsg.send_pay_who_message2()
+                    #         #if amount is blank (-1)
+                    #         else:
+                    #             sendMsg.send_pay_who_message1()
 
-                    elif sendMsg.messageType is "request":
-                        #id not blank
-                        if sendMsg.toID not in SENTINEL:
-                            #if amount is not -1
-                            if sendMsg.amount is not SENTINEL_FLOAT:
-                                #if name exists and amount inputted
-                                sendMsg.notify_requestee_and_requester_of_request()
-                        #id blank     
-                        else:
-                            sendMsg.send_request_from_who_message()
+                    # elif sendMsg.messageType is "request":
+                    #     #id not blank
+                    #     if sendMsg.toID not in SENTINEL:
+                    #         #if amount is not -1
+                    #         if sendMsg.amount is not SENTINEL_FLOAT:
+                    #             #if name exists and amount inputted
+                    #             sendMsg.notify_requestee_and_requester_of_request()
+                    #     #id blank     
+                    #     else:
+                    #         sendMsg.send_request_from_who_message()
                         
-                    elif sendMsg.messageType is "split":
-                        #id blank
-                        if sendMsg.toID in SENTINEL:
-                            sendMsg.send_split_with_who_message()
-                        #id not blank
-                        else:
-                            sendMsg.notify_bill_splitters_of_request()
+                    # elif sendMsg.messageType is "split":
+                    #     #id blank
+                    #     if sendMsg.toID in SENTINEL:
+                    #         sendMsg.send_split_with_who_message()
+                    #     #id not blank
+                    #     else:
+                    #         sendMsg.notify_bill_splitters_of_request()
 
                     # elif sendMsg.messageType is "clear":
                     
-    
+                    # if there is an amount but no user in system, it will ask them share the link so that they can be in the system
+                    elif sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
+                        # let the user know that they payed the person
+                        log("share link message")
+                        sendMsg.send_share_link_message()
                     
                     
                     # if sendMsg.toID not in SENTINEL and sendMsg.amount is not SENTINEL_FLOAT and senderUser.name not in SENTINEL:
@@ -338,11 +355,7 @@ def webhook():
                     # elif sendMsg.amount is SENTINEL_FLOAT and sendMsg.messageType is "pay":
                     #     sendMsg.send_how_much_message()
                     
-                    # # if there is an amount but no user in system, it will ask them share the link so that they can be in the system
-                    # elif sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
-                    #     # let the user know that they payed the person
-                    #     log("share link message")
-                    #     sendMsg.send_share_link_message()
+
                         
                     # elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) in SENTINEL:
                     #     sendMsg.send_pay_who_message()
