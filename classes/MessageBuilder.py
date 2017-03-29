@@ -95,7 +95,7 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "You paid $" + self.amount + " to " + self.toName)
 
     def send_confirmation_message(self):
-        self.message_template_simple(self.fromID, "Would you like to confirm this action?")
+        self.message_template_simple(self.fromID, "Please confirm this action by typing '<action> <name> <amount>'?")
 
     def send_payment_made_message(self):
         self.message_template_simple(self.toID, "You got paid $" + self.amount + " from " + self.fromName)
