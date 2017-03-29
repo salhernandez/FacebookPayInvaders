@@ -39,7 +39,7 @@ class MessageParser(object):
             msgType = "name"
         
         elif 'tala' == someText:
-            msgType = "unknown name"
+            msgType = "unknownname"
         
         elif '$' in someText:
             msgType = "amount"
