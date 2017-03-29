@@ -21,6 +21,7 @@ class MessageBuilder(object):
     def __init__(self, **kwargs):
         self.fromUser = kwargs.get('fromUser', "-1")
         self.toUser = kwargs.get('toUser', "-1")
+        # self.toUser2 = kwargs.get('toUser2', "-1")
         self.messageType = kwargs.get('messageType', "-1")
         self.messageText = kwargs.get('messageText', "-1")
         self.amount = kwargs.get('amount', -1)
@@ -87,6 +88,9 @@ class MessageBuilder(object):
 
     def send_split_message(self):
         self.message_template_simple(self.fromID, "Who would you like to split the bill with?")
+
+    def send_split_how_many_ways(self):
+        self.message_template_simple(self.fromID, "How may ways would you like to split the bill?")
 
     def send_clear_message(self):
         self.message_template_simple(self.fromID, "The conversation has been cleared! " + self.defaultMessage)
