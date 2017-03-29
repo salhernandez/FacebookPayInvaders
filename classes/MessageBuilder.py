@@ -114,7 +114,7 @@ class MessageBuilder(object):
 
     def send_share_link_message(self):
         self.message_template_simple(self.fromID,
-                                     "The user you are trying to pay is not in the system, make sure they interact with me at " +
+                                     "Hm, it looks like this user isn't in my system. Make sure they interact with me at " +
                                      "https://www.facebook.com/IAmPayBot/")
 
     def send_split_with_who_message(self):

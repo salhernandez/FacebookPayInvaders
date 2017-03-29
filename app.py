@@ -298,6 +298,9 @@ def webhook():
 
                     elif sendMsg.messageType is "name":
                         sendMsg.send_how_much_message()
+                    
+                    elif sendMsg.messageType is "unknown name":
+                        sendMsg.send_share_link_message()
                         
                     elif sendMsg.messageType is "amount":
                         sendMsg.send_confirmation_message()
