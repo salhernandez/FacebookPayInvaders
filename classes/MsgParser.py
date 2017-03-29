@@ -29,13 +29,13 @@ class MessageParser(object):
         elif 'clear' in someText:
             msgType = "clear"
             
-        elif 'josh' is someText:
+        elif 'josh' == someText:
             msgType = "name"
             
-        elif 'sal' is someText:
+        elif 'sal' == someText:
             msgType = "name"
             
-        elif 'anna' is someText:
+        elif 'anna' == someText:
             msgType = "name"
         
         elif '$' in someText:
