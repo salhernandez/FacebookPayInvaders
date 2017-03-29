@@ -295,6 +295,13 @@ def webhook():
                                 sendMsg.notify_payee_and_payer_of_payment()
                         else:
                             sendMsg.send_pay_who_message1()
+                            
+                    elif sendMsg.messageType is "request":
+                        if sendMsg.toID not in SENTINEL:
+                            if sendMsg.amount is not SENTINEL_FLOAT:
+                                sendMsg.notify_requestee_and_requester_of_request()
+                        else:
+                            sendMsg.send_request_from_who_message()
 
                     elif sendMsg.messageType is "knownName":
                         sendMsg.send_how_much_message()
@@ -304,6 +311,8 @@ def webhook():
                         
                     elif sendMsg.messageType is "amount":
                         sendMsg.send_confirmation_message()
+                        
+                    
                         
                     
                     
