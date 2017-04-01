@@ -13,7 +13,6 @@ class MessageParser(object):
     def getMessage(self):
         return self.ogMsg
 
-    #unused so far
     def __identifyTypeOfMessage__(self,someText):
         msgType = ""
         someText = str(someText.lower())
@@ -29,6 +28,15 @@ class MessageParser(object):
         
         elif 'clear' in someText:
             msgType = "clear"
+            
+        elif 'josh' == someText or 'sal' == someText or 'anna' == someText:
+            msgType = "knownName"
+        
+        elif 'tala' == someText or 'miranda' == someText:
+            msgType = "unknownName"
+        
+        elif '$' in someText:
+            msgType = "amount"
         
         else:
             msgType = "default"
@@ -45,17 +53,19 @@ class MessageParser(object):
         print someText
         
         
-        if 'pay josh' in someText:
+        if 'josh' in someText:
             userID = str(985245348244242)
             userFirst = "josh"
 
-        elif 'pay sal' in someText:
+        elif 'sal' in someText:
             userID = str(1596606567017003)
             userFirst = "sal"
 
-        elif 'pay anna' in someText:
+        elif 'anna' in someText:
             userID = str(1204927079622878)
             userFirst = "anna"
+        
+
         # else:
         #     userID = "-1"
         #     userFirst = ""

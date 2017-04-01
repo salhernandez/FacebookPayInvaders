@@ -74,17 +74,17 @@ def hello():
     
     # get data from database
     message = models.Users.query.all()
-    print message
+    # print message
     message2 = models.Pay.query.all()
-    print message2
+    # print message2
     message3 = models.Payed.query.all()
-    print message3
+    # print message3
     message4 = models.Friends.query.all()
-    print message4
+    # print message4
     
 
-    print message2[0]
-    print str(message2[0]).split()
+    # print message2[0]
+    # print str(message2[0]).split()
     
     # create columns for the pay table
     df = pd.DataFrame(columns=('','owed','owed_id','needs_to_pay','needs_to_pay_id', 'amount', 'time'))
@@ -97,13 +97,13 @@ def hello():
     # populate the pay dataframe
     for i in range(len(message2)):
         the_account = str(message2[i]).split()
-        df.loc[i] = [i, names[int(the_account[0])], the_account[0], names[int(the_account[1])], the_account[0], float(the_account[2]), the_account[3]]
+        df.loc[i] = [i, names[int(the_account[0])], the_account[0], names[int(the_account[1])], the_account[1], float(the_account[2]), the_account[3]]
     # print(df)
 
     # populate the payed dataframe
     for i in range(len(message3)):
         the_account2 = str(message3[i]).split()
-        df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[0], float(the_account2[2]), the_account2[3]]
+        df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[1], float(the_account2[2]), the_account2[3]]
     # print(df2)
     
     # populate the friends dataframe
@@ -114,7 +114,7 @@ def hello():
 
     # group and sum the pay table
     g1 = df.groupby(["owed", "needs_to_pay"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
-    # print g1
+    print g1
     
     # group and sum the payed table
     g2 = df2.groupby(["payer", "payed_to"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
@@ -280,28 +280,120 @@ def webhook():
                     #if there is no name and amount, it will reply to the user with a static response
                     #josh stuff is beklow here
                     #checks that the user and the amount is there
-                    if sendMsg.toID not in SENTINEL and sendMsg.amount is not SENTINEL_FLOAT and senderUser.name not in SENTINEL:
-                        log("notify both of payment")
-                        sendMsg.notify_payee_and_payer_of_payment()
-                        
                     
-                    # if there is an amount but no user in system, it will ask them share the link so that they can be in the system
-                    elif sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
+                    if sendMsg.messageType is "default":
+                        sendMsg.send_default_message()
+                        
+                    elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
                         # let the user know that they payed the person
                         log("share link message")
                         sendMsg.send_share_link_message()
-                        
-                    elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) in SENTINEL:
-                        sendMsg.send_pay_who_message()
-                        
+
+                    elif sendMsg.messageType is "pay":
+                        if sendMsg.toID not in SENTINEL:
+                            if sendMsg.amount is not SENTINEL_FLOAT:
+                                sendMsg.notify_payee_and_payer_of_payment()
+                        else:
+                            sendMsg.send_pay_who_message1()
+                            
                     elif sendMsg.messageType is "request":
-                        sendMsg.send_request_message()
-                        
+                        if sendMsg.toID not in SENTINEL:
+                            if sendMsg.amount is not SENTINEL_FLOAT:
+                                sendMsg.notify_requestee_and_requester_of_request()
+                        else:
+                            sendMsg.send_request_from_who_message()
+                            
                     elif sendMsg.messageType is "split":
-                        sendMsg.send_split_message()
-                    else:
-                        log("default message")
-                        sendMsg.send_default_message()
+                        if sendMsg.toID not in SENTINEL:
+                            if sendMsg.amount not in SENTINEL_FLOAT:
+                                sendMsg.notify_bill_splitters_of_request()
+                        else:
+                            sendMsg.send_split_how_many_ways()
+
+                    elif sendMsg.messageType is "knownName":
+                        sendMsg.send_how_much_message()
+                    
+                    elif sendMsg.messageType is "unknownName":
+                        sendMsg.send_share_link_message()
+                        
+                    elif sendMsg.messageType is "amount":
+                        sendMsg.send_confirmation_message()
+                        
+                    elif sendMsg.messageType is "clear":
+                        sendMsg.send_clear_message()
+                        
+                    
+                        
+                    
+                    
+                    # elif sendMsg.messageType is "pay":
+                    #     #if id is not blank and sender name isn't blank
+                    #     if sendMsg.toID not in SENTINEL:
+                    #         #if amount is specified
+                    #         if sendMsg.amount is not SENTINEL_FLOAT:
+                    #             sendMsg.notify_payee_and_payer_of_payment()
+
+                    #         #if amount is not specified (-1)
+                    #         else:
+                    #             sendMsg.send_how_much_message()
+                                
+                    #     #if id or? name are blank
+                    #     elif sendMsg.toID in SENTINEL:
+                    #         #if amount is not -1
+                    #         if sendMsg.amount is not SENTINEL_FLOAT:
+                    #             sendMsg.send_pay_who_message2()
+                    #         #if amount is blank (-1)
+                    #         else:
+                    #             sendMsg.send_pay_who_message1()
+
+                    # elif sendMsg.messageType is "request":
+                    #     #id not blank
+                    #     if sendMsg.toID not in SENTINEL:
+                    #         #if amount is not -1
+                    #         if sendMsg.amount is not SENTINEL_FLOAT:
+                    #             #if name exists and amount inputted
+                    #             sendMsg.notify_requestee_and_requester_of_request()
+                    #     #id blank     
+                    #     else:
+                    #         sendMsg.send_request_from_who_message()
+                        
+                    # elif sendMsg.messageType is "split":
+                    #     #id blank
+                    #     if sendMsg.toID in SENTINEL:
+                    #         sendMsg.send_split_with_who_message()
+                    #     #id not blank
+                    #     else:
+                    #         sendMsg.notify_bill_splitters_of_request()
+
+                    # elif sendMsg.messageType is "clear":
+                    
+                    # if there is an amount but no user in system, it will ask them share the link so that they can be in the system
+
+                    
+                    
+                    # if sendMsg.toID not in SENTINEL and sendMsg.amount is not SENTINEL_FLOAT and senderUser.name not in SENTINEL:
+                    #     log("notify both of payment")
+                    #     sendMsg.notify_payee_and_payer_of_payment()
+                    
+                    # # elif sendMsg.toID not in SENTINEL and sendMsg.amount is SENTINEL_FLOAT and senderUser.name not in SENTINEL:
+                    # #     sendMsg.send_how_much_message()
+                        
+                    # elif sendMsg.amount is SENTINEL_FLOAT and sendMsg.messageType is "pay":
+                    #     sendMsg.send_how_much_message()
+                    
+
+                        
+                    # elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) in SENTINEL:
+                    #     sendMsg.send_pay_who_message()
+                        
+                    # elif sendMsg.messageType is "request":
+                    #     sendMsg.send_request_message()
+                        
+                    # elif sendMsg.messageType is "split":
+                    #     sendMsg.send_split_message()
+                    # else:
+                    #     log("default message")
+                    #     sendMsg.send_default_message()
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
