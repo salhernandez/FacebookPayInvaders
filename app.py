@@ -15,7 +15,7 @@ import pandas as pd
 app = Flask(__name__)
 
 
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 
 #db = flask_sqlalchemy.SQLAlchemy(app)
@@ -41,10 +41,10 @@ def hello():
         sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
         sendMsg.notify_payee_and_payer_of_payment()
       
-        ts = int(time.time())
-        payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
-        models.db.session.add(payment)
-        models.db.session.commit()
+        # ts = int(time.time())
+        # payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
+        # models.db.session.add(payment)
+        # models.db.session.commit()
 
     # used to insert values into database
     ########################################################################
@@ -71,10 +71,15 @@ def hello():
     
     # models.db.session.commit()
     ##############################################################################################
-    
+    user_ids = []
+    message = models.Users.query.with_entities(models.Users.user_id).all()
+    for theId in message:
+        print theId[0]
+        user_ids.append(str(theId[0]))
+    print "120492707962287" in user_ids
     # get data from database
     message = models.Users.query.all()
-    # print message
+    print message
     message2 = models.Pay.query.all()
     # print message2
     message3 = models.Payed.query.all()
@@ -203,7 +208,6 @@ def verify():
     #     models.db.session.commit()
         
     ##################################
-    
     return "Hello world", 200
 
 @app.route('/', methods=['POST'])
@@ -235,6 +239,17 @@ def webhook():
                     # the facebook ID of the person sending you the message
                     sender_id = messaging_event["sender"]["id"]
                     
+                    
+            ############Josh
+###################################################################################################
+                    user_ids = []
+                    message = models.Users.query.with_entities(models.Users.user_id).all()
+                    for theId in message:
+                        print theId[0]
+                        user_ids.append(str(theId[0]))
+                    
+                    if str(messaging_event["sender"]["id"]) not in user_ids:
+                        
                     # the recipient's ID, which should be your page's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]
                     
@@ -322,9 +337,6 @@ def webhook():
                     elif sendMsg.messageType is "clear":
                         sendMsg.send_clear_message()
                         
-                    
-                        
-                    
                     
                     # elif sendMsg.messageType is "pay":
                     #     #if id is not blank and sender name isn't blank
