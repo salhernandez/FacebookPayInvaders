@@ -39,7 +39,7 @@ def hello():
         payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
         senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
         sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
-        sendMsg.notify_payee_and_payer_of_payment()
+        # sendMsg.notify_payee_and_payer_of_payment()
         # sendMsg.send_get_number_to_signup()
       
         # ts = int(time.time())
