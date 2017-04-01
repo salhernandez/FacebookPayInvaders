@@ -40,7 +40,7 @@ def hello():
         senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
         sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
         # sendMsg.notify_payee_and_payer_of_payment()
-        # sendMsg.send_get_number_to_signup()
+        sendMsg.send_get_number_to_signup()
       
         # ts = int(time.time())
         # payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
@@ -243,13 +243,13 @@ def webhook():
                     
             ############Josh
 ###################################################################################################
-                    user_ids = []
-                    message = models.Users.query.with_entities(models.Users.user_id).all()
-                    for theId in message:
-                        print theId[0]
-                        user_ids.append(str(theId[0]))
+                    # user_ids = []
+                    # message = models.Users.query.with_entities(models.Users.user_id).all()
+                    # for theId in message:
+                    #     print theId[0]
+                    #     user_ids.append(str(theId[0]))
                     
-                    if str(messaging_event["sender"]["id"]) not in user_ids:
+                    # if str(messaging_event["sender"]["id"]) not in user_ids:
                         
                     # the recipient's ID, which should be your page's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]
