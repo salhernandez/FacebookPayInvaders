@@ -19,7 +19,6 @@ class DBLink(object):
         models.db.session.add(payment)
         models.db.session.commit()
         
-    
     def log(self, text):  # simple wrapper for __log__ging to stdout on heroku
         print str(text)
         sys.stdout.flush()
