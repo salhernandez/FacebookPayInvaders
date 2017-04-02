@@ -49,8 +49,8 @@ class Pay(db.Model):
     __tablename__ = 'pay_table'
     
     id = db.Column(db.Integer, primary_key=True)  # key
-    owed_ID = db.Column(db.String(200))
-    pay_ID = db.Column(db.String(200))
+    owed_ID = db.Column(db.String(200))#requester
+    pay_ID = db.Column(db.String(200))#requestee
     amount = db.Column(db.Float())
     time_stamp = db.Column(db.String(30))
     
