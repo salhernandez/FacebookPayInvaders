@@ -27,14 +27,27 @@
             <p>{{friends}}</p>
         </div>
         <div>
-            <form action="/data" method = "POST">
+            <h3>Send Payment</h3>
+            <form action="/data" method = "POST" name="form_1">
                 person to pay ID: <input type="text" name="pid">
                 <br/>
                 from person ID: <input type="text" name="fid">
                 <br/>
                 amount: <input type="text" name="amount">
                 <br/>
-                <input type="submit">
+                <input type="submit" name="action" value="submit_payment">
+            </form>
+        </div>
+        <div>
+            <h3>Send Request</h3>
+            <form  action="/data" method = "POST">
+                requester ID: <input type="text" name="requester_id">
+                <br/>
+                requestee ID: <input type="text" name="requestee_id">
+                <br/>
+                amount: <input type="text" name="request_amount">
+                <br/>
+                <input type="submit" name="action" value="submit_request">
             </form>
         </div>
           </div>

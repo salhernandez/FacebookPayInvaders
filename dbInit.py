@@ -29,15 +29,41 @@ models.db.session.add(add_friendship)
 models.db.session.commit()
 
 #Users
-new_user = models.Users("985245348244242", "Joshua Smith", "josmith@csumb.edu", "nope.png")
+new_user = models.Users("985245348244242", "Joshua", "Smith", "josmith@csumb.edu", "nope.png", "8314285108")
 models.db.session.add(new_user)
 
 
-new_user = models.Users("1596606567017003","Salvador Hernandez", "salvhernandez@csumb.edu", "nope.png")
+new_user = models.Users("1596606567017003","Salvador", "Hernandez", "salvhernandez@csumb.edu", "nope.png", "6197345766")
 models.db.session.add(new_user)
 
 
-new_user = models.Users("1204927079622878", "Anna Pomelov", "apomelovz@csumb.edu", "nope.png")
+new_user = models.Users("1204927079622878", "Anna", "Pomelov", "apomelovz@csumb.edu", "nope.png", "4152839158")
 models.db.session.add(new_user)
+
+#StateInfo
+ts = str(int(time.time()))
+newStateInfo = models.StateInfo("985245348244242", "1204927079622878", 88.88, "pay","-1", ts)
+models.db.session.add(newStateInfo)
+
+ts = str(int(time.time()))
+newStateInfo = models.StateInfo("985245348244242", "1204927079622878", 77.77, "request","-1", ts)
+models.db.session.add(newStateInfo)
+
+ts = str(int(time.time()))
+newStateInfo = models.StateInfo("1204927079622878", "985245348244242", 55.55, "pay","99", ts)
+models.db.session.add(newStateInfo)
+
+#FlowStates
+ts = str(int(time.time()))
+newFlowStateInfo = models.FlowStates("985245348244242", "split", 1, ts)
+models.db.session.add(newFlowStateInfo)
+
+ts = str(int(time.time()))
+newFlowStateInfo = models.FlowStates("1204927079622878", "pay", 2, ts)
+models.db.session.add(newFlowStateInfo)
+
+ts = str(int(time.time()))
+newFlowStateInfo = models.FlowStates("1596606567017003", "request", 1, ts)
+models.db.session.add(newFlowStateInfo)
 
 models.db.session.commit()

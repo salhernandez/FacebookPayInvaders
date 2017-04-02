@@ -15,7 +15,7 @@ import pandas as pd
 app = Flask(__name__)
 
 
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 
 #db = flask_sqlalchemy.SQLAlchemy(app)
@@ -27,24 +27,57 @@ import classes.DBLink as DBLink
 
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
-
+# 
 @app.route('/data', methods = ['POST', 'GET'])
 def hello():
-    
+    # 
     # give ID's a name
     names = {985245348244242: "Josh", 1596606567017003: "Sal", 1204927079622878: "Anna"}
     if request.method == 'POST':
         result = request.form
-        print "---------------------->" + str(result['pid'])
-        payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
-        senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
-        sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
-        sendMsg.notify_payee_and_payer_of_payment()
-      
-        ts = int(time.time())
-        payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
-        models.db.session.add(payment)
-        models.db.session.commit()
+        #conditions for forms
+        
+        if request.form["action"] == "submit_payment":
+            #payment form
+            if(str(result['pid'])) is not "" and (str(result['fid'])) is not "" and (str(result['amount'])) is not "":
+                print "---------PAYMENT---------"
+                print "---------------------->" + str(result['pid'])
+                print "---------------------->" + str(result['fid'])
+                print "---------------------->" + str(result['amount'])
+                payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
+                senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
+                sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
+                sendMsg.notify_payee_and_payer_of_payment()
+              
+                ts = int(time.time())
+                payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
+                models.db.session.add(payment)
+                models.db.session.commit()
+        
+        elif request.form["action"] == "submit_request":  
+            #payment form
+            if(str(result['requester_id'])) is not "" and (str(result['requestee_id'])) is not "" and (str(result['request_amount'])) is not "":
+                print "---------REQUEST---------"
+                print "---------------------->" + str(result['requester_id'])
+                print "---------------------->" + str(result['requestee_id'])
+                print "---------------------->" + str(result['request_amount'])
+                
+                requester_User = UserInfo.UserInfo(names[int(request.form['requester_id'])], str(request.form['requester_id']))
+                requestee_User = UserInfo.UserInfo(names[int(request.form['requestee_id'])], str(request.form['requestee_id']))
+                
+                sendMsg = MsgBuilder.MessageBuilder(fromUser = requester_User, toUser = requestee_User, messageType="simple", amount = str(request.form['request_amount']))
+                sendMsg.notify_requestee_and_requester_of_request()
+              
+                # ts = int(time.time())
+                # payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
+                # models.db.session.add(payment)
+                # models.db.session.commit()
+                
+                ts = int(time.time())
+                payment = models.Pay(str(request.form['requester_id']), str(request.form['requestee_id']),float(request.form['request_amount']) , ts)
+                models.db.session.add(payment)
+                models.db.session.commit()
+            #request form
 
     # used to insert values into database
     ########################################################################
@@ -71,10 +104,15 @@ def hello():
     
     # models.db.session.commit()
     ##############################################################################################
-    
+    user_ids = []
+    message = models.Users.query.with_entities(models.Users.user_id).all()
+    for theId in message:
+        print theId[0]
+        user_ids.append(str(theId[0]))
+    print "120492707962287" in user_ids
     # get data from database
     message = models.Users.query.all()
-    # print message
+    print message
     message2 = models.Pay.query.all()
     # print message2
     message3 = models.Payed.query.all()
@@ -203,7 +241,6 @@ def verify():
     #     models.db.session.commit()
         
     ##################################
-    
     return "Hello world", 200
 
 @app.route('/', methods=['POST'])
@@ -235,6 +272,17 @@ def webhook():
                     # the facebook ID of the person sending you the message
                     sender_id = messaging_event["sender"]["id"]
                     
+                    
+            ############Josh
+###################################################################################################
+                    # user_ids = []
+                    # message = models.Users.query.with_entities(models.Users.user_id).all()
+                    # for theId in message:
+                    #     print theId[0]
+                    #     user_ids.append(str(theId[0]))
+                    
+                    # if str(messaging_event["sender"]["id"]) not in user_ids:
+                        
                     # the recipient's ID, which should be your page's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]
                     
@@ -322,9 +370,6 @@ def webhook():
                     elif sendMsg.messageType is "clear":
                         sendMsg.send_clear_message()
                         
-                    
-                        
-                    
                     
                     # elif sendMsg.messageType is "pay":
                     #     #if id is not blank and sender name isn't blank
