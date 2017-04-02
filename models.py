@@ -92,18 +92,21 @@ class StateInfo(db.Model):
     recipientID = db.Column(db.String(200))
     amount = db.Column(db.Float)
     flowType = db.Column(db.String(20))
+    splitID = db.Column(db.String(20))
     time_stamp = db.Column(db.String(30))
     
-    def __init__(self, senderID, recipientID, amount, flowType, time_stamp):
+    
+    def __init__(self, senderID, recipientID, amount, flowType, splitID, time_stamp):
     
         self.senderID = senderID
         self.recipientID = recipientID
         self.amount = amount
         self.flowType = flowType
+        self.splitID = splitID        
         self.time_stamp = time_stamp
     
     def __repr__(self):
-        return '%s %s %f %s %s' % (self.senderID, self.recipientID, self.amount, self.flowType, self.time_stamp)
+        return '%s %s %f %s %s %s' % (self.senderID, self.recipientID, self.amount, self.flowType, self.splitID, self.time_stamp)
 
 class FlowStates(db.Model):
     __tablename__ = 'flow_states_table'

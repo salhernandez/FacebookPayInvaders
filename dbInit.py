@@ -42,15 +42,15 @@ models.db.session.add(new_user)
 
 #StateInfo
 ts = str(int(time.time()))
-newStateInfo = models.StateInfo("985245348244242", "1204927079622878", 88.88, "pay", ts)
+newStateInfo = models.StateInfo("985245348244242", "1204927079622878", 88.88, "pay","-1", ts)
 models.db.session.add(newStateInfo)
 
 ts = str(int(time.time()))
-newStateInfo = models.StateInfo("985245348244242", "1204927079622878", 77.77, "request", ts)
+newStateInfo = models.StateInfo("985245348244242", "1204927079622878", 77.77, "request","-1", ts)
 models.db.session.add(newStateInfo)
 
 ts = str(int(time.time()))
-newStateInfo = models.StateInfo("1204927079622878", "985245348244242", 55.55, "pay", ts)
+newStateInfo = models.StateInfo("1204927079622878", "985245348244242", 55.55, "pay","99", ts)
 models.db.session.add(newStateInfo)
 
 #FlowStates
