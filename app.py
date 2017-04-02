@@ -35,16 +35,50 @@ def hello():
     names = {985245348244242: "Josh", 1596606567017003: "Sal", 1204927079622878: "Anna"}
     if request.method == 'POST':
         result = request.form
-        print "---------------------->" + str(result['pid'])
-        payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
-        senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
-        sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
-        sendMsg.notify_payee_and_payer_of_payment()
-      
-        ts = int(time.time())
-        payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
-        models.db.session.add(payment)
-        models.db.session.commit()
+        #conditions for forms
+        
+        if request.form["action"] == "submit_payment":
+            #payment form
+            if(str(result['pid'])) is not "" and (str(result['fid'])) is not "" and (str(result['amount'])) is not "":
+                print "---------PAYMENT---------"
+                print "---------------------->" + str(result['pid'])
+                print "---------------------->" + str(result['fid'])
+                print "---------------------->" + str(result['amount'])
+                payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
+                senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
+                sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
+                sendMsg.notify_payee_and_payer_of_payment()
+              
+                ts = int(time.time())
+                payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
+                models.db.session.add(payment)
+                models.db.session.commit()
+        
+        elif request.form["action"] == "submit_request":  
+            #payment form
+            if(str(result['requester_id'])) is not "" and (str(result['requestee_id'])) is not "" and (str(result['request_amount'])) is not "":
+                print "---------REQUEST---------"
+                print "---------------------->" + str(result['requester_id'])
+                print "---------------------->" + str(result['requestee_id'])
+                print "---------------------->" + str(result['request_amount'])
+                
+                requester_User = UserInfo.UserInfo(names[int(request.form['requester_id'])], str(request.form['requester_id']))
+                requestee_User = UserInfo.UserInfo(names[int(request.form['requestee_id'])], str(request.form['requestee_id']))
+                
+                sendMsg = MsgBuilder.MessageBuilder(fromUser = requester_User, toUser = requestee_User, messageType="simple", amount = str(request.form['request_amount']))
+                sendMsg.notify_requestee_and_requester_of_request()
+              
+                # ts = int(time.time())
+                # payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
+                # models.db.session.add(payment)
+                # models.db.session.commit()
+                
+                ts = int(time.time())
+                payment = models.Pay(str(request.form['requester_id']), str(request.form['requestee_id']),float(request.form['request_amount']) , ts)
+                models.db.session.add(payment)
+                models.db.session.commit()
+            #request form
+        
 
     # used to insert values into database
     ########################################################################
