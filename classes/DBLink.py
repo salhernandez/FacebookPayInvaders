@@ -18,6 +18,13 @@ class DBLink(object):
         payment = models.Payed(toID, fromID, float(amount), ts)
         models.db.session.add(payment)
         models.db.session.commit()
+    
+    def add_request(self, requesterID, requesteeID, amount):
+        ts = int(time.time())
+        # first is the person who is OWED, second is the person that needs to pay
+        pay_request = models.Pay(requesterID, requesteeID, amount, ts)
+        models.db.session.add(pay_request)
+        models.db.session.commit()
         
     def log(self, text):  # simple wrapper for __log__ging to stdout on heroku
         print str(text)
