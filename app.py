@@ -68,42 +68,10 @@ def hello():
                 sendMsg = MsgBuilder.MessageBuilder(fromUser = requester_User, toUser = requestee_User, messageType="simple", amount = str(request.form['request_amount']))
                 sendMsg.notify_requestee_and_requester_of_request()
               
-                # ts = int(time.time())
-                # payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
-                # models.db.session.add(payment)
-                # models.db.session.commit()
-                
-                ts = int(time.time())
-                payment = models.Pay(str(request.form['requester_id']), str(request.form['requestee_id']),float(request.form['request_amount']) , ts)
-                models.db.session.add(payment)
-                models.db.session.commit()
+                aLink = DBLink.DBLink()
+                aLink.add_request(str(request.form['requester_id']),str(request.form['requestee_id']),float(request.form['request_amount']))
             #request form
-
-    # used to insert values into database
-    ########################################################################
-    # # Pay
-    # ts = int(time.time())
-    # payment = models.Pay("985245348244242", "1596606567017003", 25.99, ts)
-    # models.db.session.add(payment)
-    # models.db.session.commit()
     
-    # # Payed
-    # ts = int(time.time())
-    # payment = models.Payed("985245348244242", "1596606567017003", 25.99, ts)
-    # models.db.session.add(payment)
-    # models.db.session.commit()
-    
-    # new_user = models.Users("985245348244242", "Joshua Smith", "josmith@csumb.edu", "nope.png")
-    # models.db.session.add(new_user)
-    
-    # new_user = models.Users("1596606567017003", "Salvador Hernandez", "salvhernandez@csumb.edu", "nope.png")
-    # models.db.session.add(new_user)
-    
-    # new_user = models.Users("1204927079622878", "Anna Pomelov", "apomelovz@csumb.edu", "nope.png")
-    # models.db.session.add(new_user)
-    
-    # models.db.session.commit()
-    ##############################################################################################
     user_ids = []
     message = models.Users.query.with_entities(models.Users.user_id).all()
     for theId in message:
