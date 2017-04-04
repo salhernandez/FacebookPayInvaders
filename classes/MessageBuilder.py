@@ -128,6 +128,8 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "Who would you like to split the bill with?")
     def send_get_number_to_signup(self):
         self.message_template_simple(self.fromID, "Please Enter a Phone Number: !!<Number> For Example: !!8882421111")
+    def send_get_number_signed_up(self):
+        self.message_template_simple(self.fromID, "Thanks! Your all signed up.")
 
     def notify_payee_and_payer_of_payment(self):
         self.send_payment_made_message()
