@@ -8,7 +8,7 @@ import flask_sqlalchemy
 import classes.MsgParser as MsgParser
 import classes.UserInfo as UserInfo
 import classes.MessageBuilder as MsgBuilder
-#import graphRequests
+import classes.GraphRequests as GraphRequests
 import numpy as np
 import pandas as pd
 
