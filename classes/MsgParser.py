@@ -6,7 +6,6 @@ import json
 class MessageParser(object):
     def __init__(self, msg):
         self.ogMsg = msg
-        self.__getNumber__(self.ogMsg)
         self.__getAmount__(self.ogMsg)
         self.__getIDofUser__(self.ogMsg)
         self.__identifyTypeOfMessage__(self.ogMsg)
@@ -88,22 +87,6 @@ class MessageParser(object):
                 break
 
         self.amount = amount
-
-    def __str__(self):
-        return str(self.__dict__)
-        
-    def __getNumber__(self, data):
-        # get words in string
-        splits = data.split(" ")
-        number = "-1"
-        # grab the word that has the $ char
-        for word in splits:
-            if '!!' in word:
-                # get number
-                number = word[2:]
-                break
-
-        self.number = number
 
     def __str__(self):
         return str(self.__dict__)
