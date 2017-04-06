@@ -298,8 +298,8 @@ def webhook():
                         #if there is no name and amount, it will reply to the user with a static response
                         #josh stuff is beklow here
                         #checks that the user and the amount is there
-                        # the_payment = PayGate(toUser = str(messaging_event["sender"]["id"]))
-                        # the_payment.send_payment_gateway()
+                        the_payment = PayGate(toUser = payedUser)
+                        the_payment.send_payment_gateway()
                         
                         if sendMsg.messageType is "default":
                             sendMsg.send_default_message()
