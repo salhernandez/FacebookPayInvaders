@@ -8,6 +8,7 @@ import flask_sqlalchemy
 import classes.MsgParser as MsgParser
 import classes.UserInfo as UserInfo
 import classes.MessageBuilder as MsgBuilder
+from classes.Pay import PayGate
 import classes.GraphRequests as GraphRequests
 import numpy as np
 import pandas as pd
@@ -309,6 +310,8 @@ def webhook():
                         elif sendMsg.messageType is "pay":
                             if sendMsg.toID not in SENTINEL:
                                 if sendMsg.amount is not SENTINEL_FLOAT:
+                                    the_payment = PayGate(toUser = str(messaging_event["sender"]["id"]))
+                                    the_payment.send_payment_gateway()
                                     sendMsg.notify_payee_and_payer_of_payment()
                             else:
                                 sendMsg.send_pay_who_message1()
