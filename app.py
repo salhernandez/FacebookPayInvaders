@@ -415,7 +415,7 @@ def webhook():
                         # sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
                         
                         
-                        if(msgObj.number == -1):
+                        if(msgObj.number == "-1"):
                             sendMsg.send_get_number_to_signup()
                         else:
                             request_info = GraphRequests.GraphRequests()
