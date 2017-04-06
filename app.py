@@ -412,10 +412,10 @@ def webhook():
                     else:
 
                         payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
-                        # sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
+                        sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
                         
                         
-                        if(msgObj.number == "-1"):
+                        if(str(msgObj.number) == "-1"):
                             sendMsg.send_get_number_to_signup()
                         else:
                             request_info = GraphRequests.GraphRequests()
