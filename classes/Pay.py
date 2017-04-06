@@ -48,7 +48,7 @@ class PayGate(object):
 
         # convert dict into json
         #####################################
-        JSON_Datalist = """{"recipient":{"id":"recipientId"},"message":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"rift","subtitle":"Next-generation virtual reality","item_url":"https://www.oculus.com/en-us/rift/","image_url":"http://messengerdemo.parseapp.com/img/rift.png","buttons":[{"type":"web_url","url":"https://www.oculus.com/en-us/rift/","title":"Open Web URL"},{"type":"postback","title":"Call Postback","payload":"Payload for first bubble"}]}]}}}}""" 
+        JSON_Datalist = """{"recipient":{"id":"recipientId"},"message":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Venmo","subtitle":"Please make your payment with Venmo","item_url":"https://venmo.com","image_url":"http://cdn.hercampus.com/s3fs-public/2013/09/22/venmo%201.gif","buttons":[{"type":"web_url","url":"https://venmo.com/account/sign-in","title":"Pay"},{"type":"postback","title":"Call Postback","payload":"Payload for first bubble"}]}]}}}}""" 
     
         the_dict = json.loads(JSON_Datalist)
         the_dict['recipient']['id'] = str(toID)
