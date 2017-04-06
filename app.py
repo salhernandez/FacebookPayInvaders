@@ -412,21 +412,19 @@ def webhook():
                     else:
 
                         payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
-                        sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
+                        # sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
                         
                         
                         if(msgObj.number == -1):
                             sendMsg.send_get_number_to_signup()
                         else:
+                            request_info = GraphRequests.GraphRequests()
+                            request_info.getUserInfo(messaging_event["sender"]["id"])
                             
-                        
-                        request_info = GraphRequests.GraphRequests()
-                        request_info.getUserInfo(messaging_event["sender"]["id"])
-                        
-                        sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(request_info.firstName))
-                        aLink = DBLink.DBLink()
-                        aLink.add_user(messaging_event["sender"]["id"], request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, str(msgObj.number))
-                        sendMsg.send_signedup()
+                            sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(request_info.firstName))
+                            aLink = DBLink.DBLink()
+                            aLink.add_user(messaging_event["sender"]["id"], request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, str(msgObj.number))
+                            sendMsg.send_signedup()
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
 
