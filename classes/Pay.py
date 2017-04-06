@@ -26,7 +26,7 @@ class PayGate(object):
         # checks if the fromUser object was passed or not
         # if not it would bean that the message is strictly from the bot to the user
 
-        self.toID = self.toUser.ID
+        self.toID = self.toUser
 
     def message_template_simple(self, toID):
 
