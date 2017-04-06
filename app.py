@@ -98,7 +98,7 @@ def hello():
     df2 = pd.DataFrame(columns=('','payer','payer_id','payed_to','payed_to_id', 'amount', 'time'))
 
     # make columns for the friends table
-    df3 = pd.DataFrame(columns=('','id','fname', 'lname','email','pic_url'))
+    df3 = pd.DataFrame(columns=('','id','fname', 'lname','email','pic_url', 'phone_number'))
     
     # populate the pay dataframe
     for i in range(len(message2)):
@@ -115,7 +115,7 @@ def hello():
     # populate the friends dataframe
     for i in range(len(message)):
         the_account3 = str(message[i]).split()
-        df3.loc[i] = [i, the_account3[0], the_account3[1], the_account3[2], the_account3[3], the_account3[4]]
+        df3.loc[i] = [i, the_account3[0], the_account3[1], the_account3[2], the_account3[3], the_account3[4], the_account3[5]]
     print(df3)
 
     # group and sum the pay table
