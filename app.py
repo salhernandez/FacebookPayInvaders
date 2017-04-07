@@ -8,6 +8,7 @@ import flask_sqlalchemy
 import classes.MsgParser as MsgParser
 import classes.UserInfo as UserInfo
 import classes.MessageBuilder as MsgBuilder
+from classes.Pay import PayGate
 import classes.GraphRequests as GraphRequests
 import numpy as np
 import pandas as pd
@@ -297,6 +298,8 @@ def webhook():
                         #if there is no name and amount, it will reply to the user with a static response
                         #josh stuff is beklow here
                         #checks that the user and the amount is there
+                        the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                        the_payment.send_payment_gateway()
                         
                         if sendMsg.messageType is "default":
                             sendMsg.send_default_message()
