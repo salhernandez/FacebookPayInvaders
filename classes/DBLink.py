@@ -1,4 +1,8 @@
 import flask_sqlalchemy, app, sys, time, re
+
+
+from sqlalchemy import or_
+
 #for heroku
 app.app.config['SQLALCHEMY_DATABASE_URI'] = app.os.getenv('DATABASE_URL')
 #app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
@@ -124,6 +128,72 @@ class DBLink(object):
     ===END USERS TABLE METHODS
     ============================================================================
     """
+    
+    """
+    ===FRIENDS TABLE METHODS
+    ============================================================================
+    """
+    
+    """
+    Gets the friends of the user
+    Returns a list of users that are friends with the submitted ID
+    """
+    def get_friends_of_user(self, userID):
+        friendsInDB = models.Friends.query.filter(or_(models.Friends.user_id == userID, models.Friends.friend_id == userID)).all()
+        
+        uniqueFriends = []
+        
+        #ID was found
+        if friendsInDB is not None:
+            for row in friendsInDB:
+                a = str(row.user_id)
+                b = str(row.friend_id)
+                
+                if a != userID:
+                    uniqueFriends.append(a)
+                    continue
+                if b != userID:
+                    uniqueFriends.append(b)
+                    continue
+                
+            return uniqueFriends 
+        else:
+            return uniqueFriends
+    
+    """
+    Checks if user 1 is friends with user 2
+    Returns False, if the user is not in the system
+    or if they are not friends
+    """
+    def are_they_friends(self, user_id_1, user_id_2):
+        friends = self.get_friends_of_user(user_id_1)
+        
+        aFlag = False
+        
+        for friend in friends:
+            if friend == user_id_2:
+                aFlag = True
+                break
+        
+        return aFlag
+    
+    """
+    Sets friends
+    """
+    def set_friends(self, user_id_1, user_id_2):
+        user_id_1 = str(user_id_1)
+        user_id_2 = str(user_id_2)
+        
+        #Friends
+        add_friendship = models.Friends(user_id_1, user_id_2)
+        models.db.session.add(add_friendship)
+        models.db.session.commit()
+        
+    """
+    ===END FRIENDS TABLE METHODS
+    ============================================================================
+    """
+    
     
     """
     ===PAYED(PAID) TABLE METHODS
