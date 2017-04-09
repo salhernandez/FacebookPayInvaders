@@ -1,7 +1,7 @@
 import flask_sqlalchemy, app, sys, time, re
 
 
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 
 #for heroku
 app.app.config['SQLALCHEMY_DATABASE_URI'] = app.os.getenv('DATABASE_URL')
@@ -323,6 +323,84 @@ class DBLink(object):
     ===END PAY TABLE METHODS
     ============================================================================
     """
+    
+    """
+    ===STATE INFO TABLE METHODS
+    ============================================================================
+    """
+    
+    """
+    Sets a state info row, method should be used when the user initiates a new flow,
+    if there is no splitID, please init to "-1"
+    
+    TO INIT A FLOW
+    CHANGE THE FIRST FIELD TO THE ID OF THE USER WITH THE FLOW
+    the rest will be filled with the update methods
+    
+    aLink = DBLink.DBLink()
+    aLink.set_state_info("1204927079622878","",0.0,"request", "-1")
+    """
+    def set_state_info(self, senderID, recipientID, amount, flowType, splitID = "-1"):
+        #StateInfo
+        senderID = str(senderID)
+        recipientID = str(recipientID)
+        ts = str(int(time.time()))
+        
+        newStateInfo = models.StateInfo(senderID, recipientID, amount, flowType, splitID, ts)
+        models.db.session.add(newStateInfo)
+        
+        models.db.session.commit()
+    
+    """
+    Gets the state information based on the person who started the flow
+    Returns all the info from the row
+    """
+    def get_state_info(self, userID):
+        
+        stateInfoRecords = models.StateInfo.query.filter_by(senderID=str(userID)).all()
+        stateInfoDict = {}
+        
+        count = 0
+        for row in stateInfoRecords:
+            # print row.owed_ID
+            
+            stateInfoDict[count] = {}
+            
+            stateInfoDict[count][row.recipientID] = {}
+            stateInfoDict[count][row.recipientID]['amount'] = row.amount
+            stateInfoDict[count][row.recipientID]['flowType'] = row.flowType
+            stateInfoDict[count][row.recipientID]['splitID'] = row.splitID
+            stateInfoDict[count][row.recipientID]['timestamp'] = row.time_stamp
+            
+            count = count + 1
+        
+        return stateInfoDict
+    
+    """
+    Updates the recipient based on the senderID, new recipient id, and split id (even if its "-1")
+    """
+    def update_state_info_recipient_ID(self, sender_id, recipient_id, split_id = "-1"):
+        sender_id = str(sender_id)
+        recipient_id = str(recipient_id)
+        split_id = str(split_id)
+        
+        admin = models.StateInfo.query.filter(and_(models.StateInfo.senderID==sender_id, models.StateInfo.recipientID=="", models.StateInfo.splitID == split_id)).update(dict(recipientID=recipient_id))
+        models.db.session.commit()
+    
+    """
+    Updates the amount based on sender id, recipient id, and split id (even if its -1)
+    """
+    def update_state_info_amount(self, sender_id, recipient_id, split_id, new_amount):
+        sender_id = str(sender_id)
+        recipient_id = str(recipient_id)
+        split_id = str(split_id)
+        
+        admin = models.StateInfo.query.filter(and_(models.StateInfo.senderID==sender_id, models.StateInfo.recipientID==recipient_id, models.StateInfo.splitID == split_id)).update(dict(amount=new_amount))
+        models.db.session.commit()
+    """
+    ===END STATE INFO TABLE METHODS
+    ============================================================================
+    """ 
     
     """
     checks if the string is a number
