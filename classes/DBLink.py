@@ -232,6 +232,51 @@ class DBLink(object):
         models.db.session.commit()
     
     """
+    Gets amounts owed BY the user
+    Returns a dictionary with the id the user owes to, amount, and timestamp
+    """
+    def get_all_owed_by(self, userID):
+        
+        owedRecords = models.Pay.query.filter_by(pay_ID=str(userID)).all()
+        
+        # print userInDB
+        owedDict = {}
+        
+        count = 0
+        for row in owedRecords:
+            # print row.owed_ID
+            owedDict[count] = {}
+            owedDict[count][row.owed_ID] = {}
+            owedDict[count][row.owed_ID]['amount'] = row.amount
+            owedDict[count][row.owed_ID]['timestamp'] = row.time_stamp
+            
+            count = count + 1
+        return owedDict
+    
+    """
+    Gets amounts owed TO the user
+    Returns a dictionary with the id the user owed by, amount, and timestamp
+    """
+    def get_all_owed_to(self, userID):
+        
+        owedToRecords = models.Pay.query.filter_by(owed_ID=str(userID)).all()
+        
+        owedToDict = {}
+        
+        count = 0
+        for row in owedToRecords:
+            # print row.owed_ID
+            
+            owedToDict[count] = {}
+            owedToDict[count][row.pay_ID] = {}
+            owedToDict[count][row.pay_ID]['amount'] = row.amount
+            owedToDict[count][row.pay_ID]['timestamp'] = row.time_stamp
+            
+            count = count + 1
+        
+        return owedToDict
+    
+    """
     ===END PAY TABLE METHODS
     ============================================================================
     """
