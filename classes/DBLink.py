@@ -345,6 +345,7 @@ class DBLink(object):
         senderID = str(senderID)
         recipientID = str(recipientID)
         ts = str(int(time.time()))
+        flowType = flowType.lower()
         
         newStateInfo = models.StateInfo(senderID, recipientID, amount, flowType, splitID, ts)
         models.db.session.add(newStateInfo)
@@ -400,7 +401,58 @@ class DBLink(object):
     """
     ===END STATE INFO TABLE METHODS
     ============================================================================
-    """ 
+    """
+    
+    """
+    ===FLOW STATE TABLE METHODS
+    ============================================================================
+    """
+    
+    """
+    This method is to be called when the user cannot be found in the flow states
+    table, thus initializing a row for the user
+    """
+    def init_flow_state(self, userID):
+        #StateInfo
+        userID = str(userID)
+        
+        ts = str(int(time.time()))
+        
+        newFlowState = models.FlowStates(userID, "", 0, ts)
+        models.db.session.add(newFlowState)
+        
+        models.db.session.commit()
+    
+    """
+    Used to updated flow type and flow status
+    """
+    def update_flow(self, user_id, flow_type, flow_status):
+        #StateInfo
+        user_id = str(user_id)
+        flow_type = flow_type.lower()
+        
+        aFlag = self.is_number_tryexcept(flow_status)
+        
+        if aFlag is True:
+            ts = str(int(time.time()))
+            flow_status = int(flow_status)
+            
+            models.FlowStates.query.filter_by(userID=user_id).update(dict(flowType=flow_type, flowState=flow_status))
+            models.db.session.commit()
+    
+    """
+    Gets the flow state for the user ID
+    """
+    def get_flow_state(self, user_id):
+        user_id = str(user_id)
+        
+        flowInfo = models.FlowStates.query.filter_by(userID=user_id).all()
+        
+        return flowInfo
+    """
+    ===END FLOW STATE TABLE METHODS
+    ============================================================================
+    """
     
     """
     checks if the string is a number
@@ -411,7 +463,6 @@ class DBLink(object):
             int(s)
             return True
         except ValueError:
-            self.log("bad phone")
             return False
     
     """
