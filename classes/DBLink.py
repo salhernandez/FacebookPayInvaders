@@ -210,6 +210,50 @@ class DBLink(object):
         models.db.session.add(payment)
         models.db.session.commit()
     
+    """
+    Gets all transactions where the user was paid TO
+    Returns a dictionary with paid to id, amount, and time stamp
+    """
+    def get_all_paid_to(self, userID):
+        
+        paidToRecords = models.Payed.query.filter_by(payed_ID=str(userID)).all()
+        
+        # print userInDB
+        paidToDict = {}
+        
+        count = 0
+        for row in paidToRecords:
+            # print row.owed_ID
+            paidToDict[count] = {}
+            paidToDict[count][row.payee_ID] = {}
+            paidToDict[count][row.payee_ID]['amount'] = row.amount
+            paidToDict[count][row.payee_ID]['timestamp'] = row.time_stamp
+            
+            count = count + 1
+        return paidToDict
+    
+    """
+    Get all the payments made by a user
+    Returns a dictionary of ids, amount, and time stamp
+    of users paid
+    """
+    def get_all_paid_from(self, userID):
+        
+        paymentsMadeRecords = models.Payed.query.filter_by(payee_ID=str(userID)).all()
+        
+        # print userInDB
+        paymentsMadeDict = {}
+        
+        count = 0
+        for row in paymentsMadeRecords:
+            # print row.owed_ID
+            paymentsMadeDict[count] = {}
+            paymentsMadeDict[count][row.payed_ID] = {}
+            paymentsMadeDict[count][row.payed_ID]['amount'] = row.amount
+            paymentsMadeDict[count][row.payed_ID]['timestamp'] = row.time_stamp
+            
+            count = count + 1
+        return paymentsMadeDict
     
     """
     ===END PAYED(PAID) TABLE METHODS
@@ -230,7 +274,6 @@ class DBLink(object):
         pay_request = models.Pay(requesterID, requesteeID, amount, ts)
         models.db.session.add(pay_request)
         models.db.session.commit()
-    
     """
     Gets amounts owed BY the user
     Returns a dictionary with the id the user owes to, amount, and timestamp
