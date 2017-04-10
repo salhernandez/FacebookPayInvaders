@@ -63,6 +63,12 @@ class PayGate(object):
     def get_user_template_simple(self, toID):
 
         params = {
+
+            "setting_type": "domain_whitelisting",
+            "whitelisted_domains": [
+            "https://venmo.com"
+            ],
+            "domain_action_type": "add"
             "access_token": os.environ["PAGE_ACCESS_TOKEN"]
         }
         headers = {
