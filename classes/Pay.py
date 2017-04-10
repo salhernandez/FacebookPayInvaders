@@ -66,6 +66,7 @@ class PayGate(object):
 
             "setting_type": "domain_whitelisting",
             "whitelisted_domains": [
+            "https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C",
             "https://venmo.com"
             ],
             "domain_action_type": "add",
