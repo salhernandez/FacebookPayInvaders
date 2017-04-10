@@ -63,13 +63,6 @@ class PayGate(object):
     def get_user_template_simple(self, toID):
 
         params = {
-
-            "setting_type": "domain_whitelisting",
-            "whitelisted_domains": [
-            "https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C",
-            "https://venmo.com"
-            ],
-            "domain_action_type": "add",
             "access_token": os.environ["PAGE_ACCESS_TOKEN"]
         }
         headers = {
@@ -87,7 +80,7 @@ class PayGate(object):
 
         # convert dict into json
         #####################################
-        JSON_Datalist = """{"recipient":{"id":"RECIPIENT_ID"},"message":{"attachment":{"type":"template","payload":{"template_type":"list","elements":[{"title":"Classic T-Shirt Collection","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C","subtitle":"See all our colors","default_action":{"type":"web_url","url":"https://venmo.com","messenger_extensions":true,"webview_height_ratio":"tall","fallback_url":"https://venmo.com"},"buttons":[{"title":"View","type":"web_url","url":"https://venmo.com","messenger_extensions":true,"webview_height_ratio":"tall","fallback_url":"https://venmo.com"}]},{"title":"Classic White T-Shirt","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C","subtitle":"100% Cotton, 200% Comfortable","default_action":{"type":"web_url","url":"https://venmo.com","messenger_extensions":true,"webview_height_ratio":"tall","fallback_url":"https://venmo.com"},"buttons":[{"title":"Shop Now","type":"web_url","url":"https://venmo.com","messenger_extensions":true,"webview_height_ratio":"tall","fallback_url":"https://venmo.com"}]},{"title":"Classic Blue T-Shirt","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C","subtitle":"100% Cotton, 200% Comfortable","default_action":{"type":"web_url","url":"https://venmo.com","messenger_extensions":true,"webview_height_ratio":"tall","fallback_url":"https://venmo.com"},"buttons":[{"title":"Shop Now","type":"web_url","url":"https://venmo.com","messenger_extensions":true,"webview_height_ratio":"tall","fallback_url":"https://venmo.com"}]},{"title":"Classic Black T-Shirt","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C","subtitle":"100% Cotton, 200% Comfortable","default_action":{"type":"web_url","url":"https://venmo.com","messenger_extensions":true,"webview_height_ratio":"tall","fallback_url":"https://venmo.com"},"buttons":[{"title":"Shop Now","type":"web_url","url":"https://venmo.com","messenger_extensions":true,"webview_height_ratio":"tall","fallback_url":"https://venmo.com"}]}],"buttons":[{"title":"View More","type":"postback","payload":"payload"}]}}}}""" 
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Pick a color:","quick_replies":[{"content_type":"text","title":"Red","payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED","image_url":"http://petersfantastichats.com/img/red.png"},{"content_type":"text","title":"Green","payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN","image_url":"http://petersfantastichats.com/img/green.png"}]}}""" 
     
         the_dict = json.loads(JSON_Datalist)
         the_dict['recipient']['id'] = str(toID)
