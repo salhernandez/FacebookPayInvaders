@@ -80,7 +80,7 @@ class PayGate(object):
 
         # convert dict into json
         #####################################
-        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Pick a color:","quick_replies":[{"content_type":"text","title":"Red","payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED","image_url":"http://petersfantastichats.com/img/red.png"},{"content_type":"text","title":"Green","payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN","image_url":"http://petersfantastichats.com/img/green.png"}]}}""" 
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Pick a color:","quick_replies":[{"content_type":"text","title":"Red","payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"},{"content_type":"text","title":"Green","payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN","image_url":"http://petersfantastichats.com/img/green.png"}]}}""" 
     
         the_dict = json.loads(JSON_Datalist)
         the_dict['recipient']['id'] = str(toID)
