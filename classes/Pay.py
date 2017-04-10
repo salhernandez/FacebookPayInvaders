@@ -68,7 +68,7 @@ class PayGate(object):
             "whitelisted_domains": [
             "https://venmo.com"
             ],
-            "domain_action_type": "add"
+            "domain_action_type": "add",
             "access_token": os.environ["PAGE_ACCESS_TOKEN"]
         }
         headers = {
