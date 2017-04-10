@@ -80,7 +80,7 @@ class PayGate(object):
 
         # convert dict into json
         #####################################
-        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Pick a color:","quick_replies":[{"content_type":"text","title":"Red","payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED","image_url":"http://vignette2.wikia.nocookie.net/gaia/images/4/41/200px-Green-dot.svg.png/revision/latest?cb=20120429031238"},{"content_type":"text","title":"Green","payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN","image_url":"http://vignette2.wikia.nocookie.net/gaia/images/4/41/200px-Green-dot.svg.png/revision/latest?cb=20120429031238"}]}}""" 
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Pick a color123:","quick_replies":[{"content_type":"text","title":"Red","payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED","image_url":"http://vignette2.wikia.nocookie.net/gaia/images/4/41/200px-Green-dot.svg.png/revision/latest?cb=20120429031238"},{"content_type":"text","title":"Green","payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN","image_url":"http://vignette2.wikia.nocookie.net/gaia/images/4/41/200px-Green-dot.svg.png/revision/latest?cb=20120429031238"}]}}""" 
     
         the_dict = json.loads(JSON_Datalist)
         the_dict['recipient']['id'] = str(toID)
