@@ -303,7 +303,7 @@ def webhook():
                         #sends buttons with images to josh
                         if "josh button demo" in message_text:
                             the_payment.send_user_table()
-                        
+                            break
                         
                         if sendMsg.messageType is "default":
                             sendMsg.send_default_message()
