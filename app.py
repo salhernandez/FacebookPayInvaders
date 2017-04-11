@@ -369,11 +369,11 @@ def webhook():
                     pass
 
                 if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
+                    log("ENTERING POSTBACK")
                     something = messaging_event["sender"]
                     for key in something:
                         value = something[key]
                         log("The key and value are ({}) = ({})".format(key, value))
-                    pass
     return "ok", 200
 
 
