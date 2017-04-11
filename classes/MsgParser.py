@@ -30,6 +30,9 @@ class MessageParser(object):
         elif 'clear' in someText:
             msgType = "clear"
             
+        elif 'yes' in someText:
+            msgType = "yes"
+            
         elif 'josh' == someText or 'sal' == someText or 'anna' == someText:
             msgType = "knownName"
         
