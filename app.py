@@ -215,8 +215,14 @@ def verify():
 def webhook():
 
     # endpoint for processing incoming messaging events
-
     data = request.get_json()
+    
+    #testing
+    # print the keys and values
+    for key in data:
+        value = jsonObject[key]
+        log("The key and value are ({}) = ({})".format(key, value))
+    
     
     log(data)  # you may not want to log every incoming message in production, but it's good for testing
 
