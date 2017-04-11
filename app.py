@@ -218,14 +218,6 @@ def webhook():
 
     data = request.get_json()
     
-     # change the JSON string into a JSON object
-    jsonObject = json.loads(data)
-
-    # print the keys and values
-    for key in jsonObject:
-        value = jsonObject[key]
-        log("The key and value are ({}) = ({})".format(key, value))
-    
     log(data)  # you may not want to log every incoming message in production, but it's good for testing
 
     if data["object"] == "page":
