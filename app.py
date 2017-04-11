@@ -257,10 +257,12 @@ def webhook():
                     message_text = messaging_event["message"]["text"]
                     
                     #check if the user has a quick_reply
-                    
-                    log("QUICK REPLY")
-                    quick_reply = messaging_event["message"]["quick_reply"]
-                    log(quick_reply)
+                    try:
+                        log("QUICK REPLY")
+                        quick_reply = messaging_event["message"]["quick_reply"]
+                        log(quick_reply)
+                    except KeyError:
+                        log("QUICKREPLY NOT FOUND")
                     
                     # the message's timestamp
                     #message_timestamp = messaging_event["timestamp"]  
