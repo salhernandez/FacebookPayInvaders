@@ -220,7 +220,7 @@ def webhook():
     #testing
     # print the keys and values
     for key in data:
-        value = jsonObject[key]
+        value = data[key]
         log("The key and value are ({}) = ({})".format(key, value))
     
     
