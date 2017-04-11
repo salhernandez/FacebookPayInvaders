@@ -306,6 +306,9 @@ def webhook():
                         if sendMsg.messageType is "default":
                             sendMsg.send_default_message()
                             
+                        elif sendMsg.messageType is "yes":
+                            sendMsg.send_payment_log_message()
+                            
                         elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
                             # let the user know that they payed the person
                             log("share link message")
@@ -340,9 +343,6 @@ def webhook():
                             
                         elif sendMsg.messageType is "amount":
                             sendMsg.send_confirmation_message()
-                            
-                        elif sendMsg.messageText is "yes"
-                            sendMsg.send_payment_log_message()
                             
                         elif sendMsg.messageType is "clear":
                             sendMsg.send_clear_message()
