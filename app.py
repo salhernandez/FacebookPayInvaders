@@ -336,12 +336,7 @@ def webhook():
                         elif sendMsg.messageType is "amount":
                             sendMsg.send_confirmation_message()
                             
-<<<<<<< HEAD
-=======
-                        elif sendMsg.messageText is "yes":
-                            sendMsg.send_payment_log_message()
-                            
->>>>>>> 4a8232aa5d485d3009109247d48797b1d8d65488
+
                         elif sendMsg.messageType is "clear":
                             sendMsg.send_clear_message()
     
