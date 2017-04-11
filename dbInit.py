@@ -29,15 +29,15 @@ models.db.session.add(add_friendship)
 models.db.session.commit()
 
 #Users
-new_user = models.Users("985245348244242", "Joshua", "Smith", "josmith@csumb.edu", "nope.png", "8314285108")
+new_user = models.Users("985245348244242", "joshua", "smith", "josmith@csumb.edu", "nope.png", "8314285108")
 models.db.session.add(new_user)
 
 
-new_user = models.Users("1596606567017003","Salvador", "Hernandez", "salvhernandez@csumb.edu", "nope.png", "6197345766")
+new_user = models.Users("1596606567017003","salvador", "hernandez", "salvhernandez@csumb.edu", "nope.png", "6197345766")
 models.db.session.add(new_user)
 
 
-new_user = models.Users("1204927079622878", "Anna", "Pomelov", "apomelovz@csumb.edu", "nope.png", "4152839158")
+new_user = models.Users("1204927079622878", "anna", "pomelov", "apomelov@csumb.edu", "nope.png", "4152839158")
 models.db.session.add(new_user)
 
 #StateInfo

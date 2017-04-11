@@ -8,7 +8,8 @@ import flask_sqlalchemy
 import classes.MsgParser as MsgParser
 import classes.UserInfo as UserInfo
 import classes.MessageBuilder as MsgBuilder
-#import graphRequests
+from classes.Pay import PayGate
+import classes.GraphRequests as GraphRequests
 import numpy as np
 import pandas as pd
 
@@ -27,7 +28,6 @@ import classes.DBLink as DBLink
 
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
-# 
 @app.route('/data', methods = ['POST', 'GET'])
 def hello():
     # 
@@ -68,42 +68,10 @@ def hello():
                 sendMsg = MsgBuilder.MessageBuilder(fromUser = requester_User, toUser = requestee_User, messageType="simple", amount = str(request.form['request_amount']))
                 sendMsg.notify_requestee_and_requester_of_request()
               
-                # ts = int(time.time())
-                # payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
-                # models.db.session.add(payment)
-                # models.db.session.commit()
-                
-                ts = int(time.time())
-                payment = models.Pay(str(request.form['requester_id']), str(request.form['requestee_id']),float(request.form['request_amount']) , ts)
-                models.db.session.add(payment)
-                models.db.session.commit()
+                aLink = DBLink.DBLink()
+                aLink.add_request(str(request.form['requester_id']),str(request.form['requestee_id']),float(request.form['request_amount']))
             #request form
-
-    # used to insert values into database
-    ########################################################################
-    # # Pay
-    # ts = int(time.time())
-    # payment = models.Pay("985245348244242", "1596606567017003", 25.99, ts)
-    # models.db.session.add(payment)
-    # models.db.session.commit()
     
-    # # Payed
-    # ts = int(time.time())
-    # payment = models.Payed("985245348244242", "1596606567017003", 25.99, ts)
-    # models.db.session.add(payment)
-    # models.db.session.commit()
-    
-    # new_user = models.Users("985245348244242", "Joshua Smith", "josmith@csumb.edu", "nope.png")
-    # models.db.session.add(new_user)
-    
-    # new_user = models.Users("1596606567017003", "Salvador Hernandez", "salvhernandez@csumb.edu", "nope.png")
-    # models.db.session.add(new_user)
-    
-    # new_user = models.Users("1204927079622878", "Anna Pomelov", "apomelovz@csumb.edu", "nope.png")
-    # models.db.session.add(new_user)
-    
-    # models.db.session.commit()
-    ##############################################################################################
     user_ids = []
     message = models.Users.query.with_entities(models.Users.user_id).all()
     for theId in message:
@@ -130,7 +98,7 @@ def hello():
     df2 = pd.DataFrame(columns=('','payer','payer_id','payed_to','payed_to_id', 'amount', 'time'))
 
     # make columns for the friends table
-    df3 = pd.DataFrame(columns=('','id','fname', 'lname','email','pic_url'))
+    df3 = pd.DataFrame(columns=('','id','fname', 'lname','email','pic_url', 'phone_number'))
     
     # populate the pay dataframe
     for i in range(len(message2)):
@@ -147,7 +115,7 @@ def hello():
     # populate the friends dataframe
     for i in range(len(message)):
         the_account3 = str(message[i]).split()
-        df3.loc[i] = [i, the_account3[0], the_account3[1], the_account3[2], the_account3[3], the_account3[4]]
+        df3.loc[i] = [i, the_account3[0], the_account3[1], the_account3[2], the_account3[3], the_account3[4], the_account3[5]]
     print(df3)
 
     # group and sum the pay table
@@ -275,13 +243,12 @@ def webhook():
                     
             ############Josh
 ###################################################################################################
-                    # user_ids = []
-                    # message = models.Users.query.with_entities(models.Users.user_id).all()
-                    # for theId in message:
-                    #     print theId[0]
-                    #     user_ids.append(str(theId[0]))
+                    user_ids = []
+                    message = models.Users.query.with_entities(models.Users.user_id).all()
+                    for theId in message:
+                        print theId[0]
+                        user_ids.append(str(theId[0]))
                     
-                    # if str(messaging_event["sender"]["id"]) not in user_ids:
                         
                     # the recipient's ID, which should be your page's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]
@@ -293,6 +260,7 @@ def webhook():
                     # the message's text
                     message_text = messaging_event["message"]["text"]
                     
+                    
                     # the message's timestamp
                     #message_timestamp = messaging_event["timestamp"]  
                     #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
@@ -300,146 +268,100 @@ def webhook():
                     #dump string into message parser and it will grab everything it needs
                     msgObj = MsgParser.MessageParser(message_text)
                     
-                    #get the name of the sender
-                    senderName = getNameOfUser(str(sender_id))
-                    
-                    #create a user object with the information obtained t from the sender
-                    senderUser = UserInfo.UserInfo(senderName, sender_id)
-                    
-                    log("amount from string $"+ msgObj.amount)
-                    
-                    #dump string into message parser and it will grab everything it needs
-                    msgObj = MsgParser.MessageParser(message_text)
-                    
-                    
-                    log("WHAT THE MSG OBJECT CONTAINS: "+str(msgObj))
-                    
-                    #print msgObj.getMessage()
-                    
-                    payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
-                    
-                    messType = str(msgObj.msgType)
-                    #messageBuilder takes in kwargs as arguments, its up to the developer to keep track of the variables that have been used or not
-                    #and make the proper calls for now
-                    #initialze message builder
-                    sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType=messType, amount = msgObj.amount)
-                    
-                    log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS: "+str(sendMsg))
-                    #if there is no name and amount, it will reply to the user with a static response
-                    #josh stuff is beklow here
-                    #checks that the user and the amount is there
-                    
-                    if sendMsg.messageType is "default":
-                        sendMsg.send_default_message()
+                    if str(messaging_event["sender"]["id"]) in user_ids:
+                        #get the name of the sender
+                        senderName = getNameOfUser(str(sender_id))
                         
-                    elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
-                        # let the user know that they payed the person
-                        log("share link message")
-                        sendMsg.send_share_link_message()
-
-                    elif sendMsg.messageType is "pay":
-                        if sendMsg.toID not in SENTINEL:
-                            if sendMsg.amount is not SENTINEL_FLOAT:
-                                sendMsg.notify_payee_and_payer_of_payment()
-                        else:
-                            sendMsg.send_pay_who_message1()
+                        #create a user object with the information obtained t from the sender
+                        senderUser = UserInfo.UserInfo(senderName, sender_id)
+                        
+                        log("amount from string $"+ msgObj.amount)
+                        
+                        #dump string into message parser and it will grab everything it needs
+                        msgObj = MsgParser.MessageParser(message_text)
+                        
+                        
+                        log("WHAT THE MSG OBJECT CONTAINS: "+str(msgObj))
+                        
+                        #print msgObj.getMessage()
+                        
+                        payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
+                        
+                        messType = str(msgObj.msgType)
+                        #messageBuilder takes in kwargs as arguments, its up to the developer to keep track of the variables that have been used or not
+                        #and make the proper calls for now
+                        #initialze message builder
+                        sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType=messType, amount = msgObj.amount)
+                        
+                        log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS: "+str(sendMsg))
+                        #if there is no name and amount, it will reply to the user with a static response
+                        #josh stuff is beklow here
+                        #checks that the user and the amount is there
+                        the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                        # the_payment.send_payment_gateway()
+                        
+                        #sends buttons with images to josh
+                        if "josh button demo" in message_text:
+                            the_payment.send_user_table()
+                            break
+                        
+                        if sendMsg.messageType is "default":
+                            sendMsg.send_default_message()
                             
-                    elif sendMsg.messageType is "request":
-                        if sendMsg.toID not in SENTINEL:
-                            if sendMsg.amount is not SENTINEL_FLOAT:
-                                sendMsg.notify_requestee_and_requester_of_request()
-                        else:
-                            sendMsg.send_request_from_who_message()
-                            
-                    elif sendMsg.messageType is "split":
-                        if sendMsg.toID not in SENTINEL:
-                            if sendMsg.amount not in SENTINEL_FLOAT:
-                                sendMsg.notify_bill_splitters_of_request()
-                        else:
-                            sendMsg.send_split_how_many_ways()
-
-                    elif sendMsg.messageType is "knownName":
-                        sendMsg.send_how_much_message()
-                    
-                    elif sendMsg.messageType is "unknownName":
-                        sendMsg.send_share_link_message()
-                        
-                    elif sendMsg.messageType is "amount":
-                        sendMsg.send_confirmation_message()
-                        
-                    elif sendMsg.messageType is "clear":
-                        sendMsg.send_clear_message()
-                        
-                    
-                    # elif sendMsg.messageType is "pay":
-                    #     #if id is not blank and sender name isn't blank
-                    #     if sendMsg.toID not in SENTINEL:
-                    #         #if amount is specified
-                    #         if sendMsg.amount is not SENTINEL_FLOAT:
-                    #             sendMsg.notify_payee_and_payer_of_payment()
-
-                    #         #if amount is not specified (-1)
-                    #         else:
-                    #             sendMsg.send_how_much_message()
+                        elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
+                            # let the user know that they payed the person
+                            log("share link message")
+                            sendMsg.send_share_link_message()
+    
+                        elif sendMsg.messageType is "pay":
+                            if sendMsg.toID not in SENTINEL:
+                                if sendMsg.amount is not SENTINEL_FLOAT:
+                                    sendMsg.notify_payee_and_payer_of_payment()
+                            else:
+                                sendMsg.send_pay_who_message1()
                                 
-                    #     #if id or? name are blank
-                    #     elif sendMsg.toID in SENTINEL:
-                    #         #if amount is not -1
-                    #         if sendMsg.amount is not SENTINEL_FLOAT:
-                    #             sendMsg.send_pay_who_message2()
-                    #         #if amount is blank (-1)
-                    #         else:
-                    #             sendMsg.send_pay_who_message1()
-
-                    # elif sendMsg.messageType is "request":
-                    #     #id not blank
-                    #     if sendMsg.toID not in SENTINEL:
-                    #         #if amount is not -1
-                    #         if sendMsg.amount is not SENTINEL_FLOAT:
-                    #             #if name exists and amount inputted
-                    #             sendMsg.notify_requestee_and_requester_of_request()
-                    #     #id blank     
-                    #     else:
-                    #         sendMsg.send_request_from_who_message()
+                        elif sendMsg.messageType is "request":
+                            if sendMsg.toID not in SENTINEL:
+                                if sendMsg.amount is not SENTINEL_FLOAT:
+                                    sendMsg.notify_requestee_and_requester_of_request()
+                            else:
+                                sendMsg.send_request_from_who_message()
+                                
+                        elif sendMsg.messageType is "split":
+                            if sendMsg.toID not in SENTINEL:
+                                if sendMsg.amount not in SENTINEL_FLOAT:
+                                    sendMsg.notify_bill_splitters_of_request()
+                            else:
+                                sendMsg.send_split_how_many_ways()
+    
+                        elif sendMsg.messageType is "knownName":
+                            sendMsg.send_how_much_message()
                         
-                    # elif sendMsg.messageType is "split":
-                    #     #id blank
-                    #     if sendMsg.toID in SENTINEL:
-                    #         sendMsg.send_split_with_who_message()
-                    #     #id not blank
-                    #     else:
-                    #         sendMsg.notify_bill_splitters_of_request()
+                        elif sendMsg.messageType is "unknownName":
+                            sendMsg.send_share_link_message()
+                            
+                        elif sendMsg.messageType is "amount":
+                            sendMsg.send_confirmation_message()
+                            
+                        elif sendMsg.messageType is "clear":
+                            sendMsg.send_clear_message()
+    
+                    else:
 
-                    # elif sendMsg.messageType is "clear":
-                    
-                    # if there is an amount but no user in system, it will ask them share the link so that they can be in the system
-
-                    
-                    
-                    # if sendMsg.toID not in SENTINEL and sendMsg.amount is not SENTINEL_FLOAT and senderUser.name not in SENTINEL:
-                    #     log("notify both of payment")
-                    #     sendMsg.notify_payee_and_payer_of_payment()
-                    
-                    # # elif sendMsg.toID not in SENTINEL and sendMsg.amount is SENTINEL_FLOAT and senderUser.name not in SENTINEL:
-                    # #     sendMsg.send_how_much_message()
+                        payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
+                        sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
                         
-                    # elif sendMsg.amount is SENTINEL_FLOAT and sendMsg.messageType is "pay":
-                    #     sendMsg.send_how_much_message()
-                    
-
                         
-                    # elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) in SENTINEL:
-                    #     sendMsg.send_pay_who_message()
-                        
-                    # elif sendMsg.messageType is "request":
-                    #     sendMsg.send_request_message()
-                        
-                    # elif sendMsg.messageType is "split":
-                    #     sendMsg.send_split_message()
-                    # else:
-                    #     log("default message")
-                    #     sendMsg.send_default_message()
-
+                        if(str(msgObj.number) == "-1"):
+                            sendMsg.send_get_number_to_signup()
+                        else:
+                            request_info = GraphRequests.GraphRequests()
+                            request_info.getUserInfo(messaging_event["sender"]["id"])
+                            
+                            sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(request_info.firstName))
+                            aLink = DBLink.DBLink()
+                            aLink.add_user(messaging_event["sender"]["id"], request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, str(msgObj.number))
+                            sendMsg.send_signedup()
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
 
