@@ -299,7 +299,11 @@ def webhook():
                         #checks that the user and the amount is there
                         the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                         # the_payment.send_payment_gateway()
-                        the_payment.send_user_table()
+                        
+                        #sends buttons with images to josh
+                        if "josh button demo" in message_text:
+                            the_payment.send_user_table()
+                        
                         
                         # if sendMsg.messageType is "default":
                         #     sendMsg.send_default_message()
