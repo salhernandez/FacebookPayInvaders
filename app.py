@@ -218,15 +218,13 @@ def webhook():
 
     data = request.get_json()
     
-    #  This is used to save data to the database
-    #  massage = models.Message(json.dumps(data, ensure_ascii=False))
-    #  models.db.session.add(massage)
-    #  models.db.session.commit()
-    
-    #   this gets data from the database
-    #   messages = models.Message.query.all()
-    #   new = json.loads(str(messages[0]))
-    
+     # change the JSON string into a JSON object
+    jsonObject = json.loads(data)
+
+    # print the keys and values
+    for key in jsonObject:
+        value = jsonObject[key]
+        log("The key and value are ({}) = ({})".format(key, value))
     
     log(data)  # you may not want to log every incoming message in production, but it's good for testing
 
