@@ -28,7 +28,6 @@ import classes.DBLink as DBLink
 
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
-# 
 @app.route('/data', methods = ['POST', 'GET'])
 def hello():
     # 
