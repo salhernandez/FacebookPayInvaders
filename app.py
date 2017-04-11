@@ -218,14 +218,6 @@ def webhook():
 
     data = request.get_json()
     
-     # change the JSON string into a JSON object
-    jsonObject = json.loads(data)
-
-    # print the keys and values
-    for key in jsonObject:
-        value = jsonObject[key]
-        log("The key and value are ({}) = ({})".format(key, value))
-    
     log(data)  # you may not want to log every incoming message in production, but it's good for testing
 
     if data["object"] == "page":
@@ -344,6 +336,12 @@ def webhook():
                         elif sendMsg.messageType is "amount":
                             sendMsg.send_confirmation_message()
                             
+<<<<<<< HEAD
+=======
+                        elif sendMsg.messageText is "yes":
+                            sendMsg.send_payment_log_message()
+                            
+>>>>>>> 4a8232aa5d485d3009109247d48797b1d8d65488
                         elif sendMsg.messageType is "clear":
                             sendMsg.send_clear_message()
     
