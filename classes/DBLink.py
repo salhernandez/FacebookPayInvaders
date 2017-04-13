@@ -442,13 +442,25 @@ class DBLink(object):
     
     """
     Gets the flow state for the user ID
+    
+    aLink = DBLink.DBLink()
+    a = aLink.get_flow_state("985245348244242")
+    log(a['userID'])
     """
     def get_flow_state(self, user_id):
         user_id = str(user_id)
         
         flowInfo = models.FlowStates.query.filter_by(userID=user_id).all()
+        flowInfoDict = {}
         
-        return flowInfo
+        for row in flowInfo:
+            flowInfoDict['userID'] = row.userID
+            flowInfoDict['flowType'] = row.flowType
+            flowInfoDict['flowState'] = row.flowState
+            flowInfoDict['timestamp'] = row.time_stamp
+        
+        #print flowInfoDict
+        return flowInfoDict
     """
     ===END FLOW STATE TABLE METHODS
     ============================================================================
