@@ -296,44 +296,44 @@ def webhook():
                         #Anna's new flow code
 ###################################################################################################                        
                         #Check where sender is in flow
-                        dbLink = DBLink.DBLink()
-                        flow_info = dbLink.get_flow_state(sender_id)
+                        # dbLink = DBLink.DBLink()
+                        # flow_info = dbLink.get_flow_state(sender_id)
                         
                         
-                        flow_type = flow_info['flowType']
-                        flow_state = flow_info['flowState']
+                        # flow_type = flow_info['flowType']
+                        # flow_state = flow_info['flowState']
                     
-                        #for testing values of flowstate and flowtype
+                        # #for testing values of flowstate and flowtype
                         
-                        log("FLOWSTATE")
-                        log(flow_info['flowState'])
-                        log("FLOWTYPE")
-                        log(flow_info['flowType'])
+                        # log("FLOWSTATE")
+                        # log(flow_info['flowState'])
+                        # log("FLOWTYPE")
+                        # log(flow_info['flowType'])
                         
-                        #if state is 0 we want to send the default buttons no matter what
-                        if flow_state == 0:
-                            #send pay, request, split quick reply
-                            sendMsg.send_default_message()
-                            break
+                        # #if state is 0 we want to send the default buttons no matter what
+                        # if flow_state == 0:
+                        #     #send pay, request, split quick reply
+                        #     sendMsg.send_default_message()
+                        #     break
                         
-                        #if state not 0 we need to parse the message further
-                        elif flow_state != 0:  
-                            #check if the user used a quick_reply
-                            try:
-                                log("QUICK REPLY")
-                                quick_reply = messaging_event["message"]["quick_reply"]
-                                log("THIS IS WHAT WE GET FOMR THE QUICK REPLY: "+quick_reply)
-                                log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
-                                log("value: "+messaging_event["message"]["quick_reply"]['value'])
+                        # #if state not 0 we need to parse the message further
+                        # elif flow_state != 0:  
+                        #     #check if the user used a quick_reply
+                        #     try:
+                        #         log("QUICK REPLY")
+                        #         quick_reply = messaging_event["message"]["quick_reply"]
+                        #         log("THIS IS WHAT WE GET FOMR THE QUICK REPLY: "+quick_reply)
+                        #         log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
+                        #         log("value: "+messaging_event["message"]["quick_reply"]['value'])
                                 
                                 
-                            except KeyError:
-                                log("QUICKREPLY NOT FOUND")
-                                if flow_state == 2:
-                                    the_payment.send_user_table()
-                                    break
-                                elif flow_state == 4:
-                                    sendMsg.send_confirmation_message()
+                        #     except KeyError:
+                        #         log("QUICKREPLY NOT FOUND")
+                        #         if flow_state == 2:
+                        #             the_payment.send_user_table()
+                        #             break
+                        #         elif flow_state == 4:
+                        #             sendMsg.send_confirmation_message()
                         
 
 ###################################################################################################                            
