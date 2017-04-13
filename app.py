@@ -220,7 +220,7 @@ def webhook():
     )
 
     a = requests.post('https://graph.facebook.com/v2.6/me/subscribed_apps', params=params)
-    logs(a)
+    log(a)
     return
     # endpoint for processing incoming messaging events
 
