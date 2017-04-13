@@ -361,55 +361,55 @@ def webhook():
 
                         #OLD HARD CODED BASED CONVO
                         
-                        # #sends buttons with images to josh
-                        # if "josh button demo" in message_text:
-                        #     the_payment.send_user_table()
-                        #     break
+                        #sends buttons with images to josh
+                        if "josh button demo" in message_text:
+                            the_payment.send_user_table()
+                            break
                         
-                        # # if sendMsg.messageType is "default":
-                        # #     sendMsg.send_default_message()
+                        # if sendMsg.messageType is "default":
+                        #     sendMsg.send_default_message()
                             
-                        # if sendMsg.messageType is "yes":
-                        #     sendMsg.send_payment_log_message()
+                        if sendMsg.messageType is "yes":
+                            sendMsg.send_payment_log_message()
                             
-                        # elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
-                        #     # let the user know that they payed the person
-                        #     log("share link message")
-                        #     sendMsg.send_share_link_message()
+                        elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
+                            # let the user know that they payed the person
+                            log("share link message")
+                            sendMsg.send_share_link_message()
     
-                        # elif sendMsg.messageType is "pay":
-                        #     if sendMsg.toID not in SENTINEL:
-                        #         if sendMsg.amount is not SENTINEL_FLOAT:
-                        #             sendMsg.notify_payee_and_payer_of_payment()
-                        #     else:
-                        #         sendMsg.send_pay_who_message1()
+                        elif sendMsg.messageType is "pay":
+                            if sendMsg.toID not in SENTINEL:
+                                if sendMsg.amount is not SENTINEL_FLOAT:
+                                    sendMsg.notify_payee_and_payer_of_payment()
+                            else:
+                                sendMsg.send_pay_who_message1()
                                 
-                        # elif sendMsg.messageType is "request":
-                        #     if sendMsg.toID not in SENTINEL:
-                        #         if sendMsg.amount is not SENTINEL_FLOAT:
-                        #             sendMsg.notify_requestee_and_requester_of_request()
-                        #     else:
-                        #         sendMsg.send_request_from_who_message()
+                        elif sendMsg.messageType is "request":
+                            if sendMsg.toID not in SENTINEL:
+                                if sendMsg.amount is not SENTINEL_FLOAT:
+                                    sendMsg.notify_requestee_and_requester_of_request()
+                            else:
+                                sendMsg.send_request_from_who_message()
                                 
-                        # elif sendMsg.messageType is "split":
-                        #     if sendMsg.toID not in SENTINEL:
-                        #         if sendMsg.amount not in SENTINEL_FLOAT:
-                        #             sendMsg.notify_bill_splitters_of_request()
-                        #     else:
-                        #         sendMsg.send_split_how_many_ways()
+                        elif sendMsg.messageType is "split":
+                            if sendMsg.toID not in SENTINEL:
+                                if sendMsg.amount not in SENTINEL_FLOAT:
+                                    sendMsg.notify_bill_splitters_of_request()
+                            else:
+                                sendMsg.send_split_how_many_ways()
     
-                        # elif sendMsg.messageType is "knownName":
-                        #     sendMsg.send_how_much_message()
+                        elif sendMsg.messageType is "knownName":
+                            sendMsg.send_how_much_message()
                         
-                        # elif sendMsg.messageType is "unknownName":
-                        #     sendMsg.send_share_link_message()
+                        elif sendMsg.messageType is "unknownName":
+                            sendMsg.send_share_link_message()
                             
-                        # elif sendMsg.messageType is "amount":
-                        #     sendMsg.send_confirmation_message()
+                        elif sendMsg.messageType is "amount":
+                            sendMsg.send_confirmation_message()
                             
 
-                        # elif sendMsg.messageType is "clear":
-                        #     sendMsg.send_clear_message()
+                        elif sendMsg.messageType is "clear":
+                            sendMsg.send_clear_message()
     
                     else:
 
