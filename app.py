@@ -391,12 +391,12 @@ def webhook():
                             else:
                                 sendMsg.send_request_from_who_message()
                                 
-                        elif sendMsg.messageType is "split":
-                            if sendMsg.toID not in SENTINEL:
-                                if sendMsg.amount not in SENTINEL_FLOAT:
-                                    sendMsg.notify_bill_splitters_of_request()
-                            else:
-                                sendMsg.send_split_how_many_ways()
+                        # elif sendMsg.messageType is "split":
+                        #     if sendMsg.toID not in SENTINEL:
+                        #         if sendMsg.amount not in SENTINEL_FLOAT:
+                        #             sendMsg.notify_bill_splitters_of_request()
+                        #     else:
+                        #         sendMsg.send_split_how_many_ways()
     
                         elif sendMsg.messageType is "knownName":
                             sendMsg.send_how_much_message()
