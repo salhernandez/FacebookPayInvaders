@@ -318,7 +318,7 @@ def webhook():
                         log("FLOWTYPE")
                         log(flow_info['flowType'])
                         
-                        if flow_state == 0:
+                        if flow_state == 2:
                             #send pay, request, split quick reply
                             sendMsg.send_default_message()
 
