@@ -10,6 +10,7 @@ import classes.UserInfo as UserInfo
 import classes.MessageBuilder as MsgBuilder
 from classes.Pay import PayGate
 import classes.GraphRequests as GraphRequests
+import classes.QuickReply as QuickReply
 import numpy as np
 import pandas as pd
 
@@ -19,7 +20,6 @@ app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 
-#db = flask_sqlalchemy.SQLAlchemy(app)
 import models
 
 db = flask_sqlalchemy.SQLAlchemy(app)
