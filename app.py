@@ -235,9 +235,6 @@ def webhook():
                 if messaging_event.get("message"):
                     # the facebook ID of the person sending you the message
                     sender_id = messaging_event["sender"]["id"]
-                
-                        
-                    
                     
             ############Josh
 ###################################################################################################
@@ -301,7 +298,8 @@ def webhook():
                         #Check where sender is in flow
                         dbLink = DBLink.DBLink()
                         flow_info = dbLink.get_flow_state(sender_id)
-                    
+                        
+                        
                         flow_type = flow_info['flowType']
                         flow_state = flow_info['flowState']
                     
@@ -311,6 +309,12 @@ def webhook():
                         log(flow_info['flowState'])
                         log("FLOWTYPE")
                         log(flow_info['flowType'])
+                        
+                        #for testing DELETE AFTERWARDS
+                            
+                        aReply = QuickReply.QuickReply()
+                        aReply.send_action_quick_reply(sender_id)
+                        return
                         
                         #if state is 0 we want to send the default buttons no matter what
                         if flow_state == 0:
@@ -324,7 +328,10 @@ def webhook():
                             try:
                                 log("QUICK REPLY")
                                 quick_reply = messaging_event["message"]["quick_reply"]
-                                log(quick_reply)
+                                log("THIS IS WHAT WE GET FOMR THE QUICK REPLY: "+quick_reply)
+                                log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
+                                log("value: "+messaging_event["message"]["quick_reply"]['value'])
+                                
                                 
                             except KeyError:
                                 log("QUICKREPLY NOT FOUND")
@@ -333,6 +340,7 @@ def webhook():
                                     break
                                 elif flow_state == 4:
                                     sendMsg.send_confirmation_message()
+                        
 
 ###################################################################################################                            
                         # elif flow_state == 1:
