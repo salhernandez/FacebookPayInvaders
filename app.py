@@ -257,14 +257,6 @@ def webhook():
                     
                     # the message's text
                     message_text = messaging_event["message"]["text"]
-
-                    #check if the user has a quick_reply
-                    try:
-                        log("QUICK REPLY")
-                        quick_reply = messaging_event["message"]["quick_reply"]
-                        log(quick_reply)
-                    except KeyError:
-                        log("QUICKREPLY NOT FOUND")
                     
                     # the message's timestamp
                     #message_timestamp = messaging_event["timestamp"]  
@@ -318,29 +310,43 @@ def webhook():
                         log("FLOWTYPE")
                         log(flow_info['flowType'])
                         
-                        #PAY
+                        #if state is 0 we want to send the default buttons no matter what
                         if flow_state == 0:
                             #send pay, request, split quick reply
                             sendMsg.send_default_message()
-                            
-                        elif flow_state == 1:
-                            sendMsg.send_pay_who_message1()
-                        
-                        elif flow_state == 2:
-                            # sendMsg.send_pay_who_message1()
-                            #test
-                            the_payment.send_user_table()
                             break
                         
-                        elif flow_state == 3:
-                            sendMsg.send_how_much_message()
-                        
-                        elif flow_state == 4:
-                            sendMsg.send_confirmation_message()
+                        #if state not 0 we need to parse the message further
+                        elif flow_state != 0     
+                            #check if the user used a quick_reply
+                            try:
+                                log("QUICK REPLY")
+                                quick_reply = messaging_event["message"]["quick_reply"]
+                                log(quick_reply)
+                                
+                            except KeyError:
+                                log("QUICKREPLY NOT FOUND")
+                                if flow_state == 2:
+                                    the_payment.send_user_table()
+                                    break
+                                elif flow_state == 4:
+                                    sendMsg.send_confirmation_message()
+
+                                
                             
-                        elif flow_state == 5:
-                            the_payment.send_user_table()
-                            break
+                        # elif flow_state == 1:
+                        #     sendMsg.send_pay_who_message1()
+                        
+                       
+                        
+                        # elif flow_state == 3:
+                        #     sendMsg.send_how_much_message()
+                        
+                      
+                            
+                        # elif flow_state == 5:
+                        #     the_payment.send_user_table()
+                        #     break
 
 
 
