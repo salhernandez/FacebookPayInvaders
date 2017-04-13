@@ -262,10 +262,10 @@ def webhook():
                     dbLink = DBLink.DBLink()
                     flow_info = dbLink.get_flow_state(sender_id)
                     #flow_type = flowInfo.flowType
-                    flow_state = flow_info.flowState
+                    #flow_state = flow_info.flowState
                     
                     log("HAI")
-                    log(flow_state)
+                    log(flow_info)
                     
                     #if flow_state == 0:
                         #send pay, request, split quick reply
