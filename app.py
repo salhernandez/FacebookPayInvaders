@@ -296,6 +296,8 @@ def webhook():
                         the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                         # the_payment.send_payment_gateway()
                         
+                        #Anna's new flow code
+###################################################################################################                        
                         #Check where sender is in flow
                         dbLink = DBLink.DBLink()
                         flow_info = dbLink.get_flow_state(sender_id)
@@ -332,8 +334,7 @@ def webhook():
                                 elif flow_state == 4:
                                     sendMsg.send_confirmation_message()
 
-                                
-                            
+###################################################################################################                            
                         # elif flow_state == 1:
                         #     sendMsg.send_pay_who_message1()
                         
