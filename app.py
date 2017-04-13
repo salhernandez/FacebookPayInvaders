@@ -235,6 +235,8 @@ def webhook():
                 if messaging_event.get("message"):
                     # the facebook ID of the person sending you the message
                     sender_id = messaging_event["sender"]["id"]
+                
+                        
                     
                     
             ############Josh
@@ -256,6 +258,23 @@ def webhook():
                     # the message's text
                     message_text = messaging_event["message"]["text"]
                     
+                    #Check where sender is in flow
+                    dbLink = DBLink.DBLink()
+                    flow_info = dbLink.get_flow_state(sender_id)
+                    #flow_type = flowInfo.flowType
+                    flow_state = flowInfo.flowState
+                    
+                    log("HAI")
+                    log(flow_state)
+                    
+                    #if flow_state == 0:
+                        #send pay, request, split quick reply
+                    #else:
+                        #if quick reply:
+                        
+                        #else:
+
+
                     #check if the user has a quick_reply
                     try:
                         log("QUICK REPLY")
@@ -282,7 +301,6 @@ def webhook():
                         
                         #dump string into message parser and it will grab everything it needs
                         msgObj = MsgParser.MessageParser(message_text)
-                        
                         
                         log("WHAT THE MSG OBJECT CONTAINS: "+str(msgObj))
                         
