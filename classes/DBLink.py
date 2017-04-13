@@ -107,13 +107,34 @@ class DBLink(object):
     """
     Gets all the users in the db based on the last name
     Returns users that match the last name
+    
+    aLink = DBLink.DBLink()
+    a = aLink.get_users_with_last_name("he")
+    log(a[0][userID]['firstName'])
+    return "test"
     """
     def get_users_with_last_name(self, last_name):
         last_name = last_name.lower()
         userInDB = models.Users.query.filter(models.Users.lastName.startswith(last_name)).all()
         
         if userInDB is not None:
-            return userInDB
+            # print userInDB
+            userInDBDict = {}
+            
+            count = 0
+            for row in userInDB:
+                # print row.owed_ID
+                userInDBDict[count] = {}
+                userInDBDict[count][row.user_id] = {}
+                userInDBDict[count][row.user_id]['userID'] = row.user_id
+                userInDBDict[count][row.user_id]['firstName'] = row.firstName
+                userInDBDict[count][row.user_id]['lastName'] = row.lastName
+                userInDBDict[count][row.user_id]['email'] = row.email
+                userInDBDict[count][row.user_id]['imgUrl'] = row.imgUrl
+                userInDBDict[count][row.user_id]['phoneNumber'] = row.phoneNumber
+                
+                count = count + 1
+            return userInDBDict
         else:
             return None
     
