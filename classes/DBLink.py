@@ -41,26 +41,66 @@ class DBLink(object):
     """
     Checks if a user is in the db
     Return rows that match, otherwise it returns None
+    
+    
+    aLink = DBLink.DBLink()
+    a = aLink.get_user_in_db("985245348244242")
+    log(a['firstName'])
     """
     def get_user_in_db(self, userID):
         userInDB = models.Users.query.filter_by(user_id=str(userID)).all()
         
         #ID was found
         if userInDB is not None:
-            return userInDB
+            userDict = {}
+        
+            for row in userInDB:
+                userDict['userID'] = row.user_id
+                userDict['firstName'] = row.firstName
+                userDict['lastName'] = row.lastName
+                userDict['email'] = row.email
+                userDict['imgUrl'] = row.imgUrl
+                userDict['phoneNumber'] = row.phoneNumber
+                break
+            
+            return userDict
+                
         else:
             return None
     
     """
     Gets all the users in the db based on the first name
     Returns users that match the first name
+    
+    make note of the number iterator that starts at 0
+    
+    aLink = DBLink.DBLink()
+    a = aLink.get_users_with_first_name("sal")
+    log(a[0][USER_ID_IS_HERE]['firstName'])
     """
     def get_users_with_first_name(self, first_name):
         first_name = first_name.lower()
         userInDB = models.Users.query.filter(models.Users.firstName.startswith(first_name)).all()
         
         if userInDB is not None:
-            return userInDB
+            
+            # print userInDB
+            userInDBDict = {}
+            
+            count = 0
+            for row in userInDB:
+                # print row.owed_ID
+                userInDBDict[count] = {}
+                userInDBDict[count][row.user_id] = {}
+                userInDBDict[count][row.user_id]['userID'] = row.user_id
+                userInDBDict[count][row.user_id]['firstName'] = row.firstName
+                userInDBDict[count][row.user_id]['lastName'] = row.lastName
+                userInDBDict[count][row.user_id]['email'] = row.email
+                userInDBDict[count][row.user_id]['imgUrl'] = row.imgUrl
+                userInDBDict[count][row.user_id]['phoneNumber'] = row.phoneNumber
+                
+                count = count + 1
+            return userInDBDict
         else:
             return None
     
