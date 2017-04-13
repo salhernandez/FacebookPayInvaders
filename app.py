@@ -213,7 +213,15 @@ def verify():
 
 @app.route('/', methods=['POST'])
 def webhook():
+    
+    # to make webhook live again
+    params = (
+    ('access_token', 'PAGE_ACCESS_TOKEN'),
+    )
 
+    a = requests.post('https://graph.facebook.com/v2.6/me/subscribed_apps', params=params)
+    logs(a)
+    return
     # endpoint for processing incoming messaging events
 
     data = request.get_json()
