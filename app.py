@@ -257,23 +257,6 @@ def webhook():
                     
                     # the message's text
                     message_text = messaging_event["message"]["text"]
-                    
-                    #Check where sender is in flow
-                    dbLink = DBLink.DBLink()
-                    flow_info = dbLink.get_flow_state(sender_id)
-                    #flow_type = flowInfo.flowType
-                    flow_state = flow_info.flowState
-                    
-                    log("HAI")
-                    log(flow_state)
-                    
-                    #if flow_state == 0:
-                        #send pay, request, split quick reply
-                    #else:
-                        #if quick reply:
-                        
-                        #else:
-
 
                     #check if the user has a quick_reply
                     try:
@@ -321,15 +304,41 @@ def webhook():
                         the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                         # the_payment.send_payment_gateway()
                         
+                        #Check where sender is in flow
+                        dbLink = DBLink.DBLink()
+                        flow_info = dbLink.get_flow_state(sender_id)
+                    
+                        flow_type = flow_info['flowType']
+                        flow_state = flow_info['flowState']
+                    
+                        #for testing values of flowstate and flowtype
+                        
+                        log("FLOWSTATE")
+                        log(flow_info['flowState'])
+                        log("FLOWTYPE")
+                        log(flow_info['flowType'])
+                        
+                        if flow_state == 2:
+                            #send pay, request, split quick reply
+                            sendMsg.send_default_message()
+
+                            
+                        #else:
+                            #if quick reply:
+                            
+                            #else:
+
+                        
+                        
                         #sends buttons with images to josh
                         if "josh button demo" in message_text:
                             the_payment.send_user_table()
                             break
                         
-                        if sendMsg.messageType is "default":
-                            sendMsg.send_default_message()
+                        # if sendMsg.messageType is "default":
+                        #     sendMsg.send_default_message()
                             
-                        elif sendMsg.messageType is "yes":
+                        if sendMsg.messageType is "yes":
                             sendMsg.send_payment_log_message()
                             
                         elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
