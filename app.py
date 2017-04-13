@@ -264,11 +264,16 @@ def webhook():
                     #flow_type = flowInfo.flowType
                     #flow_state = flow_info.flowState
                     
-                    log("HAI")
-                    log(flow_info['flowState'])
+                    flow_type = flow_info['flowType']
+                    flow_state = flow_info['flowState']
+                
                     
-                    #if flow_state == 0:
+                    if flow_state == 2:
                         #send pay, request, split quick reply
+                        log("FLOWSTATE")
+                        log(flow_info['flowState'])
+                        log("FLOWTYPE")
+                        log(flow_info['flowType'])
                     #else:
                         #if quick reply:
                         
