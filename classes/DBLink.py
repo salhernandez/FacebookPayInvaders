@@ -444,8 +444,8 @@ class DBLink(object):
     Gets the flow state for the user ID
     
     aLink = DBLink.DBLink()
-    a = aLink.get_flow_state("985245348244242")
-    log(a['userID'])
+    flow_info = aLink.get_flow_state("985245348244242")
+    log(flow_info['userID'])
     """
     def get_flow_state(self, user_id):
         user_id = str(user_id)
