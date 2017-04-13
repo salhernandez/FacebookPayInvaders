@@ -319,7 +319,7 @@ def webhook():
                             break
                         
                         #if state not 0 we need to parse the message further
-                        elif flow_state != 0     
+                        elif flow_state != 0:  
                             #check if the user used a quick_reply
                             try:
                                 log("QUICK REPLY")
