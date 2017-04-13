@@ -310,12 +310,6 @@ def webhook():
                         log("FLOWTYPE")
                         log(flow_info['flowType'])
                         
-                        #for testing DELETE AFTERWARDS
-                            
-                        aReply = QuickReply.QuickReply()
-                        aReply.send_action_quick_reply(sender_id)
-                        return
-                        
                         #if state is 0 we want to send the default buttons no matter what
                         if flow_state == 0:
                             #send pay, request, split quick reply
