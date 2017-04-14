@@ -22,14 +22,13 @@ class QuickReplyParser(object):
         self.log("__"+self.valueFromResponse+"__")
         isValid = False
         
-        if self.valueFromResponse is "pay":
+        if self.valueFromResponse in "pay":
             self.__payFlow__()
-            self.log("its the pay flow :)")
             isValid = True
-        elif self.valueFromResponse is "request":
+        elif self.valueFromResponse in "request":
             self.__requestFlow__()
             isValid = True
-        elif self.valueFromResponse is "split":
+        elif self.valueFromResponse in "split":
             self.__splitFlow__()
             isValid = True
         else:
