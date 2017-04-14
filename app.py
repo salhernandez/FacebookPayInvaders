@@ -278,16 +278,17 @@ def webhook():
                             #log("THIS IS WHAT WE GET FOMR THE QUICK REPLY: "+quick_reply)
                             log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
                             log("value: "+messaging_event["message"]["quick_reply"]['value'])
-                            return
+                            break
                             
                         except KeyError:
                             log("QUICKREPLY NOT FOUND")
                             if flow_state == 2:
                                 the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                 the_payment.send_user_table()
-                                return
+                                break
                             elif flow_state == 4:
                                 sendMsg.send_confirmation_message()
+                                break
                     
 
 ################################################################################################### 
