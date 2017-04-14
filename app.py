@@ -262,14 +262,17 @@ def webhook():
                     #checks that the message has a quick reply, if not, it breaks out
                     try:
                         log("QUICK REPLY ERROR CHECK")
-                        log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
-                        log("value: "+messaging_event["message"]["quick_reply"]['value'])
+                        flowType = messaging_event["quick_reply"]['flowType']
+                        value = messaging_event["quick_reply"]['value']
+                        
+                        log("flowType: "+flowType)
+                        log("value: "+value)
                         #Check where sender is in flow
                         dbLink = DBLink.DBLink()
                         flow_info = dbLink.get_flow_state(sender_id)
                         
-                        
                         sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser)
+                        
                         
                         flow_type = flow_info['flowType']
                         flow_state = flow_info['flowState']
@@ -426,7 +429,7 @@ def webhook():
                                 aLink.add_user(messaging_event["sender"]["id"], request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, str(msgObj.number))
                                 sendMsg.send_signedup()
                                 
-                    except keyError:
+                    except KeyError:
                         #anotherUser = UserInfo.UserInfo("", messaging_event["sender"]["id"])
                         aReply = QuickReply.QuickReply()
                         aReply.send_action_quick_reply(messaging_event["sender"]["id"])
