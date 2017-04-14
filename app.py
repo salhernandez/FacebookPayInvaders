@@ -225,6 +225,7 @@ def webhook():
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
                 
+                
                 # someone sent us a message
                 if messaging_event.get("message"):
                     # the facebook ID of the person sending you the message
@@ -247,7 +248,15 @@ def webhook():
                     #add new user to db
                 
                   #Anna's new flow code
-###################################################################################################                        
+###################################################################################################   
+                    #checks that the message has a quick reply, if not, it breaks out
+                    try:
+                        log("QUICK REPLY ERROR CHECK")
+                        log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
+                        log("value: "+messaging_event["message"]["quick_reply"]['value'])
+                    except KeyError:
+                        break
+                            
                     #Check where sender is in flow
                     dbLink = DBLink.DBLink()
                     flow_info = dbLink.get_flow_state(sender_id)
