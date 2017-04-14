@@ -267,53 +267,60 @@ def webhook():
                         json_acceptable_string = info.replace("'", "\"")
                         d = json.loads(json_acceptable_string)
                         
-                        flowType = d['flowType']
-                        value = d['value']
+                        #grabs the values
+                        flowTypeFromResponse = d['flowType']
+                        valueFromResponse = d['value']
                         
                         log(d)
-                        log(flowType)
-                        log(value)
+                        #log(flowTypeFromResponse)
+                        #log(valueFromResponse)
                         
                         
                         
-                        # #Check where sender is in flow
-                        # dbLink = DBLink.DBLink()
-                        # flow_info = dbLink.get_flow_state(sender_id)
+                        #Check where sender is in flow
+                        dbLink = DBLink.DBLink()
+                        flow_info = dbLink.get_flow_state(sender_id)
                         
-                        # sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser)
+                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser)
                         
                         
-                        # flow_type = flow_info['flowType']
-                        # flow_state = flow_info['flowState']
+                        flow_type = flow_info['flowType']
+                        flow_state = flow_info['flowState']
                     
-                        # #for testing values of flowstate and flowtype
+                        #for testing values of flowstate and flowtype
                         
-                        # log("FLOWSTATE")
-                        # log(flow_info['flowState'])
-                        # log("FLOWTYPE")
-                        # log(flow_info['flowType'])
+                        log("FLOWSTATE FROM DB")
+                        log(flow_info['flowState'])
+                        log("FLOWTYPE FROM DB")
+                        log(flow_info['flowType'])
                         
-                        # #if state is 0 we want to send the default buttons no matter what
-                        # if flow_state == 0:
-                        #     #send pay, request, split quick reply
-                        #     sendMsg.send_default_message()
-                        #     break
+                        #if state is 0 we want to send the default buttons no matter what
+                        if flow_state == 0:
+                            #send pay, request, split quick reply
+                            sendMsg.send_default_message()
+                            break
                         
-                        # #if state not 0 we need to parse the message further
-                        # elif flow_state != 0:  
-                        #     #check if the user used a quick_reply
+                        #if state not 0 we need to parse the message further
+                        elif flow_state != 0:  
+                            #check if the user used a quick_reply
                             
-                        #     # log("QUICK REPLY")
-                        #     # quick_reply = messaging_event["message"]["quick_reply"]
-                        #     # log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
+                            # log("QUICK REPLY")
+                            # quick_reply = messaging_event["message"]["quick_reply"]
+                            # log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
                     
-                        #     if flow_state == 2:
-                        #         the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                        #         the_payment.send_user_table()
-                        #         break
-                        #     elif flow_state == 4:
-                        #         sendMsg.send_confirmation_message()
-                        #         break
+                            if flow_state == 2:
+                                the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                                the_payment.send_user_table()
+                                break
+                            elif flow_state == 4:
+                                sendMsg.send_confirmation_message()
+                                break
+                        
+                        else:#default
+                            aReply = QuickReply.QuickReply()
+                            aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                            break
+                        
                     except KeyError:
                         log("KEYERROR FROM REPLY")
                         
