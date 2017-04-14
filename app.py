@@ -266,7 +266,8 @@ def webhook():
                         # value = messaging_event['message']['quick_reply']['payload']['value']
                         
                         for info in messaging_event['message']['quick_reply']['payload']:
-                            log(info[0])
+                            someInfo = json.loads(info)
+                            log(someInfo['flowType'])
                             
                         # log("flowType: "+flowType)
                         # log("value: "+value)
