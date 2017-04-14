@@ -1,11 +1,6 @@
-import requests, os, json, sys, flask_sqlalchemy, app
-
-#for heroku
-app.app.config['SQLALCHEMY_DATABASE_URI'] = app.os.getenv('DATABASE_URL')
-#app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
+import requests, os, json, sys, flask_sqlalchemy
 
 import models
-db = flask_sqlalchemy.SQLAlchemy(app.app)
 
 import classes.DBLink as DBLink
 
