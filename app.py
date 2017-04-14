@@ -297,8 +297,9 @@ def webhook():
                         #if state is 0 we want to send the default buttons no matter what
                         if flow_state == 0:
                             #send pay, request, split quick reply
-                            sendMsg.send_default_message()
-                            break
+                            #sendMsg.send_default_message()
+                            #break
+                            pass
                         
                         #if state not 0 we need to parse the message further
                         elif flow_state != 0:  
@@ -313,8 +314,9 @@ def webhook():
                                 the_payment.send_user_table()
                                 break
                             elif flow_state == 4:
-                                sendMsg.send_confirmation_message()
-                                break
+                                #sendMsg.send_confirmation_message()
+                                #break
+                                pass
                         
                         else:#default
                             aReply = QuickReply.QuickReply()
