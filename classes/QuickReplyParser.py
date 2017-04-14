@@ -1,6 +1,5 @@
 import requests, os, json, sys
-
-
+import classes.DBLink as DBLink
 
 # This class is meant to containt all the graph request that we will use
 
@@ -19,7 +18,6 @@ class QuickReplyParser(object):
     """
     def isQRValid(self):
         self.log("entering isQRValid")
-        self.log("__"+self.valueFromResponse+"__")
         isValid = False
         
         if self.valueFromResponse in "pay":
@@ -40,18 +38,41 @@ class QuickReplyParser(object):
     """
     def __payFlow__(self):
         self.log("its the pay flow :)")
+        self.__getFlowInfo__()
     
     """
     requestFLow
     """
     def __requestFlow__(self):
         self.log("its the request flow :)")
-    
+        self.__getFlowInfo__()
     """
     splitFLow
     """
     def __splitFlow__(self):
         self.log("its the split flow :)")
+        self.__getFlowInfo__()
+    """
+    getFlowInfo
+    """
+    def __getFlowInfo__(self):
+        self.log("getting flow info :)")
+        #####################################################
+        #Check where sender is in flow
+        dbLink = DBLink.DBLink()
+        flow_info = dbLink.get_flow_state(self.senderID)
+        
+        flow_type = flow_info['flowType']
+        flow_state = flow_info['flowState']
+    
+        #for testing values of flowstate and flowtype
+        
+        log("FLOWSTATE FROM DB")
+        log(flow_info['flowState'])
+        log("FLOWTYPE FROM DB")
+        log(flow_info['flowType'])
+        
+        #####################################################
     
     """
     prints the instance variables as a dictionary

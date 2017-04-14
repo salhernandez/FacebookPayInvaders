@@ -281,7 +281,13 @@ def webhook():
                         isValid = qrParser.isQRValid()
                         
                         if qrParser is True:
-                            break
+                            
+                            someUser = UserInfo.UserInfo("",sender_id)
+                            anotherUser = UserInfo.UserInfo("","")
+                        
+                            sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                            sendMsg.send_default_message()
+                            return
                         
                         
                         #####################################################
