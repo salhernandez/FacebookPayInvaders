@@ -267,7 +267,7 @@ def webhook():
                         
                         for info in messaging_event['message']['quick_reply']['payload']:
                             log(type(info))
-                            log(info[0])
+                            log(info[0][0])
                             
                         # log("flowType: "+flowType)
                         # log("value: "+value)
