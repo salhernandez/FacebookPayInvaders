@@ -319,7 +319,7 @@ def webhook():
                                 #log("THIS IS WHAT WE GET FOMR THE QUICK REPLY: "+quick_reply)
                                 log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
                                 log("value: "+messaging_event["message"]["quick_reply"]['value'])
-                                
+                                break
                                 
                             except KeyError:
                                 log("QUICKREPLY NOT FOUND")
