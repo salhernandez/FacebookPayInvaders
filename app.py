@@ -227,7 +227,7 @@ def webhook():
     #   new = json.loads(str(messages[0]))
     
     
-    log("FROM THE DATA: "+data)  # you may not want to log every incoming message in production, but it's good for testing
+    log(data)  # you may not want to log every incoming message in production, but it's good for testing
 
     if data["object"] == "page":
 
