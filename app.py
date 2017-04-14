@@ -346,39 +346,22 @@ def webhook():
                             #if there is no name and amount, it will reply to the user with a static response
                             #josh stuff is beklow here
                             #checks that the user and the amount is there
-                            the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                            the_payment.send_payment_gateway()
                             
-                                                     
-                            # elif flow_state == 1:
-                            #     sendMsg.send_pay_who_message1()
                             
-                           
-                            
-                            # elif flow_state == 3:
-                            #     sendMsg.send_how_much_message()
-                            
-                          
+                            #triggers venmo
+                            if "josh venmo demo" in message_text:
+                                the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                                the_payment.send_payment_gateway()
                                 
-                            # elif flow_state == 5:
-                            #     the_payment.send_user_table()
-                            #     break
-    
-    
-    
-                                
-                            #else:
-                                #if quick reply:
-                                
-                                #else:
-    
-                            #OLD HARD CODED BASED CONVO
                             
                             #sends buttons with images to josh
                             if "josh button demo" in message_text:
                                 the_payment.send_user_table()
                                 break
                             
+                            
+                            aReply = QuickReply.QuickReply()
+                            aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                             # # if sendMsg.messageType is "default":
                             # #     sendMsg.send_default_message()
                                 
@@ -440,6 +423,7 @@ def webhook():
                                 aLink = DBLink.DBLink()
                                 aLink.add_user(messaging_event["sender"]["id"], request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, str(msgObj.number))
                                 sendMsg.send_signedup()
+                                
                     except keyError:
                         #anotherUser = UserInfo.UserInfo("", messaging_event["sender"]["id"])
                         aReply = QuickReply.QuickReply()
