@@ -1,4 +1,12 @@
 import requests, os, json, sys, app
+
+#for heroku
+app.app.config['SQLALCHEMY_DATABASE_URI'] = app.os.getenv('DATABASE_URL')
+#app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://payinvader:girlscoutcookies1@localhost/postgres'
+
+import models
+db = flask_sqlalchemy.SQLAlchemy(app.app)
+
 import classes.DBLink as DBLink
 
 # This class is meant to containt all the graph request that we will use
