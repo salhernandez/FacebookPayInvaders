@@ -1,26 +1,38 @@
 import requests, os, json, sys
 
+
+
 # This class is meant to containt all the graph request that we will use
 
 # Sample Usage
 # aReplyParser = QuickReplyParser.QuickReplyParser("1596606567017003", "pay", 1)
 # print str(aReplyParser)
 class QuickReplyParser(object):
-    def __init__(self, flowType, flowState, senderID):
-        self.flowType = str(flowType).lower()
-        self.flowState = flowState
+    def __init__(self, flowTypeFromResponse, valueFromResponse, senderID):
+        self.flowTypeFromResponse = str(flowTypeFromResponse).lower()
+        self.valueFromResponse = valueFromResponse
         self.senderID = senderID
         
+    
+    """
+    is the quick reply valid
+    """
+    def isQRValid(self):
+        isValid = False
         
-        if self.flowType is "pay":
+        if self.valueFromResponse is "pay":
             self.__payFlow__()
-        elif self.flowType is "request":
+            isValid = True
+        elif self.valueFromResponse is "request":
             self.__requestFlow__()
-        elif self.flowType is "split":
+            isValid = True
+        elif self.valueFromResponse is "split":
             self.__splitFlow__()
+            isValid = True
         else:
-            return None
+            isValid = False
         
+        return isValid
     """
     payFlow
     """
