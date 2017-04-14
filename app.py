@@ -458,7 +458,8 @@ def webhook():
                             payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
                             sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
                             
-                            
+                            print "here-----------------"
+                            print str(msgObj.number)
                             if(str(msgObj.number) == "-1"):
                                 sendMsg.send_get_number_to_signup()
                             else:
