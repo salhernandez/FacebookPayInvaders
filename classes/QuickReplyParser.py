@@ -10,7 +10,7 @@ class QuickReplyParser(object):
         self.flowTypeFromResponse = str(flowTypeFromResponse).lower()
         self.valueFromResponse = str(valueFromResponse).lower()
         self.senderID = senderID
-        self.dbLink = dbLink
+        #self.dbLink = dbLink
         
     
     """
