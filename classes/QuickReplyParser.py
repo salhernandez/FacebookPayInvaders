@@ -1,8 +1,4 @@
-import requests, os, json, sys, flask_sqlalchemy
-
-import models
-
-import classes.DBLink as DBLink
+import requests, os, json, sys
 
 # This class is meant to containt all the graph request that we will use
 
@@ -10,10 +6,11 @@ import classes.DBLink as DBLink
 # aReplyParser = QuickReplyParser.QuickReplyParser("1596606567017003", "pay", 1)
 # print str(aReplyParser)
 class QuickReplyParser(object):
-    def __init__(self, flowTypeFromResponse, valueFromResponse, senderID):
+    def __init__(self, flowTypeFromResponse, valueFromResponse, senderID, dbLink):
         self.flowTypeFromResponse = str(flowTypeFromResponse).lower()
         self.valueFromResponse = str(valueFromResponse).lower()
         self.senderID = senderID
+        self.dbLink = dbLink
         
     
     """
@@ -62,8 +59,8 @@ class QuickReplyParser(object):
         self.log("getting flow info :)")
         #####################################################
         #Check where sender is in flow
-        dbLink = DBLink.DBLink()
-        flow_info = dbLink.get_flow_state(self.senderID)
+        
+        flow_info = self.dbLink.get_flow_state(self.senderID)
         
         flow_type = flow_info['flowType']
         flow_state = flow_info['flowState']
