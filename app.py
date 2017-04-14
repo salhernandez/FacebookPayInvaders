@@ -266,7 +266,7 @@ def webhook():
                         # value = messaging_event['message']['quick_reply']['payload']['value']
                         
                         info =  "{"+str(messaging_event['message']['quick_reply']['payload'])+"}"
-                        info = JSON_Datalist.replace(" ", "")
+                        info = info.replace(" ", "")
                         info = json.loads(info)
                         log(info)
                         
