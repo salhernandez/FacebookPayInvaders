@@ -11,6 +11,7 @@ import classes.MessageBuilder as MsgBuilder
 from classes.Pay import PayGate
 import classes.GraphRequests as GraphRequests
 import classes.QuickReply as QuickReply
+import classes.QuickReplyParser as QuickReplyParser
 import numpy as np
 import pandas as pd
 
