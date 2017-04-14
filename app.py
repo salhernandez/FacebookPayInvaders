@@ -424,7 +424,7 @@ def webhook():
                                 aLink.add_user(messaging_event["sender"]["id"], request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, str(msgObj.number))
                                 sendMsg.send_signedup()
                                 
-                    except keyError:
+                    except KeyError:
                         #anotherUser = UserInfo.UserInfo("", messaging_event["sender"]["id"])
                         aReply = QuickReply.QuickReply()
                         aReply.send_action_quick_reply(messaging_event["sender"]["id"])
