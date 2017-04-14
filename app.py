@@ -236,7 +236,7 @@ def webhook():
                     aUserInfo = dbLink.get_user_in_db(sender_id)
                     
                     #init with empty name
-                    UserInfo.UserInfo(aUserInfo["", messaging_event["sender"]["id"])
+                    UserInfo.UserInfo("", messaging_event["sender"]["id"])
                     if aUserInfo is not None:
                         someUser = UserInfo.UserInfo(aUserInfo['firstName'], messaging_event["sender"]["id"])
                     
