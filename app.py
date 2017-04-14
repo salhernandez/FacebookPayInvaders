@@ -266,8 +266,9 @@ def webhook():
                         # value = messaging_event['message']['quick_reply']['payload']['value']
                         
                         info = "{"+str(messaging_event['message']['quick_reply']['payload'])+"}"
-                        
-                        log(info)
+                        json_acceptable_string = i.replace("'", "\"")
+                        d = json.loads(json_acceptable_string)
+                        log(d)
                         
                         # #Check where sender is in flow
                         # dbLink = DBLink.DBLink()
