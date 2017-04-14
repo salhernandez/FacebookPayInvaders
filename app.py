@@ -268,12 +268,12 @@ def webhook():
                         d = json.loads(json_acceptable_string)
                         
                         #grabs the values
-                        flowTypeFromResponse = d['flowType']
-                        valueFromResponse = d['value']
+                        flowTypeFromResponse = str(d['flowType'])
+                        valueFromResponse = str(d['value'])
                         
                         log(d)
-                        #log(flowTypeFromResponse)
-                        #log(valueFromResponse)
+                        log("flowType from quick reply: "+flowTypeFromResponse)
+                        log("value from quick reply: "+valueFromResponse)
                         
                         
                         #if the quickreply is awknowledged, then it breaks out of the loop
