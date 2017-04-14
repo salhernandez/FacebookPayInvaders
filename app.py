@@ -239,6 +239,7 @@ def webhook():
                     # the facebook ID of the person sending you the message
                     sender_id = messaging_event["sender"]["id"]
                     
+                    log("messages comes from"+sender_id)
                     
             ############Josh
 ###################################################################################################
