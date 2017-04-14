@@ -262,13 +262,19 @@ def webhook():
                     #checks that the message has a quick reply, if not, it breaks out
                     try:
                         log("QUICK REPLY ERROR CHECK")
-                        # flowType = messaging_event['message']['quick_reply']['payload']['flowType']
-                        # value = messaging_event['message']['quick_reply']['payload']['value']
                         
                         info = "{"+str(messaging_event['message']['quick_reply']['payload'])+"}"
                         json_acceptable_string = info.replace("'", "\"")
                         d = json.loads(json_acceptable_string)
+                        
+                        flowType = d['flowType']
+                        value = d['value']
+                        
                         log(d)
+                        log(flowType)
+                        log(value)
+                        
+                        
                         
                         # #Check where sender is in flow
                         # dbLink = DBLink.DBLink()
