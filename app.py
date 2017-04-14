@@ -231,14 +231,14 @@ def webhook():
                     # the facebook ID of the person sending you the message
                     sender_id = messaging_event["sender"]["id"]
                     
-                    #gets info from the db
-                    dbLink = DBLink.DBLink()
-                    aUserInfo = dbLink.get_user_in_db(sender_id)
+                    # #gets info from the db
+                    # dbLink = DBLink.DBLink()
+                    # aUserInfo = dbLink.get_user_in_db(sender_id)
                     
                     #init with empty name
                     someUser = UserInfo.UserInfo("", messaging_event["sender"]["id"])
-                    if aUserInfo is not None:
-                        someUser = UserInfo.UserInfo(aUserInfo['firstName'], messaging_event["sender"]["id"])
+                    # if aUserInfo is not None:
+                    #     someUser = UserInfo.UserInfo(aUserInfo['firstName'], messaging_event["sender"]["id"])
                     
                         
             ############Josh
@@ -303,7 +303,7 @@ def webhook():
                                 sendMsg.send_confirmation_message()
                                 break
                     except KeyError:
-                        pass
+                        log("KEYERROR")
                         
 ################################################################################################### 
                 
