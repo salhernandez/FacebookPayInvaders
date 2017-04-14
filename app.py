@@ -283,6 +283,7 @@ def webhook():
                         except KeyError:
                             log("QUICKREPLY NOT FOUND")
                             if flow_state == 2:
+                                the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                 the_payment.send_user_table()
                                 break
                             elif flow_state == 4:
