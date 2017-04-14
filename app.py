@@ -281,7 +281,10 @@ def webhook():
                         dbLink = DBLink.DBLink()
                         flow_info = dbLink.get_flow_state(sender_id)
                         
-                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser)
+                        someUser = UserInfo.UserInfo("",messaging_event["sender"]["id"])
+                        anotherUser = UserInfo.UserInfo("","")
+                        
+                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                         
                         
                         flow_type = flow_info['flowType']
@@ -314,9 +317,9 @@ def webhook():
                                 the_payment.send_user_table()
                                 break
                             elif flow_state == 4:
-                                #sendMsg.send_confirmation_message()
-                                #break
-                                pass
+                                sendMsg.send_confirmation_message()
+                                break
+                                #pass
                         
                         else:#default
                             aReply = QuickReply.QuickReply()
