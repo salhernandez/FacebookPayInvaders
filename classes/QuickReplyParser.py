@@ -1,4 +1,4 @@
-import requests, os, json, sys, app
+import requests, os, json, sys, flask_sqlalchemy, app
 
 #for heroku
 app.app.config['SQLALCHEMY_DATABASE_URI'] = app.os.getenv('DATABASE_URL')
