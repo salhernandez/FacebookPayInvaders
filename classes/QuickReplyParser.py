@@ -18,10 +18,13 @@ class QuickReplyParser(object):
     is the quick reply valid
     """
     def isQRValid(self):
+        self.log("entering isQRValid")
+        self.log("__"+self.valueFromResponse+"__")
         isValid = False
         
         if self.valueFromResponse is "pay":
             self.__payFlow__()
+            self.log("its the pay flow :)")
             isValid = True
         elif self.valueFromResponse is "request":
             self.__requestFlow__()
