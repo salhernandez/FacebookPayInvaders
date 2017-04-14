@@ -268,63 +268,80 @@ def webhook():
                         d = json.loads(json_acceptable_string)
                         
                         #grabs the values
-                        flowTypeFromResponse = d['flowType']
-                        valueFromResponse = d['value']
+                        flowTypeFromResponse = str(d['flowType'])
+                        valueFromResponse = str(d['value'])
                         
                         log(d)
-                        #log(flowTypeFromResponse)
-                        #log(valueFromResponse)
+                        log("flowType from quick reply: "+flowTypeFromResponse)
+                        log("value from quick reply: "+valueFromResponse)
                         
                         
+                        #if the quickreply is awknowledged, then it breaks out of the loop
+                        #dbLink = DBLink.DBLink()
+                        qrParser = QuickReplyParser.QuickReplyParser(flowTypeFromResponse, valueFromResponse, sender_id)
+                        isValid = qrParser.isQRValid()
                         
-                        #Check where sender is in flow
-                        dbLink = DBLink.DBLink()
-                        flow_info = dbLink.get_flow_state(sender_id)
-                        
-                        someUser = UserInfo.UserInfo("",messaging_event["sender"]["id"])
-                        anotherUser = UserInfo.UserInfo("","")
-                        
-                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                        
-                        
-                        flow_type = flow_info['flowType']
-                        flow_state = flow_info['flowState']
-                    
-                        #for testing values of flowstate and flowtype
-                        
-                        log("FLOWSTATE FROM DB")
-                        log(flow_info['flowState'])
-                        log("FLOWTYPE FROM DB")
-                        log(flow_info['flowType'])
-                        
-                        #if state is 0 we want to send the default buttons no matter what
-                        if flow_state == 0:
-                            #send pay, request, split quick reply
-                            #sendMsg.send_default_message()
-                            #break
-                            pass
-                        
-                        #if state not 0 we need to parse the message further
-                        elif flow_state != 0:  
-                            #check if the user used a quick_reply
+                        if qrParser is True:
                             
-                            # log("QUICK REPLY")
-                            # quick_reply = messaging_event["message"]["quick_reply"]
-                            # log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
-                    
-                            if flow_state == 2:
-                                the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                                the_payment.send_user_table()
-                                break
-                            elif flow_state == 4:
-                                sendMsg.send_confirmation_message()
-                                break
-                                #pass
+                            someUser = UserInfo.UserInfo("",sender_i)
+                            anotherUser = UserInfo.UserInfo("","")
                         
-                        else:#default
-                            aReply = QuickReply.QuickReply()
-                            aReply.send_action_quick_reply(messaging_event["sender"]["id"])
-                            break
+                            sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                            sendMsg.send_default_message()
+                            return
+                        
+                        
+                        #####################################################
+                        # #Check where sender is in flow
+                        # dbLink = DBLink.DBLink()
+                        # flow_info = dbLink.get_flow_state(sender_id)
+                        
+                        # someUser = UserInfo.UserInfo("",messaging_event["sender"]["id"])
+                        # anotherUser = UserInfo.UserInfo("","")
+                        
+                        # sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                        
+                        
+                        # flow_type = flow_info['flowType']
+                        # flow_state = flow_info['flowState']
+                    
+                        # #for testing values of flowstate and flowtype
+                        
+                        # log("FLOWSTATE FROM DB")
+                        # log(flow_info['flowState'])
+                        # log("FLOWTYPE FROM DB")
+                        # log(flow_info['flowType'])
+                        
+                        #####################################################
+                        
+                        # #if state is 0 we want to send the default buttons no matter what
+                        # if flow_state == 0:
+                        #     #send pay, request, split quick reply
+                        #     #sendMsg.send_default_message()
+                        #     #break
+                        #     pass
+                        
+                        # #if state not 0 we need to parse the message further
+                        # elif flow_state != 0:  
+                        #     #check if the user used a quick_reply
+                            
+                        #     # log("QUICK REPLY")
+                        #     # quick_reply = messaging_event["message"]["quick_reply"]
+                        #     # log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
+                    
+                        #     if flow_state == 2:
+                        #         the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                        #         the_payment.send_user_table()
+                        #         break
+                        #     elif flow_state == 4:
+                        #         sendMsg.send_confirmation_message()
+                        #         break
+                        #         #pass
+                        
+                        # else:#default
+                        #     aReply = QuickReply.QuickReply()
+                        #     aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                        #     break
                         
                     except KeyError:
                         log("KEYERROR FROM REPLY")
