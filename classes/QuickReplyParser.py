@@ -10,7 +10,7 @@ import requests, os, json, sys
 class QuickReplyParser(object):
     def __init__(self, flowTypeFromResponse, valueFromResponse, senderID):
         self.flowTypeFromResponse = str(flowTypeFromResponse).lower()
-        self.valueFromResponse = valueFromResponse
+        self.valueFromResponse = str(valueFromResponse).lower()
         self.senderID = senderID
         
     
