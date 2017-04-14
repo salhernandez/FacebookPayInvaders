@@ -262,8 +262,8 @@ def webhook():
                     #checks that the message has a quick reply, if not, it breaks out
                     try:
                         log("QUICK REPLY ERROR CHECK")
-                        flowType = messaging_event["message"]["quick_reply"]['payload']['flowType']
-                        value = messaging_event["message"]["quick_reply"]['payload']['value']
+                        flowType = messaging_event['message']['quick_reply']['payload']['flowType']
+                        value = messaging_event['message']['quick_reply']['payload']['value']
                         
                         log("flowType: "+flowType)
                         log("value: "+value)
