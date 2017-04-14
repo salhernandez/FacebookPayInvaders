@@ -231,6 +231,16 @@ def webhook():
                     # the facebook ID of the person sending you the message
                     sender_id = messaging_event["sender"]["id"]
                     
+                    #gets info from the db
+                    dbLink = DBLink.DBLink()
+                    aUserInfo = dbLink.get_user_in_db(sender_id)
+                    
+                    #init with empty name
+                    UserInfo.UserInfo(aUserInfo["", messaging_event["sender"]["id"])
+                    if aUserInfo is not None:
+                        someUser = UserInfo.UserInfo(aUserInfo['firstName'], messaging_event["sender"]["id"])
+                    
+                        
             ############Josh
 ###################################################################################################
                     user_ids = []
@@ -258,7 +268,8 @@ def webhook():
                         dbLink = DBLink.DBLink()
                         flow_info = dbLink.get_flow_state(sender_id)
                         
-                        sendMsg = MsgBuilder.MessageBuilder(fromUser = sender_id)
+                        
+                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser)
                         
                         flow_type = flow_info['flowType']
                         flow_state = flow_info['flowState']
