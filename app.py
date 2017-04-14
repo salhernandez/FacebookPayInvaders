@@ -265,14 +265,9 @@ def webhook():
                         # flowType = messaging_event['message']['quick_reply']['payload']['flowType']
                         # value = messaging_event['message']['quick_reply']['payload']['value']
                         
-                        for info in messaging_event['message']['quick_reply']['payload'][0]:
-                            #log(type(info))
-                            #log(info[0][0])
-                            log("loop start")
-                            log(info)
-                            log("loop end")
+                        info =  messaging_event['message']['quick_reply']['payload'][0]:
                         # log("flowType: "+flowType)
-                        # log("value: "+value)
+                        log(info)
                         
                         # #Check where sender is in flow
                         # dbLink = DBLink.DBLink()
