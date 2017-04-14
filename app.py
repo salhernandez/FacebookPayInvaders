@@ -348,6 +348,8 @@ def webhook():
                             #checks that the user and the amount is there
                             
                             
+                            the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                                
                             #triggers venmo
                             if "josh venmo demo" in message_text:
                                 the_payment = PayGate(toUser = messaging_event["sender"]["id"])
@@ -424,7 +426,7 @@ def webhook():
                                 aLink.add_user(messaging_event["sender"]["id"], request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, str(msgObj.number))
                                 sendMsg.send_signedup()
                                 
-                    except KeyError:
+                    except keyError:
                         #anotherUser = UserInfo.UserInfo("", messaging_event["sender"]["id"])
                         aReply = QuickReply.QuickReply()
                         aReply.send_action_quick_reply(messaging_event["sender"]["id"])
