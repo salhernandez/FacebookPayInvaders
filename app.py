@@ -213,15 +213,6 @@ def verify():
 
 @app.route('/', methods=['POST'])
 def webhook():
-    
-    # to make webhook live again
-    params = (
-    ('access_token', 'PAGE_ACCESS_TOKEN'),
-    )
-
-    a = requests.post('https://graph.facebook.com/v2.6/me/subscribed_apps', params=params)
-    log(a)
-    return
     # endpoint for processing incoming messaging events
 
     data = request.get_json()
@@ -335,12 +326,12 @@ def webhook():
                             else:
                                 sendMsg.send_request_from_who_message()
                                 
-                        elif sendMsg.messageType is "split":
-                            if sendMsg.toID not in SENTINEL:
-                                if sendMsg.amount not in SENTINEL_FLOAT:
-                                    sendMsg.notify_bill_splitters_of_request()
-                            else:
-                                sendMsg.send_split_how_many_ways()
+                        # elif sendMsg.messageType is "split":
+                        #     if sendMsg.toID not in SENTINEL:
+                        #         if sendMsg.amount not in SENTINEL_FLOAT:
+                        #             sendMsg.notify_bill_splitters_of_request()
+                        #     else:
+                        #         sendMsg.send_split_how_many_ways()
     
                         elif sendMsg.messageType is "knownName":
                             sendMsg.send_how_much_message()
