@@ -400,6 +400,9 @@ def webhook():
                             #sends buttons with images to josh
                             if "josh button demo" in message_text:
                                 the_payment.send_user_table()
+                                dbLink = DBLink.DBLink()
+                                the_user = dbLink.get_users_with_first_name("Hsoj")
+                                print the_user
                                 break
                             
                             
