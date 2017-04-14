@@ -308,138 +308,143 @@ def webhook():
 ################################################################################################### 
                 
                     # the message's text
-                    message_text = messaging_event["message"]["text"]
-                    
-                    # the message's timestamp
-                    #message_timestamp = messaging_event["timestamp"]  
-                    #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
-                    
-                    #dump string into message parser and it will grab everything it needs
-                    msgObj = MsgParser.MessageParser(message_text)
-                    
-                    if str(messaging_event["sender"]["id"]) in user_ids:
-                        #get the name of the sender
-                        senderName = getNameOfUser(str(sender_id))
+                    try:
+                        message_text = messaging_event["message"]["text"]
                         
-                        #create a user object with the information obtained t from the sender
-                        senderUser = UserInfo.UserInfo(senderName, sender_id)
-                        
-                        log("amount from string $"+ msgObj.amount)
+                        # the message's timestamp
+                        #message_timestamp = messaging_event["timestamp"]  
+                        #time = str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(message_timestamp))))
                         
                         #dump string into message parser and it will grab everything it needs
                         msgObj = MsgParser.MessageParser(message_text)
                         
-                        log("WHAT THE MSG OBJECT CONTAINS: "+str(msgObj))
-                        
-                        #print msgObj.getMessage()
-                        
-                        payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
-                        
-                        messType = str(msgObj.msgType)
-                        #messageBuilder takes in kwargs as arguments, its up to the developer to keep track of the variables that have been used or not
-                        #and make the proper calls for now
-                        #initialze message builder
-                        sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType=messType, amount = msgObj.amount)
-                        
-                        log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS: "+str(sendMsg))
-                        #if there is no name and amount, it will reply to the user with a static response
-                        #josh stuff is beklow here
-                        #checks that the user and the amount is there
-                        the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                        # the_payment.send_payment_gateway()
-                        
-                                                 
-                        # elif flow_state == 1:
-                        #     sendMsg.send_pay_who_message1()
-                        
-                       
-                        
-                        # elif flow_state == 3:
-                        #     sendMsg.send_how_much_message()
-                        
-                      
+                        if str(messaging_event["sender"]["id"]) in user_ids:
+                            #get the name of the sender
+                            senderName = getNameOfUser(str(sender_id))
                             
-                        # elif flow_state == 5:
-                        #     the_payment.send_user_table()
-                        #     break
-
-
-
+                            #create a user object with the information obtained t from the sender
+                            senderUser = UserInfo.UserInfo(senderName, sender_id)
                             
-                        #else:
-                            #if quick reply:
+                            log("amount from string $"+ msgObj.amount)
                             
+                            #dump string into message parser and it will grab everything it needs
+                            msgObj = MsgParser.MessageParser(message_text)
+                            
+                            log("WHAT THE MSG OBJECT CONTAINS: "+str(msgObj))
+                            
+                            #print msgObj.getMessage()
+                            
+                            payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
+                            
+                            messType = str(msgObj.msgType)
+                            #messageBuilder takes in kwargs as arguments, its up to the developer to keep track of the variables that have been used or not
+                            #and make the proper calls for now
+                            #initialze message builder
+                            sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType=messType, amount = msgObj.amount)
+                            
+                            log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS: "+str(sendMsg))
+                            #if there is no name and amount, it will reply to the user with a static response
+                            #josh stuff is beklow here
+                            #checks that the user and the amount is there
+                            the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                            # the_payment.send_payment_gateway()
+                            
+                                                     
+                            # elif flow_state == 1:
+                            #     sendMsg.send_pay_who_message1()
+                            
+                           
+                            
+                            # elif flow_state == 3:
+                            #     sendMsg.send_how_much_message()
+                            
+                          
+                                
+                            # elif flow_state == 5:
+                            #     the_payment.send_user_table()
+                            #     break
+    
+    
+    
+                                
                             #else:
-
-                        #OLD HARD CODED BASED CONVO
-                        
-                        #sends buttons with images to josh
-                        if "josh button demo" in message_text:
-                            the_payment.send_user_table()
-                            break
-                        
-                        # # if sendMsg.messageType is "default":
-                        # #     sendMsg.send_default_message()
-                            
-                        # if sendMsg.messageType is "yes":
-                        #     sendMsg.send_payment_log_message()
-                            
-                        # elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
-                        #     # let the user know that they payed the person
-                        #     log("share link message")
-                        #     sendMsg.send_share_link_message()
-    
-                        # elif sendMsg.messageType is "pay":
-                        #     if sendMsg.toID not in SENTINEL:
-                        #         if sendMsg.amount is not SENTINEL_FLOAT:
-                        #             sendMsg.notify_payee_and_payer_of_payment()
-                        #     else:
-                        #         sendMsg.send_pay_who_message1()
+                                #if quick reply:
                                 
-                        # elif sendMsg.messageType is "request":
-                        #     if sendMsg.toID not in SENTINEL:
-                        #         if sendMsg.amount is not SENTINEL_FLOAT:
-                        #             sendMsg.notify_requestee_and_requester_of_request()
-                        #     else:
-                        #         sendMsg.send_request_from_who_message()
+                                #else:
+    
+                            #OLD HARD CODED BASED CONVO
+                            
+                            #sends buttons with images to josh
+                            if "josh button demo" in message_text:
+                                the_payment.send_user_table()
+                                break
+                            
+                            # # if sendMsg.messageType is "default":
+                            # #     sendMsg.send_default_message()
                                 
-                        # # elif sendMsg.messageType is "split":
-                        # #     if sendMsg.toID not in SENTINEL:
-                        # #         if sendMsg.amount not in SENTINEL_FLOAT:
-                        # #             sendMsg.notify_bill_splitters_of_request()
-                        # #     else:
-                        # #         sendMsg.send_split_how_many_ways()
-    
-                        # elif sendMsg.messageType is "knownName":
-                        #     sendMsg.send_how_much_message()
-                        
-                        # elif sendMsg.messageType is "unknownName":
-                        #     sendMsg.send_share_link_message()
+                            # if sendMsg.messageType is "yes":
+                            #     sendMsg.send_payment_log_message()
+                                
+                            # elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
+                            #     # let the user know that they payed the person
+                            #     log("share link message")
+                            #     sendMsg.send_share_link_message()
+        
+                            # elif sendMsg.messageType is "pay":
+                            #     if sendMsg.toID not in SENTINEL:
+                            #         if sendMsg.amount is not SENTINEL_FLOAT:
+                            #             sendMsg.notify_payee_and_payer_of_payment()
+                            #     else:
+                            #         sendMsg.send_pay_who_message1()
+                                    
+                            # elif sendMsg.messageType is "request":
+                            #     if sendMsg.toID not in SENTINEL:
+                            #         if sendMsg.amount is not SENTINEL_FLOAT:
+                            #             sendMsg.notify_requestee_and_requester_of_request()
+                            #     else:
+                            #         sendMsg.send_request_from_who_message()
+                                    
+                            # # elif sendMsg.messageType is "split":
+                            # #     if sendMsg.toID not in SENTINEL:
+                            # #         if sendMsg.amount not in SENTINEL_FLOAT:
+                            # #             sendMsg.notify_bill_splitters_of_request()
+                            # #     else:
+                            # #         sendMsg.send_split_how_many_ways()
+        
+                            # elif sendMsg.messageType is "knownName":
+                            #     sendMsg.send_how_much_message()
                             
-                        # elif sendMsg.messageType is "amount":
-                        #     sendMsg.send_confirmation_message()
-                            
-
-                        # elif sendMsg.messageType is "clear":
-                        #     sendMsg.send_clear_message()
+                            # elif sendMsg.messageType is "unknownName":
+                            #     sendMsg.send_share_link_message()
+                                
+                            # elif sendMsg.messageType is "amount":
+                            #     sendMsg.send_confirmation_message()
+                                
     
-                    else:
-
-                        payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
-                        sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
-                        
-                        
-                        if(str(msgObj.number) == "-1"):
-                            sendMsg.send_get_number_to_signup()
+                            # elif sendMsg.messageType is "clear":
+                            #     sendMsg.send_clear_message()
+        
                         else:
-                            request_info = GraphRequests.GraphRequests()
-                            request_info.getUserInfo(messaging_event["sender"]["id"])
+    
+                            payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
+                            sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
                             
-                            sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(request_info.firstName))
-                            aLink = DBLink.DBLink()
-                            aLink.add_user(messaging_event["sender"]["id"], request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, str(msgObj.number))
-                            sendMsg.send_signedup()
                             
+                            if(str(msgObj.number) == "-1"):
+                                sendMsg.send_get_number_to_signup()
+                            else:
+                                request_info = GraphRequests.GraphRequests()
+                                request_info.getUserInfo(messaging_event["sender"]["id"])
+                                
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(request_info.firstName))
+                                aLink = DBLink.DBLink()
+                                aLink.add_user(messaging_event["sender"]["id"], request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, str(msgObj.number))
+                                sendMsg.send_signedup()
+                    except keyError:
+                        #anotherUser = UserInfo.UserInfo("", messaging_event["sender"]["id"])
+                        aReply = QuickReply.QuickReply()
+                        aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                        
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
 
