@@ -1,4 +1,4 @@
-import requests, os, json, sys
+import requests, os, json, sys, flask, flask_sqlalchemy
 
 # This class is meant to containt all the graph request that we will use
 

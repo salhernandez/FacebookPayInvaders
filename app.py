@@ -277,7 +277,7 @@ def webhook():
                         
                         
                         #if the quickreply is awknowledged, then it breaks out of the loop
-                        # dbLink = DBLink.DBLink()
+                        dbLink = DBLink.DBLink()
                         qrParser = QuickReplyParser.QuickReplyParser(flowTypeFromResponse, valueFromResponse, sender_id, dbLink)
                         isValid = qrParser.isQRValid()
                         
