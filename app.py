@@ -401,7 +401,7 @@ def webhook():
                             if "Josh button demo" in message_text:
                                 the_payment.send_user_table()
                                 dbLink = DBLink.DBLink()
-                                the_user = dbLink.get_users_with_first_name("Tala")
+                                the_user = dbLink.get_users_with_first_name("hsoj")
                                 print the_user
                                 break
                             
@@ -458,8 +458,7 @@ def webhook():
                             payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
                             sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
                             
-                            print "here-----------------"
-                            print str(msgObj.number)
+
                             if(str(msgObj.number) == "-1"):
                                 sendMsg.send_get_number_to_signup()
                             else:
