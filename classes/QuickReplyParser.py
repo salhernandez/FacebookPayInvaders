@@ -130,6 +130,10 @@ class QuickReplyParser(object):
         #for the person selection buttons
         elif self.responseType in "selectPerson":
             self.log("triggered selectPerson")
+        
+        #for the person selection buttons
+        elif self.responseType in "confirmDeny":
+            self.log("triggered confirmDeny")
     
     """
     prints the instance variables as a dictionary
