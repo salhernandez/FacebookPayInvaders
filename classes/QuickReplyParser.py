@@ -1,4 +1,5 @@
 import requests, os, json, sys, flask, flask_sqlalchemy
+import classes.DBLink as DBLink
 
 # This class is meant to containt all the graph request that we will use
 
@@ -10,7 +11,7 @@ class QuickReplyParser(object):
         self.flowTypeFromResponse = str(flowTypeFromResponse).lower()
         self.valueFromResponse = str(valueFromResponse).lower()
         self.senderID = senderID
-        #self.dbLink = dbLink
+        self.dbLink = DBLink.DBLink()
         
     
     """
@@ -38,41 +39,41 @@ class QuickReplyParser(object):
     """
     def __payFlow__(self):
         self.log("its the pay flow :)")
-        #self.__getFlowInfo__()
+        self.__getFlowInfo__()
     
     """
     requestFLow
     """
     def __requestFlow__(self):
         self.log("its the request flow :)")
-        #self.__getFlowInfo__()
+        self.__getFlowInfo__()
     """
     splitFLow
     """
     def __splitFlow__(self):
         self.log("its the split flow :)")
-        #self.__getFlowInfo__()
-    # """
-    # getFlowInfo
-    # """
-    # def __getFlowInfo__(self):
-    #     self.log("getting flow info :)")
-    #     #####################################################
-    #     #Check where sender is in flow
+        self.__getFlowInfo__()
+    """
+    getFlowInfo
+    """
+    def __getFlowInfo__(self):
+        self.log("getting flow info :)")
+        #####################################################
+        #Check where sender is in flow
         
-    #     flow_info = self.dbLink.get_flow_state(self.senderID)
+        flow_info = self.dbLink.get_flow_state(self.senderID)
         
-    #     flow_type = flow_info['flowType']
-    #     flow_state = flow_info['flowState']
+        flow_type = flow_info['flowType']
+        flow_state = flow_info['flowState']
     
-    #     #for testing values of flowstate and flowtype
+        #for testing values of flowstate and flowtype
         
-    #     log("FLOWSTATE FROM DB")
-    #     log(flow_info['flowState'])
-    #     log("FLOWTYPE FROM DB")
-    #     log(flow_info['flowType'])
+        self.log("FLOWSTATE FROM DB")
+        self.log(flow_info['flowState'])
+        self.log("FLOWTYPE FROM DB")
+        self.log(flow_info['flowType'])
         
-    #     #####################################################
+        #####################################################
     
     """
     prints the instance variables as a dictionary
