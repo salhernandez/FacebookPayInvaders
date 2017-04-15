@@ -67,7 +67,31 @@ class DBLink(object):
                 
         else:
             return None
+    """
+    Gets all the users in the database
     
+    
+    """
+    def get_all_user_in_db(self):
+        userInDB = models.Users.query.all()
+        
+        #ID was found
+        if userInDB is not None:
+            userDict = {}
+        
+            for row in userInDB:
+                userDict['userID'] = row.user_id
+                userDict['firstName'] = row.firstName
+                userDict['lastName'] = row.lastName
+                userDict['email'] = row.email
+                userDict['imgUrl'] = row.imgUrl
+                userDict['phoneNumber'] = row.phoneNumber
+                break
+            
+            return userDict
+                
+        else:
+            return None
     """
     Gets all the users in the db based on the first name
     Returns users that match the first name
