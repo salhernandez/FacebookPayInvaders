@@ -77,17 +77,24 @@ class DBLink(object):
         
         #ID was found
         if userInDB is not None:
-            userDict = {}
-        
-            for row in userInDB:
-                userDict['userID'] = row.user_id
-                userDict['firstName'] = row.firstName
-                userDict['lastName'] = row.lastName
-                userDict['email'] = row.email
-                userDict['imgUrl'] = row.imgUrl
-                userDict['phoneNumber'] = row.phoneNumber
+           
+            # print userInDB
+            userInDBDict = {}
             
-            return userDict
+            count = 0
+            for row in userInDB:
+                # print row.owed_ID
+                userInDBDict[count] = {}
+                userInDBDict[count][row.user_id] = {}
+                userInDBDict[count][row.user_id]['userID'] = row.user_id
+                userInDBDict[count][row.user_id]['firstName'] = row.firstName
+                userInDBDict[count][row.user_id]['lastName'] = row.lastName
+                userInDBDict[count][row.user_id]['email'] = row.email
+                userInDBDict[count][row.user_id]['imgUrl'] = row.imgUrl
+                userInDBDict[count][row.user_id]['phoneNumber'] = row.phoneNumber
+                
+                count = count + 1
+            return userInDBDict
                 
         else:
             return None
