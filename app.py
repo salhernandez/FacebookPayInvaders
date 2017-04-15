@@ -402,10 +402,10 @@ def webhook():
                                 dbLink = DBLink.DBLink()
                                 the_user = dbLink.get_all_user_in_db()
                                 the_payment.send_user_table(the_user)
-                                print the_user[0]
-                                print the_user[1]
-                                print the_user[3]
-                                print len(the_user)
+                                # print the_user[0]
+                                # print the_user[1]
+                                # print the_user[3]
+                                # print len(the_user)
                                 break
                             
                             
