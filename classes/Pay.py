@@ -88,7 +88,7 @@ class PayGate(object):
         print the_dict['message']['quick_replies'][0]['title']
         the_dict['recipient']['id'] = str(toID)
        
-        # the_dict['recipient']['message']['quick_replies'][0]['title'] = users[0]['firstName']
+        the_dict['message']['quick_replies'][0]['title'] = users[0]['firstName']
 
         data = json.dumps(the_dict)
         #######################################
