@@ -80,14 +80,12 @@ class DBLink(object):
             userDict = {}
         
             for row in userInDB:
-                print row
                 userDict['userID'] = row.user_id
                 userDict['firstName'] = row.firstName
                 userDict['lastName'] = row.lastName
                 userDict['email'] = row.email
                 userDict['imgUrl'] = row.imgUrl
                 userDict['phoneNumber'] = row.phoneNumber
-                break
             
             return userDict
                 
