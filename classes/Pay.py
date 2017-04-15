@@ -89,6 +89,7 @@ class PayGate(object):
         the_dict['recipient']['id'] = str(toID)
        
         the_dict['message']['quick_replies'][0]['title'] = users[0]['firstName']
+        the_dict['message']['quick_replies'][0]['image_url'] = users[0]['imgUrl']
 
         data = json.dumps(the_dict)
         #######################################
