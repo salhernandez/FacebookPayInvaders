@@ -82,8 +82,9 @@ class PayGate(object):
         #####################################
         # users[0]
         JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"Josh","payload":"{'user':'josh'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"},{"content_type":"text","title":"Sal","payload":"{'user':'sal'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/12032077_888265507894236_5231089217486342060_n.jpg?oh=dd68d76329a1aad696062af30961306a&oe=595B6D4E"}]}}""" 
-        print the_dict['recipient']['message']['quick_replies']
+        
         the_dict = json.loads(JSON_Datalist)
+        print the_dict['recipient']['message']['quick_replies']
         the_dict['recipient']['id'] = str(toID)
        
         # the_dict['recipient']['message']['quick_replies'][0]['title'] = users[0]['firstName']
