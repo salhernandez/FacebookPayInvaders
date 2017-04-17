@@ -402,8 +402,10 @@ def webhook():
                             flow_info = aLink.get_flow_state(sender_id)
                             
                             if msgObj.ogMsg in "clear":
-                                aLink.update_flow(sender_id, "", 0)
+                                aLink.update_flow(sender_id, "", 1)
                                 sendMsg.send_clear_message()
+                                aReply = QuickReply.QuickReply()
+                                aReply.send_action_quick_reply(messaging_event["sender"]["id"])                                
                                 break
                             
                             # aReply = QuickReply.QuickReply()

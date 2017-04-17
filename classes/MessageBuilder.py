@@ -93,7 +93,7 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "How may ways would you like to split the bill?")
 
     def send_clear_message(self):
-        self.message_template_simple(self.fromID, "The conversation has been cleared! " + self.defaultMessage)
+        self.message_template_simple(self.fromID, "The conversation has been cleared!")
 
     def send_how_much_message(self):
         self.message_template_simple(self.fromID, "Please specify an amount")
