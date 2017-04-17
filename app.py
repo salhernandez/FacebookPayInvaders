@@ -306,7 +306,7 @@ def webhook():
                                 
                                 if qrParser.flowStateFromDB == 1:
                                     #increment flowState in DB
-                                    a = aLink.update_flow(recipient_id, "pay", 2)
+                                    a = aLink.update_flow(sender_id, "pay", 2)
                     
                                     #send pay who message
                                     sendMsg.send_pay_who_message1()
