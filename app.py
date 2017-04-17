@@ -402,7 +402,7 @@ def webhook():
                             aLink = DBLink.DBLink()
                             flow_info = aLink.get_flow_state(sender_id)
                             
-                            if msgObj.ogMsg in "clear":
+                            if msgObj.ogMsg in "clear" or msgObj.ogMsg in "exit":
                                 aLink.update_flow(sender_id, "", 1)
                                 sendMsg.send_clear_message()
                                 aReply = QuickReply.QuickReply()
