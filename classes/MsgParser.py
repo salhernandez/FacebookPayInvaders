@@ -1,5 +1,5 @@
 import json
-
+import classes.DBLink as DBLink
 #This class is used specidifcally for taking apart the message and get the info
 #we want from it. 
 
@@ -10,6 +10,8 @@ class MessageParser(object):
         self.__getAmount__(self.ogMsg)
         self.__getIDofUser__(self.ogMsg)
         self.__identifyTypeOfMessage__(self.ogMsg)
+        self.dbLink = DBLink.DBLink()
+        
 
     def getMessage(self):
         return self.ogMsg
@@ -54,6 +56,7 @@ class MessageParser(object):
         userID = "-1"
         userFirst = ""
         
+        
         print someText
         
         
@@ -70,9 +73,9 @@ class MessageParser(object):
             userFirst = "anna"
         
 
-        # else:
-        #     userID = "-1"
-        #     userFirst = ""
+        else:
+            userID = "-1"
+            userFirst = ""
 
         self.userID = userID
         self.userFirst = userFirst
