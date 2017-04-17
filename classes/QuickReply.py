@@ -21,8 +21,7 @@ class QuickReply(object):
 
         # convert dict into json
         #####################################
-        JSON_Datalist = """{ "recipient":{ "id":"USER_ID" }, "message":{ "text":"What do you want to do?", "quick_replies":[ { "content_type":"text", "title":"Pay", "payload":" 'flowType':'action', 'value':'pay' " }, { "content_type":"text", "title":"Request", "payload":" 'flowType':'action', 'value':'request' " }, { "content_type":"text", "title":"Split", "payload":" 'flowType':'action', 'value':'split' " } ] } }"""
-        
+        JSON_Datalist = """{ "recipient":{ "id":"USER_ID" }, "message":{ "text":"What do you want to do?", "quick_replies":[ { "content_type":"text", "title":"Pay", "payload":" 'responseType':'action', 'value':'pay' " }, { "content_type":"text", "title":"Request", "payload":" 'responseType':'action', 'value':'request' " }, { "content_type":"text", "title":"Split", "payload":" 'responseType':'action', 'value':'split' " } ] } }"""
         #gets rid of white space
         JSON_Datalist = JSON_Datalist.replace(" ", "")
         the_dict = json.loads(JSON_Datalist)
@@ -52,7 +51,7 @@ class QuickReply(object):
 
         # convert dict into json
         #####################################
-        JSON_Datalist = """{ "recipient":{ "id":"USER_ID" }, "message":{ "text":"What do you want to do?", "quick_replies":[ { "content_type":"text", "title":"Confirm", "payload":" 'flowType':'confirmDeny', 'value':'confirm' " }, { "content_type":"text", "title":"Deny", "payload":" 'flowType':'confirmDeny', 'value':'deny' " } ] } }"""
+        JSON_Datalist = """{ "recipient":{ "id":"USER_ID" }, "message":{ "text":"What do you want to do?", "quick_replies":[ { "content_type":"text", "title":"Confirm", "payload":" 'responseType':'confirmDeny', 'value':'confirm' " }, { "content_type":"text", "title":"Deny", "payload":" 'responseType':'confirmDeny', 'value':'deny' " } ] } }"""
         #gets rid of white space
         JSON_Datalist = JSON_Datalist.replace(" ", "")
         the_dict = json.loads(JSON_Datalist)

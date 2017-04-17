@@ -11,7 +11,6 @@ import classes.MessageBuilder as MsgBuilder
 from classes.Pay import PayGate
 import classes.GraphRequests as GraphRequests
 import classes.QuickReply as QuickReply
-import classes.QuickReplyParser as QuickReplyParser
 import numpy as np
 import pandas as pd
 
@@ -26,6 +25,7 @@ import models
 db = flask_sqlalchemy.SQLAlchemy(app)
 
 import classes.DBLink as DBLink
+import classes.QuickReplyParser as QuickReplyParser
 
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
@@ -267,6 +267,7 @@ def webhook():
                         json_acceptable_string = info.replace("'", "\"")
                         d = json.loads(json_acceptable_string)
                         
+                        #CHANGE flowType to responseType 
                         #grabs the values
                         flowTypeFromResponse = str(d['flowType'])
                         valueFromResponse = str(d['value'])
@@ -571,7 +572,6 @@ def log(message):  # simple wrapper for logging to stdout on heroku
 
 if __name__ == '__main__':
     app.run(
-
         host=os.getenv('IP', '0.0.0.0'),
         port=int(os.getenv('PORT', 8080))
     )

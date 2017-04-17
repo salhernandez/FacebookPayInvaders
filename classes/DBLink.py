@@ -440,27 +440,22 @@ class DBLink(object):
     
     """
     Gets the state information based on the person who started the flow
-    Returns all the info from the row
+    Returns all the info from the row ONLY 1 ROW
     """
     def get_state_info(self, userID):
         
-        stateInfoRecords = models.StateInfo.query.filter_by(senderID=str(userID)).all()
+        stateInfoRecords = models.StateInfo.query.filter_by(senderID=str(userID)).first()
         stateInfoDict = {}
         
-        count = 0
-        for row in stateInfoRecords:
+        if stateInfoRecords is not None:
+            
             # print row.owed_ID
-            
-            stateInfoDict[count] = {}
-            
-            stateInfoDict[count][row.recipientID] = {}
-            stateInfoDict[count][row.recipientID]['amount'] = row.amount
-            stateInfoDict[count][row.recipientID]['flowType'] = row.flowType
-            stateInfoDict[count][row.recipientID]['splitID'] = row.splitID
-            stateInfoDict[count][row.recipientID]['timestamp'] = row.time_stamp
-            
-            count = count + 1
-        
+            stateInfoDict['recipientID'] = stateInfoRecords.recipientID
+            stateInfoDict['amount'] = stateInfoRecords.amount
+            stateInfoDict['flowType'] = stateInfoRecords.flowType
+            stateInfoDict['splitID'] = stateInfoRecords.splitID
+            stateInfoDict['timestamp'] = stateInfoRecords.time_stamp
+                
         return stateInfoDict
     
     """
