@@ -293,7 +293,7 @@ def webhook():
                         
                         if isValid is True:
                             log("isValid is TRUE")
-                            if qrParser.valueFromResponse is "pay":
+                            if qrParser.valueFromResponse in "pay":
                                 
                                 log("VALUE FROM RESPONSE IS PAY")
                                 
