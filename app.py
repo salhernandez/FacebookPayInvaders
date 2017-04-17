@@ -403,6 +403,7 @@ def webhook():
                             
                             if msgObj.ogMsg in "clear":
                                 aLink.update_flow(sender_id, "", 0)
+                                sendMsg.send_clear_message()
                                 break
                             
                             # aReply = QuickReply.QuickReply()
