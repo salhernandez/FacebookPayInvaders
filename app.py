@@ -404,6 +404,8 @@ def webhook():
                             log(flow_info['flowState'])
                             
                             if flow_info['flowState'] == 0:
+                                dbLink.update_flow(sender_id, "", 1)
+
                                 aReply = QuickReply.QuickReply()
                                 aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                                 
