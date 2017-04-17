@@ -292,6 +292,7 @@ def webhook():
                         isValidConfirmDeny = qrParser.isQRConfirmDenyValid()
                         
                         if isValid is True:
+                            log("isValid is TRUE")
                             if qrParser.valueFromResponse is "pay":
                                 
                                 log("VALUE FROM RESPONSE IS PAY")
