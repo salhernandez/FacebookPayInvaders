@@ -266,7 +266,9 @@ def webhook():
                     #check if recipient user is already in the Users db
                     #if isUserInDB(recipient_id) == false
                     #add new user to db
-                
+                    
+                    
+                    
                   #Anna's new flow code
 ###################################################################################################   
                     #checks that the message has a quick reply, if not, it breaks out
@@ -375,7 +377,7 @@ def webhook():
                             
                             
                             the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                                
+                            
                             #triggers venmo
                             if "josh venmo demo" in message_text:
                                 the_payment = PayGate(toUser = messaging_event["sender"]["id"])
@@ -393,9 +395,15 @@ def webhook():
                                 # print len(the_user)
                                 break
                             
+                            
+                            
                             #get the message, and id, check if the message containts the right info for the current flow
                             aLink = DBLink.DBLink()
                             flow_info = aLink.get_flow_state(sender_id)
+                            
+                            if msgObj.ogMsg in "clear":
+                                aLink.update_flow(sender_id, "", 0)
+                                break
                             
                             # aReply = QuickReply.QuickReply()
                             # aReply.send_action_quick_reply(messaging_event["sender"]["id"])
