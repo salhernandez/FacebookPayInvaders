@@ -267,6 +267,7 @@ def webhook():
                         json_acceptable_string = info.replace("'", "\"")
                         d = json.loads(json_acceptable_string)
                         
+                        #CHANGE flowType to responseType 
                         #grabs the values
                         flowTypeFromResponse = str(d['flowType'])
                         valueFromResponse = str(d['value'])
