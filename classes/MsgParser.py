@@ -43,8 +43,6 @@ class MessageParser(object):
         self.userID = userID
         self.userFirst = userFirst
         
-        self.__identifyTypeOfMessage__(someText)
-
     def __getAmount__(self,data):
         # get words in string
         splits = data.split(" ")
