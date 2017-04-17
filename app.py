@@ -408,6 +408,7 @@ def webhook():
                             # aReply = QuickReply.QuickReply()
                             # aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                             
+                            #if the user is not in a flow, then it send the action quick message reply
                             if flow_info['flowState'] == 0:
                                 log("FLOWSTATE == 0")
                                 log(flow_info['flowState'])
@@ -416,6 +417,23 @@ def webhook():
                                 aReply = QuickReply.QuickReply()
                                 aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                                 break
+                            
+                            
+                            #check if the response belongs to that flow
+                            if messmessage_text in "pay":
+                                pass
+                            if messmessage_text in "request":
+                                pass
+                            if messmessage_text in "split":
+                                #check the flow state
+                                if flow_info['flowState'] = 1:
+                                    log("FLOWSTATE == 1")
+                                    #check for the proper value
+                                    if flow_info['flowType'] in "":
+                                        log("FLOWSTATE == 1")
+                                        aReply = QuickReply.QuickReply()
+                                        aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                                        break
                             
                             if flow_info['flowState'] == 1:
                                 log("FLOWSTATE == 1")
