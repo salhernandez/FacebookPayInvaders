@@ -280,11 +280,11 @@ def webhook():
                         #if the quickreply is awknowledged, then it breaks out of the loop
                         #dbLink = DBLink.DBLink()
                         qrParser = QuickReplyParser.QuickReplyParser(flowTypeFromResponse, valueFromResponse, sender_id)
-                        isValid = qrParser.isQRValid()
+                        isValid = qrParser.isQRActionValid()
                         
                         if qrParser is True:
                             
-                            someUser = UserInfo.UserInfo("",sender_i)
+                            someUser = UserInfo.UserInfo("",sender_id)
                             anotherUser = UserInfo.UserInfo("","")
                         
                             sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
