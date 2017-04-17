@@ -35,7 +35,7 @@ SENTINEL_FLOAT = -1.0
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    dbLink.update_flow("1204927079622878", "", 0)
+    dbLink.set_state_info("1204927079622878", "985245348244242", 0, "pay", "-1")
 
     return "test"
 
@@ -395,8 +395,6 @@ def webhook():
                                 # print the_user[3]
                                 # print len(the_user)
                                 break
-                            
-                            
                             
                             #get the message, and id, check if the message containts the right info for the current flow
                             aLink = DBLink.DBLink()

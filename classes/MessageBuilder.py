@@ -81,7 +81,7 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "Who would you like to request money from?")
     
     def send_pay_who_message1(self):
-        self.message_template_simple(self.fromID, "Who would you like to pay?")
+        self.message_template_simple(self.fromID, "Type the first and last name of the user you'd like to pay")
     
     def send_pay_who_message2(self):
         self.message_template_simple(self.fromID, "Who would you like to pay $" + self.amount + "?")
