@@ -430,7 +430,7 @@ def webhook():
                                 pass
                             if messmessage_text in "split":
                                 #check the flow state
-                                if flow_info['flowState'] = 1:
+                                if flow_info['flowState'] == 1:
                                     log("FLOWSTATE == 1")
                                     #check for the proper value
                                     if flow_info['flowType'] in "":
