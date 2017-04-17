@@ -433,7 +433,27 @@ class DBLink(object):
             count = count + 1
         
         return owedToDict
-    
+        
+    """
+    delete_pay_request
+    Deletes the pay request from the db
+    Uses the payeeID, and timestamp
+    """
+    def delete_pay_request(self, payeeID, the_ts):
+        the_ts = str(the_ts)
+        record = models.Pay.query.filter(and_(models.Pay.pay_ID == payeeID, models.Pay.time_stamp == the_ts)).first()
+        PayInfoDict = {}
+        
+        if record is not None:
+            PayInfoDict['owed_ID'] = record.owed_ID
+            PayInfoDict['pay_ID'] = record.pay_ID
+            PayInfoDict['amount'] = record.amount
+            PayInfoDict['timestamp'] = record.time_stamp
+        
+        models.db.session.delete(record)        
+        models.db.session.commit()
+        return PayInfoDict
+        
     """
     ===END PAY TABLE METHODS
     ============================================================================
@@ -604,6 +624,20 @@ class DBLink(object):
         else:
             return False
     
+    """
+    perform_payment_transaction
+    
+    aLink = DBLink.DBLink()
+    
+    a = aLink.perform_payment_transaction("1596606567017003", 1491129978)
+    """
+    def perform_payment_transaction(self, payeeID, time_stamp):
+        #delete payment from db
+        deletedInfo = self.delete_pay_request(payeeID, time_stamp)
+        #add it to the payed(paid) table
+        self.add_payment(deletedInfo['owed_ID'], deletedInfo['pay_ID'], deletedInfo['amount'])
+        
+        
     """
     Displays the instance variables of the object
     """
