@@ -399,8 +399,14 @@ def webhook():
                                 
                             
                             #sends buttons with images to josh
-                            if "josh button demo" in message_text:
-                                the_payment.send_user_table()
+                            if "Josh button demo" in message_text:
+                                dbLink = DBLink.DBLink()
+                                the_user = dbLink.get_all_user_in_db()
+                                the_payment.send_user_table(the_user)
+                                # print the_user[0]
+                                # print the_user[1]
+                                # print the_user[3]
+                                # print len(the_user)
                                 break
                             
                             
@@ -456,7 +462,7 @@ def webhook():
                             payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
                             sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
                             
-                            
+
                             if(str(msgObj.number) == "-1"):
                                 sendMsg.send_get_number_to_signup()
                             else:

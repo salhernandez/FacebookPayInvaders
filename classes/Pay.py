@@ -60,7 +60,7 @@ class PayGate(object):
             self.log(r.status_code)
             self.log(r.text)
             
-    def get_user_template_simple(self, toID):
+    def get_user_template_simple(self, toID, users):
 
         params = {
             "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -80,10 +80,19 @@ class PayGate(object):
 
         # convert dict into json
         #####################################
-        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"Josh","payload":"{'user':'josh'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"},{"content_type":"text","title":"Sal","payload":"{'user':'sal'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/12032077_888265507894236_5231089217486342060_n.jpg?oh=dd68d76329a1aad696062af30961306a&oe=595B6D4E"}]}}""" 
-    
+
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"Josh","payload":"{'user':'josh'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
+       
+        for i in range(len(users)-1):
+            JSON_Datalist = JSON_Datalist + """,{"content_type":"text","title":"Josh","payload":"{'user':'josh'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
+        JSON_Datalist = JSON_Datalist + """]}}"""
+        
         the_dict = json.loads(JSON_Datalist)
+
         the_dict['recipient']['id'] = str(toID)
+        for i in range(len(users)-1):
+            the_dict['message']['quick_replies'][i]['title'] = users[i]['firstName']
+            the_dict['message']['quick_replies'][i]['image_url'] = users[i]['imgUrl']
 
         data = json.dumps(the_dict)
         #######################################
@@ -98,8 +107,8 @@ class PayGate(object):
     def send_payment_gateway(self):
         self.message_template_simple(self.toID)
         
-    def send_user_table(self):
-        self.get_user_template_simple(self.toID)
+    def send_user_table(self, users):
+        self.get_user_template_simple(self.toID, users)
 
     ############################################################################
     def log(self, text):  # simple wrapper for __log__ging to stdout on heroku
