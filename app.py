@@ -34,7 +34,7 @@ SENTINEL_FLOAT = -1.0
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    dbLink.update_flow("1204927079622878", "pay", 0)
+    dbLink.update_flow("1204927079622878", "", 0)
 
     return "test"
 
