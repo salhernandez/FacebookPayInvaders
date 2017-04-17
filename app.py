@@ -34,7 +34,7 @@ SENTINEL_FLOAT = -1.0
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    dbLink.update_flow("1204927079622878", "", 0)
+    dbLink.update_flow("1204927079622878", "pay", 4)
 
     return "test"
 
@@ -54,15 +54,18 @@ def hello():
                 print "---------------------->" + str(result['pid'])
                 print "---------------------->" + str(result['fid'])
                 print "---------------------->" + str(result['amount'])
-                payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
-                senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
+                
+                dbLink = DBLink.DBLink()
+                p_user = dbLink.get_user_in_db(str(request.form['pid']))
+                f_user = dbLink.get_user_in_db(str(request.form['fid']))
+                payedUser = UserInfo.UserInfo(p_user['firstName'], str(request.form['pid']))
+                senderUser = UserInfo.UserInfo(f_user['firstName'], str(request.form['fid']))
                 sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
                 sendMsg.notify_payee_and_payer_of_payment()
               
                 ts = int(time.time())
-                payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
-                models.db.session.add(payment)
-                models.db.session.commit()
+                
+                dbLink.add_payment(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']))
         
         elif request.form["action"] == "submit_request":  
             #payment form
@@ -285,7 +288,6 @@ def webhook():
                         log("flowType from quick reply: "+responseTypeFromResponse)
                         log("value from quick reply: "+valueFromResponse)
                         
-                        
                         #if the quickreply is awknowledged, then it breaks out of the loop
                         #dbLink = DBLink.DBLink()
                         qrParser = QuickReplyParser.QuickReplyParser(responseTypeFromResponse, valueFromResponse, sender_id)
@@ -293,7 +295,10 @@ def webhook():
                         isValidConfirmDeny = qrParser.isQRConfirmDenyValid()
                         
                         if isValid is True:
-                            if qrParser.valueFromResponse is "pay":
+                            log("isValid is TRUE")
+                            if qrParser.valueFromResponse in "pay":
+                                
+                                log("VALUE FROM RESPONSE IS PAY")
                                 
                                 someUser = UserInfo.UserInfo("",sender_id)
                                 anotherUser = UserInfo.UserInfo("","")
@@ -304,18 +309,18 @@ def webhook():
                                 
                                 if qrParser.flowStateFromDB == 1:
                                     #increment flowState in DB
-                                    a = aLink.update_flow(recipient_id, "pay", 2)
+                                    a = aLink.update_flow(sender_id, "pay", 2)
                     
                                     #send pay who message
                                     sendMsg.send_pay_who_message1()
 
-                                elif qrParser.flowStateFromDB == 3:
-                                    a = aLink.update_flow(recipient_id, "pay", 4)
+                                # elif qrParser.flowStateFromDB == 3:
+                                #     a = aLink.update_flow(recipient_id, "pay", 4)
 
-                                elif qrParser.flowStateFromDB == 5:
-                                    a = aLink.update_flow(recipient_id, "pay", 6)
-                                    the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                                    the_payment.send_payment_gateway()
+                                # elif qrParser.flowStateFromDB == 5:
+                                #     a = aLink.update_flow(recipient_id, "pay", 6)
+                                #     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                                #     the_payment.send_payment_gateway()
                             break
                         
                         elif isValidConfirmDeny is True:
@@ -415,6 +420,7 @@ def webhook():
                                 break
                             
                             if flow_info['flowState'] == 1:
+<<<<<<< HEAD
                                 log("FLOWSTATE == 1")
 
                                 # if flow_info['flowType'] is "":
@@ -425,12 +431,34 @@ def webhook():
                                 aReply = QuickReply.QuickReply()
                                 aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                                 break
+=======
+                                if flow_info['flowType'] in "":
+                                    log("FLOWSTATE == 1")
+                                    aReply = QuickReply.QuickReply()
+                                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                                    break
+                                
+>>>>>>> f86bc58c3243f6e5b4025f139a2d55c75983a131
                                     
                                 # elif flow_info['flowState'] == 2:   
                                 
-                                # elif flow_info['flowState'] == 4: 
+                            if flow_info['flowState'] == 4: 
+                                log("FLOWSTATE IS 4")
+                                #if correct amout input, increment flow and send message
+                                
+                                
+                                # #store amount into state table
+                                # aLink.update_state_info_amount(sender_id, "", "-1", msgObj.amount)
+                                
+                                # aLink.update_flow(sender_id, "pay", 5)
+                                
+                                aReply = QuickReply.QuickReply()
+                                aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
+                                break
+
+                                #else resend how much message
                                     
-                                # elif flow_info['flowState'] == 6:   
+                            # elif flow_info['flowState'] == 6:   
 
                         else:
     

@@ -11,43 +11,9 @@ class MessageParser(object):
         self.__getIDofUser__(self.ogMsg)
         self.__identifyTypeOfMessage__(self.ogMsg)
         self.dbLink = DBLink.DBLink()
-        
 
     def getMessage(self):
         return self.ogMsg
-
-    def __identifyTypeOfMessage__(self,someText):
-        msgType = ""
-        someText = str(someText.lower())
-
-        if 'pay' in someText:
-            msgType = "pay"
-        
-        elif 'request' in someText:
-            msgType = "request"
-        
-        elif 'split' in someText:
-            msgType = "split"
-        
-        elif 'clear' in someText:
-            msgType = "clear"
-            
-        elif 'yes' in someText:
-            msgType = "yes"
-            
-        elif 'josh' == someText or 'sal' == someText or 'anna' == someText:
-            msgType = "knownName"
-        
-        elif 'tala' == someText or 'miranda' == someText:
-            msgType = "unknownName"
-        
-        elif '$' in someText:
-            msgType = "amount"
-        
-        else:
-            msgType = "default"
-        
-        self.msgType = msgType
             
     def __getIDofUser__(self,someText):
         
@@ -80,8 +46,6 @@ class MessageParser(object):
         self.userID = userID
         self.userFirst = userFirst
         
-        self.__identifyTypeOfMessage__(someText)
-
     def __getAmount__(self,data):
         # get words in string
         splits = data.split(" ")
@@ -95,9 +59,6 @@ class MessageParser(object):
 
         self.amount = amount
 
-    def __str__(self):
-        return str(self.__dict__)
-        
     def __getNumber__(self, data):
         # get words in string
         splits = data.split(" ")

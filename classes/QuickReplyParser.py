@@ -126,7 +126,9 @@ class QuickReplyParser(object):
         self.log(flow_state['flowType'])
         self.log(self.valueFromResponse)
         
-        return flow_state
+        #return flowState
+        
+        return
         
         # #check if the user's flow selection matches the flowType in the db
         # if flow_type not in self.valueFromResponse:
