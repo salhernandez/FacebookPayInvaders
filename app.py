@@ -5,6 +5,7 @@ import requests
 import time
 from flask import Flask, render_template, request, jsonify
 import flask_sqlalchemy
+import classes.MsgParser as MsgParser
 import classes.UserInfo as UserInfo
 import classes.MessageBuilder as MsgBuilder
 from classes.Pay import PayGate
@@ -34,7 +35,7 @@ SENTINEL_FLOAT = -1.0
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    dbLink.update_flow("1204927079622878", "pay", 4)
+    dbLink.update_flow("1204927079622878", "", 0)
 
     return "test"
 
@@ -54,18 +55,15 @@ def hello():
                 print "---------------------->" + str(result['pid'])
                 print "---------------------->" + str(result['fid'])
                 print "---------------------->" + str(result['amount'])
-                
-                dbLink = DBLink.DBLink()
-                p_user = dbLink.get_user_in_db(str(request.form['pid']))
-                f_user = dbLink.get_user_in_db(str(request.form['fid']))
-                payedUser = UserInfo.UserInfo(p_user['firstName'], str(request.form['pid']))
-                senderUser = UserInfo.UserInfo(f_user['firstName'], str(request.form['fid']))
+                payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
+                senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
                 sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
                 sendMsg.notify_payee_and_payer_of_payment()
               
                 ts = int(time.time())
-                
-                dbLink.add_payment(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']))
+                payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
+                models.db.session.add(payment)
+                models.db.session.commit()
         
         elif request.form["action"] == "submit_request":  
             #payment form
@@ -427,8 +425,11 @@ def webhook():
                                     aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                                     break
                                 
-                                    
-                                # elif flow_info['flowState'] == 2:   
+                            if flow_info['flowState'] == 2:
+                                aLink.update_flow(sender_id, "pay", 3)
+                            
+                            if flow_info['flowState'] == 3:
+                                aLink.update_flow(sender_id, "pay", 4)
                                 
                             if flow_info['flowState'] == 4: 
                                 log("FLOWSTATE IS 4")
