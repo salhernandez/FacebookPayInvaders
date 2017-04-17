@@ -401,6 +401,7 @@ def webhook():
                             
                             aLink = DBLink.DBLink()
                             flow_info = aLink.get_flow_state(sender_id)
+                            log("FLOWSTATE")
                             log(flow_info['flowState'])
                             
                             aReply = QuickReply.QuickReply()
