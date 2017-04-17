@@ -314,22 +314,34 @@ def webhook():
                     
                                     #send pay who message
                                     sendMsg.send_pay_who_message1()
-                            break
+                                    break
+
+                            elif qrParser.valueFromResponse in "request":
+                                someUser = UserInfo.UserInfo("",sender_id)
+                                anotherUser = UserInfo.UserInfo("","")
+                            
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                
+                                if qrParser.flowStateFromDB == 1:
+                                    #increment flowState in DB
+                                    a = aLink.update_flow(sender_id, "request", 2)
+                    
+                                    #send pay who message
+                                    sendMsg.send_request_from_who_message()
+                                    break 
                         
                         elif isValidConfirmDeny is True:
                             if qrParser.valueFromResponse in "confirm":
                                 aLink.update_flow(sender_id, "", 0)
                                 the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                 the_payment.send_payment_gateway()
-
                                 break
-                                
+
                             elif qrParser.valueFromResponse is "deny":
-                                someUser = UserInfo.UserInfo("",sender_id)
-                                anotherUser = UserInfo.UserInfo("","")
-                            
-                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                                sendMsg.send_default_message()
+                                aLink.update_flow(sender_id, "", 1)
+                                sendMsg.send_clear_message()
+                                aReply = QuickReply.QuickReply()
+                                aReply.send_action_quick_reply(messaging_event["sender"]["id"])                                
                             break
                     except KeyError:
                         log("KEYERROR FROM REPLY")
