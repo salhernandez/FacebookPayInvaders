@@ -294,6 +294,9 @@ def webhook():
                         isValid = qrParser.isQRActionValid()
                         isValidConfirmDeny = qrParser.isQRConfirmDenyValid()
                         
+                        aLink = DBLink.DBLink()
+
+                        
                         if isValid is True:
                             log("isValid is TRUE")
                             if qrParser.valueFromResponse in "pay":
@@ -304,8 +307,6 @@ def webhook():
                                 anotherUser = UserInfo.UserInfo("","")
                             
                                 sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                                
-                                aLink = DBLink.DBLink()
                                 
                                 if qrParser.flowStateFromDB == 1:
                                     #increment flowState in DB
