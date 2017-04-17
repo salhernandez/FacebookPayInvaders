@@ -29,6 +29,7 @@ import classes.QuickReplyParser as QuickReplyParser
 
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
+
 @app.route('/data', methods = ['POST', 'GET'])
 def hello():
     # 
@@ -269,7 +270,7 @@ def webhook():
                         
                         #CHANGE flowType to responseType 
                         #grabs the values
-                        flowTypeFromResponse = str(d['flowType'])
+                        responseTypeFromResponse = str(d['responseType'])
                         valueFromResponse = str(d['value'])
                         
                         log(d)
@@ -279,10 +280,10 @@ def webhook():
                         
                         #if the quickreply is awknowledged, then it breaks out of the loop
                         #dbLink = DBLink.DBLink()
-                        qrParser = QuickReplyParser.QuickReplyParser(flowTypeFromResponse, valueFromResponse, sender_id)
+                        qrParser = QuickReplyParser.QuickReplyParser(responseTypeFromResponse, valueFromResponse, sender_id)
                         isValid = qrParser.isQRActionValid()
                         
-                        if qrParser is True:
+                        if isValid is True:
                             
                             someUser = UserInfo.UserInfo("",sender_id)
                             anotherUser = UserInfo.UserInfo("","")
