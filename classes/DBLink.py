@@ -433,7 +433,19 @@ class DBLink(object):
             count = count + 1
         
         return owedToDict
-    
+        
+    """
+    delete_pay_request
+    Deletes the pay request from the db
+    Uses the owedID, payID, and timestamp
+    """
+    def delete_pay_request(self, owedID, payID, the_ts):
+        the_ts = str(the_ts)
+        records = models.Pay.query.filter(and_(models.Pay.owed_ID == owedID, models.Pay.pay_ID == payID, models.Pay.time_stamp == the_ts)).all()
+        
+        for row in records:
+            self.log(row)
+        
     """
     ===END PAY TABLE METHODS
     ============================================================================
