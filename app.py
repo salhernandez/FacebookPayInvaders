@@ -297,19 +297,19 @@ def webhook():
                                 
                                 log("VALUE FROM RESPONSE IS PAY")
                                 
-                                # someUser = UserInfo.UserInfo("",sender_id)
-                                # anotherUser = UserInfo.UserInfo("","")
+                                someUser = UserInfo.UserInfo("",sender_id)
+                                anotherUser = UserInfo.UserInfo("","")
                             
-                                # sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                 
-                                # aLink = DBLink.DBLink()
+                                aLink = DBLink.DBLink()
                                 
-                                # if qrParser.flowStateFromDB == 1:
-                                #     #increment flowState in DB
-                                #     a = aLink.update_flow(recipient_id, "pay", 2)
+                                if qrParser.flowStateFromDB == 1:
+                                    #increment flowState in DB
+                                    a = aLink.update_flow(recipient_id, "pay", 2)
                     
-                                #     #send pay who message
-                                #     sendMsg.send_pay_who_message1()
+                                    #send pay who message
+                                    sendMsg.send_pay_who_message1()
 
                                 # elif qrParser.flowStateFromDB == 3:
                                 #     a = aLink.update_flow(recipient_id, "pay", 4)
