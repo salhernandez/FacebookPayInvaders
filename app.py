@@ -5,7 +5,6 @@ import requests
 import time
 from flask import Flask, render_template, request, jsonify
 import flask_sqlalchemy
-import classes.MsgParser as MsgParser
 import classes.UserInfo as UserInfo
 import classes.MessageBuilder as MsgBuilder
 from classes.Pay import PayGate
@@ -26,6 +25,7 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 
 import classes.DBLink as DBLink
 import classes.QuickReplyParser as QuickReplyParser
+import classes.MsgParser as MsgParser
 
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
@@ -398,7 +398,7 @@ def webhook():
                                 # print len(the_user)
                                 break
                             
-                            
+                            #get the message, and id, check if the message containts the right info for the current flow
                             aLink = DBLink.DBLink()
                             flow_info = aLink.get_flow_state(sender_id)
                             
@@ -415,7 +415,7 @@ def webhook():
                                 break
                             
                             if flow_info['flowState'] == 1:
-                                 log("FLOWSTATE == 1")
+                                log("FLOWSTATE == 1")
 
                                 # if flow_info['flowType'] is "":
                                 #     log("FLOWTYPE IS EMPTY")
