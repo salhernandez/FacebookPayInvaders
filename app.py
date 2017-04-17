@@ -317,9 +317,9 @@ def webhook():
                         
                         elif isValidConfirmDeny is True:
                             if qrParser.valueFromResponse in "confirm":
+                                aLink.update_flow(sender_id, "", 0)
                                 the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                 the_payment.send_payment_gateway()
-                                a = aLink.update_flow(sender_id, "", 0)
 
                                 break
                                 
