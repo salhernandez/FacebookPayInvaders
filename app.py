@@ -309,7 +309,7 @@ def webhook():
                                     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                     the_payment.send_payment_gateway()
                                     
-                            return
+                            break
                         
                         elif isValidConfirmDeny is True:
                             someUser = UserInfo.UserInfo("",sender_id)
