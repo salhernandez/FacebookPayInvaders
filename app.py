@@ -401,13 +401,13 @@ def webhook():
                             
                             aLink = DBLink.DBLink()
                             flow_info = aLink.get_flow_state(sender_id)
-                            log("FLOWSTATE")
-                            log(flow_info['flowState'])
                             
                             aReply = QuickReply.QuickReply()
                             aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                             
-                            # if flow_info['flowState'] == 0:
+                            if flow_info['flowState'] == 0:
+                                log("FLOWSTATE == 0")
+                                log(flow_info['flowState'])
                             #     dbLink.update_flow(sender_id, "", 1)
 
                             #     aReply = QuickReply.QuickReply()
