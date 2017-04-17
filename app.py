@@ -54,15 +54,18 @@ def hello():
                 print "---------------------->" + str(result['pid'])
                 print "---------------------->" + str(result['fid'])
                 print "---------------------->" + str(result['amount'])
-                payedUser = UserInfo.UserInfo(names[int(request.form['pid'])], str(request.form['pid']))
-                senderUser = UserInfo.UserInfo(names[int(request.form['fid'])], str(request.form['fid']))
+                
+                dbLink = DBLink.DBLink()
+                p_user = dbLink.get_user_in_db(str(request.form['pid']))
+                f_user = dbLink.get_user_in_db(str(request.form['fid']))
+                payedUser = UserInfo.UserInfo(p_user['firstName'], str(request.form['pid']))
+                senderUser = UserInfo.UserInfo(f_user['firstName'], str(request.form['fid']))
                 sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType="simple", amount = str(request.form['amount']))
                 sendMsg.notify_payee_and_payer_of_payment()
               
                 ts = int(time.time())
-                payment = models.Payed(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']), ts)
-                models.db.session.add(payment)
-                models.db.session.commit()
+                
+                dbLink.add_payment(str(request.form['pid']), str(request.form['fid']), float(request.form['amount']))
         
         elif request.form["action"] == "submit_request":  
             #payment form
