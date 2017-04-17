@@ -281,14 +281,42 @@ def webhook():
                         #dbLink = DBLink.DBLink()
                         qrParser = QuickReplyParser.QuickReplyParser(flowTypeFromResponse, valueFromResponse, sender_id)
                         isValid = qrParser.isQRActionValid()
+                        isValidConfirmDeny = qrParser.isQRConfirmDenyValid()
                         
-                        if qrParser is True:
+                        if isValid is True:
+                            if qrParser.valueFromResponse is "pay":
+                                
+                                someUser = UserInfo.UserInfo("",sender_id)
+                                anotherUser = UserInfo.UserInfo("","")
                             
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                
+                                aLink = DBLink.DBLink()
+                                
+                                if qrParser.flowStateFromDB == 0:
+                                    #increment flowState in DB
+                                    a = aLink.update_flow(recipient_id, "pay", 1)
+                    
+                                    #send pay who message
+                                    sendMsg.send_pay_who_message1()
+                                    
+                                elif qrParser.flowStateFromDB == 2:
+                                    a = aLink.update_flow(recipient_id, "pay", 3)
+
+                                elif qrParser.flowStateFromDB == 4:
+                                    a = aLink.update_flow(recipient_id, "pay", 5)
+                                    the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                                    the_payment.send_payment_gateway()
+                                    
+                            return
+                        
+                        elif isValidConfirmDeny is True:
                             someUser = UserInfo.UserInfo("",sender_id)
                             anotherUser = UserInfo.UserInfo("","")
                         
                             sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                             sendMsg.send_default_message()
+                            
                             return
                         
                         
