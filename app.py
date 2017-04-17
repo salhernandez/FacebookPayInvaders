@@ -415,10 +415,11 @@ def webhook():
                                 break
                             
                             if flow_info['flowState'] == 1:
-                                log("FLOWSTATE == 1")
-                                aReply = QuickReply.QuickReply()
-                                aReply.send_action_quick_reply(messaging_event["sender"]["id"])
-                                break
+                                if flow_info['flowType'] in "":
+                                    log("FLOWSTATE == 1")
+                                    aReply = QuickReply.QuickReply()
+                                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                                    break
                                     
                                 # elif flow_info['flowState'] == 2:   
                                 
