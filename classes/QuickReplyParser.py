@@ -171,6 +171,51 @@ class QuickReplyParser(object):
             self.log("triggered confirmDeny")
     
     """
+    
+    """
+    def get_user_template_simple(self, toID, users):
+
+        params = {
+            "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+        }
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # data = json.dumps({
+        #     "recipient": {
+        #         "id": recipient_id
+        #     },
+        #     "message": {
+        #         "text": message_text
+        #     }
+        # })
+
+        # convert dict into json
+        #####################################
+
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"Josh","payload":"{'user':'josh'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
+       
+        for i in range(len(users)-1):
+            JSON_Datalist = JSON_Datalist + """,{"content_type":"text","title":"Josh","payload":"{'user':'josh'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
+        JSON_Datalist = JSON_Datalist + """]}}"""
+        
+        the_dict = json.loads(JSON_Datalist)
+
+        the_dict['recipient']['id'] = str(toID)
+        for i in range(len(users)-1):
+            the_dict['message']['quick_replies'][i]['title'] = users[i]['firstName']
+            the_dict['message']['quick_replies'][i]['image_url'] = users[i]['imgUrl']
+            the_dict['message']['quick_replies'][i]['payload'] = {"responseType":"selectedPerson","value":users[i]['userID']}
+
+        data = json.dumps(the_dict)
+        #######################################
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+        if r.status_code != 200:
+            self.log(r.status_code)
+            self.log(r.text)
+    
+    """
     prints the instance variables as a dictionary
     """
     def __str__(self):

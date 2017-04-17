@@ -26,6 +26,7 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 
 import classes.DBLink as DBLink
 import classes.QuickReplyParser as QuickReplyParser
+import classes.MsgParser as MsgParser
 
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
@@ -34,7 +35,7 @@ SENTINEL_FLOAT = -1.0
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    dbLink.update_flow("1204927079622878", "pay", 4)
+    dbLink.update_flow("1204927079622878", "", 0)
 
     return "test"
 
@@ -400,7 +401,7 @@ def webhook():
                                 # print len(the_user)
                                 break
                             
-                            
+                            #get the message, and id, check if the message containts the right info for the current flow
                             aLink = DBLink.DBLink()
                             flow_info = aLink.get_flow_state(sender_id)
                             
@@ -417,14 +418,18 @@ def webhook():
                                 break
                             
                             if flow_info['flowState'] == 1:
+                                log("FLOWSTATE == 1")
                                 if flow_info['flowType'] in "":
                                     log("FLOWSTATE == 1")
                                     aReply = QuickReply.QuickReply()
                                     aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                                     break
                                 
-                                    
-                                # elif flow_info['flowState'] == 2:   
+                            if flow_info['flowState'] == 2:
+                                aLink.update_flow(sender_id, "pay", 3)
+                            
+                            if flow_info['flowState'] == 3:
+                                aLink.update_flow(sender_id, "pay", 4)
                                 
                             if flow_info['flowState'] == 4: 
                                 log("FLOWSTATE IS 4")

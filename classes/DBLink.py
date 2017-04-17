@@ -62,9 +62,7 @@ class DBLink(object):
                 userDict['imgUrl'] = row.imgUrl
                 userDict['phoneNumber'] = row.phoneNumber
                 break
-            
             return userDict
-                
         else:
             return None
     """
@@ -273,7 +271,7 @@ class DBLink(object):
                 
             return uniqueFriends 
         else:
-            return uniqueFriends
+            return None
     
     """
     Checks if user 1 is friends with user 2
@@ -336,17 +334,19 @@ class DBLink(object):
         # print userInDB
         paidToDict = {}
         
-        count = 0
-        for row in paidToRecords:
-            # print row.owed_ID
-            paidToDict[count] = {}
-            paidToDict[count][row.payee_ID] = {}
-            paidToDict[count][row.payee_ID]['amount'] = row.amount
-            paidToDict[count][row.payee_ID]['timestamp'] = row.time_stamp
-            
-            count = count + 1
-        return paidToDict
-    
+        if paidToRecords is not None:
+            count = 0
+            for row in paidToRecords:
+                # print row.owed_ID
+                paidToDict[count] = {}
+                paidToDict[count][row.payee_ID] = {}
+                paidToDict[count][row.payee_ID]['amount'] = row.amount
+                paidToDict[count][row.payee_ID]['timestamp'] = row.time_stamp
+                
+                count = count + 1
+            return paidToDict
+        else:
+            return None
     """
     Get all the payments made by a user
     Returns a dictionary of ids, amount, and time stamp
@@ -356,19 +356,22 @@ class DBLink(object):
         
         paymentsMadeRecords = models.Payed.query.filter_by(payee_ID=str(userID)).all()
         
-        # print userInDB
-        paymentsMadeDict = {}
-        
-        count = 0
-        for row in paymentsMadeRecords:
-            # print row.owed_ID
-            paymentsMadeDict[count] = {}
-            paymentsMadeDict[count][row.payed_ID] = {}
-            paymentsMadeDict[count][row.payed_ID]['amount'] = row.amount
-            paymentsMadeDict[count][row.payed_ID]['timestamp'] = row.time_stamp
+        if paymentsMadeRecords is not None:
+            # print userInDB
+            paymentsMadeDict = {}
             
-            count = count + 1
-        return paymentsMadeDict
+            count = 0
+            for row in paymentsMadeRecords:
+                # print row.owed_ID
+                paymentsMadeDict[count] = {}
+                paymentsMadeDict[count][row.payed_ID] = {}
+                paymentsMadeDict[count][row.payed_ID]['amount'] = row.amount
+                paymentsMadeDict[count][row.payed_ID]['timestamp'] = row.time_stamp
+                
+                count = count + 1
+            return paymentsMadeDict
+        else:
+            return None
     
     """
     ===END PAYED(PAID) TABLE METHODS
@@ -397,19 +400,22 @@ class DBLink(object):
         
         owedRecords = models.Pay.query.filter_by(pay_ID=str(userID)).all()
         
-        # print userInDB
-        owedDict = {}
-        
-        count = 0
-        for row in owedRecords:
-            # print row.owed_ID
-            owedDict[count] = {}
-            owedDict[count][row.owed_ID] = {}
-            owedDict[count][row.owed_ID]['amount'] = row.amount
-            owedDict[count][row.owed_ID]['timestamp'] = row.time_stamp
+        if owedRecords is not None:
+            # print userInDB
+            owedDict = {}
             
-            count = count + 1
-        return owedDict
+            count = 0
+            for row in owedRecords:
+                # print row.owed_ID
+                owedDict[count] = {}
+                owedDict[count][row.owed_ID] = {}
+                owedDict[count][row.owed_ID]['amount'] = row.amount
+                owedDict[count][row.owed_ID]['timestamp'] = row.time_stamp
+                
+                count = count + 1
+            return owedDict
+        else:
+            return None
     
     """
     Gets amounts owed TO the user
@@ -419,20 +425,23 @@ class DBLink(object):
         
         owedToRecords = models.Pay.query.filter_by(owed_ID=str(userID)).all()
         
-        owedToDict = {}
-        
-        count = 0
-        for row in owedToRecords:
-            # print row.owed_ID
+        if owedToRecords is not None:
+            owedToDict = {}
             
-            owedToDict[count] = {}
-            owedToDict[count][row.pay_ID] = {}
-            owedToDict[count][row.pay_ID]['amount'] = row.amount
-            owedToDict[count][row.pay_ID]['timestamp'] = row.time_stamp
+            count = 0
+            for row in owedToRecords:
+                # print row.owed_ID
+                
+                owedToDict[count] = {}
+                owedToDict[count][row.pay_ID] = {}
+                owedToDict[count][row.pay_ID]['amount'] = row.amount
+                owedToDict[count][row.pay_ID]['timestamp'] = row.time_stamp
+                
+                count = count + 1
             
-            count = count + 1
-        
-        return owedToDict
+            return owedToDict
+        else:
+            return None
         
     """
     delete_pay_request
@@ -505,7 +514,10 @@ class DBLink(object):
             stateInfoDict['splitID'] = stateInfoRecords.splitID
             stateInfoDict['timestamp'] = stateInfoRecords.time_stamp
                 
-        return stateInfoDict
+            return stateInfoDict
+        
+        else:
+            return None
     
     """
     Updates the recipient based on the senderID, new recipient id, and split id (even if its "-1")
@@ -583,14 +595,17 @@ class DBLink(object):
         flowInfo = models.FlowStates.query.filter_by(userID=user_id).all()
         flowInfoDict = {}
         
-        for row in flowInfo:
-            flowInfoDict['userID'] = row.userID
-            flowInfoDict['flowType'] = row.flowType
-            flowInfoDict['flowState'] = row.flowState
-            flowInfoDict['timestamp'] = row.time_stamp
-        
-        #print flowInfoDict
-        return flowInfoDict
+        if flowInfo is not None:
+            for row in flowInfo:
+                flowInfoDict['userID'] = row.userID
+                flowInfoDict['flowType'] = row.flowType
+                flowInfoDict['flowState'] = row.flowState
+                flowInfoDict['timestamp'] = row.time_stamp
+            
+            #print flowInfoDict
+            return flowInfoDict
+        else:
+            return None
     """
     ===END FLOW STATE TABLE METHODS
     ============================================================================
