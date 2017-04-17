@@ -285,7 +285,6 @@ def webhook():
                         log("flowType from quick reply: "+responseTypeFromResponse)
                         log("value from quick reply: "+valueFromResponse)
                         
-                        
                         #if the quickreply is awknowledged, then it breaks out of the loop
                         #dbLink = DBLink.DBLink()
                         qrParser = QuickReplyParser.QuickReplyParser(responseTypeFromResponse, valueFromResponse, sender_id)
@@ -295,27 +294,29 @@ def webhook():
                         if isValid is True:
                             if qrParser.valueFromResponse is "pay":
                                 
-                                someUser = UserInfo.UserInfo("",sender_id)
-                                anotherUser = UserInfo.UserInfo("","")
+                                log("VALUE FROM RESPONSE IS PAY")
+                                
+                                # someUser = UserInfo.UserInfo("",sender_id)
+                                # anotherUser = UserInfo.UserInfo("","")
                             
-                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                # sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                 
-                                aLink = DBLink.DBLink()
+                                # aLink = DBLink.DBLink()
                                 
-                                if qrParser.flowStateFromDB == 1:
-                                    #increment flowState in DB
-                                    a = aLink.update_flow(recipient_id, "pay", 2)
+                                # if qrParser.flowStateFromDB == 1:
+                                #     #increment flowState in DB
+                                #     a = aLink.update_flow(recipient_id, "pay", 2)
                     
-                                    #send pay who message
-                                    sendMsg.send_pay_who_message1()
+                                #     #send pay who message
+                                #     sendMsg.send_pay_who_message1()
 
-                                elif qrParser.flowStateFromDB == 3:
-                                    a = aLink.update_flow(recipient_id, "pay", 4)
+                                # elif qrParser.flowStateFromDB == 3:
+                                #     a = aLink.update_flow(recipient_id, "pay", 4)
 
-                                elif qrParser.flowStateFromDB == 5:
-                                    a = aLink.update_flow(recipient_id, "pay", 6)
-                                    the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                                    the_payment.send_payment_gateway()
+                                # elif qrParser.flowStateFromDB == 5:
+                                #     a = aLink.update_flow(recipient_id, "pay", 6)
+                                #     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                                #     the_payment.send_payment_gateway()
                             break
                         
                         elif isValidConfirmDeny is True:
@@ -420,6 +421,7 @@ def webhook():
                                     aReply = QuickReply.QuickReply()
                                     aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                                     break
+                                
                                     
                                 # elif flow_info['flowState'] == 2:   
                                 
