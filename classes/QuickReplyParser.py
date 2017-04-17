@@ -37,19 +37,42 @@ class QuickReplyParser(object):
         
         isValid = True
         
-        if self.valueFromResponse not in accepted_strings:
-            self.log("QR in is not accepted")
-            isValid = False
-        # if self.valueFromResponse in "pay":
-        #     self.__payFlow__()
-        # elif self.valueFromResponse in "request":
-        #     self.__requestFlow__()
-        # elif self.valueFromResponse in "split":
-        #     self.__splitFlow__()
-        # else:
+        # if self.valueFromResponse not in accepted_strings:
+        #     self.log("QR in is not accepted")
         #     isValid = False
+        if self.valueFromResponse in "pay":
+            self.__payFlow__()
+        elif self.valueFromResponse in "request":
+            self.__requestFlow__()
+        elif self.valueFromResponse in "split":
+            self.__splitFlow__()
+        else:
+            isValid = False
         
         return isValid
+       
+    """
+    Checks if the quick reply for confirm/deny is one that we need to handle
+    """
+    def isQRConfirmDenyValid(self):
+        self.log("entering isQRConfirmDenyValid")
+        accepted_strings = {'confirm', 'deny'}
+        
+        isValid = True;
+        
+        # if self.valueFromResponse not in accepted_strings:
+        #     self.log("QR is not accepted")
+        #     isValid = False
+        
+        if self.valueFromResponse in "confirm":
+            self.__payFlow__()
+        elif self.valueFromResponse in "deny":
+            self.__requestFlow__()
+        else:
+            isValid = False
+            
+        return isValid
+    
     """
     payFlow
     """
@@ -69,7 +92,17 @@ class QuickReplyParser(object):
     def __splitFlow__(self):
         self.log("its the split flow :)")
         self.getFlowState()
+    
+    #confirm/deny
+    def __confirmFlow__(self):
+        self.log("confirmed message")
+        self.getFlowState()
+        
+    def __denyFlow__(self):
+        self.log("deny message")
+        self.getFlowState()
     """
+    
     getFlowInfo
     gets flow info and returns dictionary, it also puts the values in instance
     variables
