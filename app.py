@@ -427,9 +427,12 @@ def webhook():
                                 
                             if flow_info['flowState'] == 2:
                                 aLink.update_flow(sender_id, "pay", 3)
+                                sendMsg.send_default_message()
+ 
                             
                             if flow_info['flowState'] == 3:
                                 aLink.update_flow(sender_id, "pay", 4)
+                                sendMsg.send_default_message()
                                 
                             if flow_info['flowState'] == 4: 
                                 log("FLOWSTATE IS 4")
