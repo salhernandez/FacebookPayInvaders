@@ -450,7 +450,7 @@ def webhook():
                             
                             
                             aReply = QuickReply.QuickReply()
-                            aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
+                            aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                             # # if sendMsg.messageType is "default":
                             # #     sendMsg.send_default_message()
                                 
