@@ -34,7 +34,7 @@ SENTINEL_FLOAT = -1.0
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    dbLink.init_flow_state("1204927079622878")
+    dbLink.update_flow("1204927079622878", "pay", 0)
 
     return "test"
 
@@ -302,18 +302,18 @@ def webhook():
                                 
                                 aLink = DBLink.DBLink()
                                 
-                                if qrParser.flowStateFromDB == 0:
+                                if qrParser.flowStateFromDB == 1:
                                     #increment flowState in DB
-                                    a = aLink.update_flow(recipient_id, "pay", 1)
+                                    a = aLink.update_flow(recipient_id, "pay", 2)
                     
                                     #send pay who message
                                     sendMsg.send_pay_who_message1()
                                     
-                                elif qrParser.flowStateFromDB == 2:
-                                    a = aLink.update_flow(recipient_id, "pay", 3)
+                                elif qrParser.flowStateFromDB == 3:
+                                    a = aLink.update_flow(recipient_id, "pay", 4)
 
-                                elif qrParser.flowStateFromDB == 4:
-                                    a = aLink.update_flow(recipient_id, "pay", 5)
+                                elif qrParser.flowStateFromDB == 5:
+                                    a = aLink.update_flow(recipient_id, "pay", 6)
                                     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                     the_payment.send_payment_gateway()
                                     
@@ -433,7 +433,7 @@ def webhook():
                             if "josh venmo demo" in message_text:
                                 the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                 the_payment.send_payment_gateway()
-                                
+                                break
                             
                             #sends buttons with images to josh
                             if "Josh button demo" in message_text:
@@ -447,8 +447,10 @@ def webhook():
                                 break
                             
                             
+                            
+                            
                             aReply = QuickReply.QuickReply()
-                            aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                            aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
                             # # if sendMsg.messageType is "default":
                             # #     sendMsg.send_default_message()
                                 
