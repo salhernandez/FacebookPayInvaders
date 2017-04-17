@@ -10,10 +10,7 @@ class MessageParser(object):
         self.__getAmount__(self.ogMsg)
         self.__getIDofUser__(self.ogMsg)
         self.__identifyTypeOfMessage__(self.ogMsg)
-<<<<<<< HEAD
-=======
         self.dbLink = DBLink.DBLink()
->>>>>>> 52be947125fbbafd435326ff09e38b154acca91b
 
     def getMessage(self):
         return self.ogMsg
