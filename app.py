@@ -34,7 +34,7 @@ SENTINEL_FLOAT = -1.0
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    dbLink.update_flow("1204927079622878", "", 0)
+    dbLink.update_flow("1204927079622878", "pay", 4)
 
     return "test"
 
@@ -426,9 +426,21 @@ def webhook():
                                     
                                 # elif flow_info['flowState'] == 2:   
                                 
-                                # elif flow_info['flowState'] == 4: 
+                            if flow_info['flowState'] == 4: 
+                                #if correct amout input, increment flow and send message
+                                
+                                
+                                #store amount into state table
+                                aLink.set_state_info(sender_id, "", msgObj.amount, "pay", "-1")
+                                
+                                aLink.update_flow(sender_id, "pay", 5)
+                                aReply = QuickReply.QuickReply()
+                                aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
+                                break
+
+                                #else resend how much message
                                     
-                                # elif flow_info['flowState'] == 6:   
+                            # elif flow_info['flowState'] == 6:   
 
                         else:
     
