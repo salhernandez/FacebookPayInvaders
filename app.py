@@ -427,13 +427,14 @@ def webhook():
                                 # elif flow_info['flowState'] == 2:   
                                 
                             if flow_info['flowState'] == 4: 
+                                log("FLOWSTATE IS 4")
                                 #if correct amout input, increment flow and send message
                                 
                                 
-                                #store amount into state table
-                                aLink.update_state_info_amount(sender_id, "", "-1", msgObj.amount)
+                                # #store amount into state table
+                                # aLink.update_state_info_amount(sender_id, "", "-1", msgObj.amount)
                                 
-                                aLink.update_flow(sender_id, "pay", 5)
+                                # aLink.update_flow(sender_id, "pay", 5)
                                 
                                 aReply = QuickReply.QuickReply()
                                 aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
