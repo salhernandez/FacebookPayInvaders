@@ -308,7 +308,7 @@ def webhook():
                     
                                     #send pay who message
                                     sendMsg.send_pay_who_message1()
-                                    
+
                                 elif qrParser.flowStateFromDB == 3:
                                     a = aLink.update_flow(recipient_id, "pay", 4)
 
@@ -316,71 +316,23 @@ def webhook():
                                     a = aLink.update_flow(recipient_id, "pay", 6)
                                     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                     the_payment.send_payment_gateway()
-                                    
                             break
                         
                         elif isValidConfirmDeny is True:
-                            someUser = UserInfo.UserInfo("",sender_id)
-                            anotherUser = UserInfo.UserInfo("","")
-                        
-                            sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                            sendMsg.send_default_message()
+                            if qrParser.valueFromResponse is "confirm":
+                                someUser = UserInfo.UserInfo("",sender_id)
+                                anotherUser = UserInfo.UserInfo("","")
                             
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                sendMsg.send_default_message()
+                                
+                            elif qrParser.valueFromResponse is "deny":
+                                someUser = UserInfo.UserInfo("",sender_id)
+                                anotherUser = UserInfo.UserInfo("","")
+                            
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                sendMsg.send_default_message()
                             break
-                        
-                        
-                        #####################################################
-                        # #Check where sender is in flow
-                        # dbLink = DBLink.DBLink()
-                        # flow_info = dbLink.get_flow_state(sender_id)
-                        
-                        # someUser = UserInfo.UserInfo("",messaging_event["sender"]["id"])
-                        # anotherUser = UserInfo.UserInfo("","")
-                        
-                        # sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                        
-                        
-                        # flow_type = flow_info['flowType']
-                        # flow_state = flow_info['flowState']
-                    
-                        # #for testing values of flowstate and flowtype
-                        
-                        # log("FLOWSTATE FROM DB")
-                        # log(flow_info['flowState'])
-                        # log("FLOWTYPE FROM DB")
-                        # log(flow_info['flowType'])
-                        
-                        #####################################################
-                        
-                        # #if state is 0 we want to send the default buttons no matter what
-                        # if flow_state == 0:
-                        #     #send pay, request, split quick reply
-                        #     #sendMsg.send_default_message()
-                        #     #break
-                        #     pass
-                        
-                        # #if state not 0 we need to parse the message further
-                        # elif flow_state != 0:  
-                        #     #check if the user used a quick_reply
-                            
-                        #     # log("QUICK REPLY")
-                        #     # quick_reply = messaging_event["message"]["quick_reply"]
-                        #     # log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
-                    
-                        #     if flow_state == 2:
-                        #         the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                        #         the_payment.send_user_table()
-                        #         break
-                        #     elif flow_state == 4:
-                        #         sendMsg.send_confirmation_message()
-                        #         break
-                        #         #pass
-                        
-                        # else:#default
-                        #     aReply = QuickReply.QuickReply()
-                        #     aReply.send_action_quick_reply(messaging_event["sender"]["id"])
-                        #     break
-                        
                     except KeyError:
                         log("KEYERROR FROM REPLY")
                         
@@ -447,10 +399,22 @@ def webhook():
                                 break
                             
                             
+                            aLink = DBLink.DBLink()
+                            flow_info = aLink.get_flow_state(sender_id)
+                            log(flow_info['flowState'])
                             
+                            if flow_info['flowState'] == 0:
+                                aReply = QuickReply.QuickReply()
+                                aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                                
+                                # elif flow_info['flowState'] == 2:   
+                                
+                                # elif flow_info['flowState'] == 4: 
+                                    
+                                # elif flow_info['flowState'] == 6:   
+
+
                             
-                            aReply = QuickReply.QuickReply()
-                            aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                             # # if sendMsg.messageType is "default":
                             # #     sendMsg.send_default_message()
                                 
