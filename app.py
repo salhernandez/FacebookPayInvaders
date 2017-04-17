@@ -431,9 +431,10 @@ def webhook():
                                 
                                 
                                 #store amount into state table
-                                aLink.set_state_info(sender_id, "", msgObj.amount, "pay", "-1")
+                                aLink.update_state_info_amount(sender_id, "", "-1", msgObj.amount)
                                 
                                 aLink.update_flow(sender_id, "pay", 5)
+                                
                                 aReply = QuickReply.QuickReply()
                                 aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
                                 break
