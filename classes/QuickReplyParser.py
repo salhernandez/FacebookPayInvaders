@@ -1,78 +1,174 @@
 import requests, os, json, sys, flask, flask_sqlalchemy
+import classes.DBLink as DBLink
 
 # This class is meant to containt all the graph request that we will use
 
 # Sample Usage
 # aReplyParser = QuickReplyParser.QuickReplyParser("1596606567017003", "pay", 1)
 # print str(aReplyParser)
+
+"""
+methods are laid out to strip information like flow state and flow state info
+based on the methods, all of the information will be stored in instance
+variables but can also be returned just in case a check needs to be made,
+like if a quick response is valid
+
+#SAMPLE USE
+qrParser = QuickReplyParser.QuickReplyParser("action", "split", 985245348244242)
+    #isValid = qrParser.isQRActionValid()
+    flowInfo = qrParser.getFlowState()
+    qrParser.__getFlowStateInfo__()
+    qrParser.triggerResponseTypeConditions()
+"""
 class QuickReplyParser(object):
-    def __init__(self, flowTypeFromResponse, valueFromResponse, senderID):
-        self.flowTypeFromResponse = str(flowTypeFromResponse).lower()
+    def __init__(self, responseType, valueFromResponse, senderID):
+        self.responseType = str(responseType).lower()
         self.valueFromResponse = str(valueFromResponse).lower()
         self.senderID = senderID
-        #self.dbLink = dbLink
+        self.dbLink = DBLink.DBLink()
         
     
     """
-    is the quick reply valid
+    Checks if the quick reply for action is one that we need to handle
     """
-    def isQRValid(self):
+    def isQRActionValid(self):
         self.log("entering isQRValid")
-        isValid = False
+        accepted_strings = {'pay', 'request', 'split'}
         
+        isValid = True
+        
+        # if self.valueFromResponse not in accepted_strings:
+        #     self.log("QR in is not accepted")
+        #     isValid = False
         if self.valueFromResponse in "pay":
             self.__payFlow__()
-            isValid = True
         elif self.valueFromResponse in "request":
             self.__requestFlow__()
-            isValid = True
         elif self.valueFromResponse in "split":
             self.__splitFlow__()
-            isValid = True
         else:
             isValid = False
         
         return isValid
+       
+    """
+    Checks if the quick reply for confirm/deny is one that we need to handle
+    """
+    def isQRConfirmDenyValid(self):
+        self.log("entering isQRConfirmDenyValid")
+        accepted_strings = {'confirm', 'deny'}
+        
+        isValid = True;
+        
+        # if self.valueFromResponse not in accepted_strings:
+        #     self.log("QR is not accepted")
+        #     isValid = False
+        
+        if self.valueFromResponse in "confirm":
+            self.__payFlow__()
+        elif self.valueFromResponse in "deny":
+            self.__requestFlow__()
+        else:
+            isValid = False
+            
+        return isValid
+    
     """
     payFlow
     """
     def __payFlow__(self):
         self.log("its the pay flow :)")
-        #self.__getFlowInfo__()
+        self.getFlowState()
     
     """
     requestFLow
     """
     def __requestFlow__(self):
         self.log("its the request flow :)")
-        #self.__getFlowInfo__()
+        self.getFlowState()
     """
     splitFLow
     """
     def __splitFlow__(self):
         self.log("its the split flow :)")
-        #self.__getFlowInfo__()
-    # """
-    # getFlowInfo
-    # """
-    # def __getFlowInfo__(self):
-    #     self.log("getting flow info :)")
-    #     #####################################################
-    #     #Check where sender is in flow
-        
-    #     flow_info = self.dbLink.get_flow_state(self.senderID)
-        
-    #     flow_type = flow_info['flowType']
-    #     flow_state = flow_info['flowState']
+        self.getFlowState()
     
-    #     #for testing values of flowstate and flowtype
+    #confirm/deny
+    def __confirmFlow__(self):
+        self.log("confirmed message")
+        self.getFlowState()
         
-    #     log("FLOWSTATE FROM DB")
-    #     log(flow_info['flowState'])
-    #     log("FLOWTYPE FROM DB")
-    #     log(flow_info['flowType'])
+    def __denyFlow__(self):
+        self.log("deny message")
+        self.getFlowState()
+    """
+    
+    getFlowInfo
+    gets flow info and returns dictionary, it also puts the values in instance
+    variables
+    """
+    def getFlowState(self):
+        self.log("getting flow info :)")
+        #####################################################
+        #Check where sender is in flow
         
-    #     #####################################################
+        flow_state = self.dbLink.get_flow_state(self.senderID)
+        
+        self.flowStateInfo = flow_state
+        
+        self.flowTypeFromDB = flow_state['flowType']
+        self.flowStateFromDB = flow_state['flowState']
+    
+        #for testing values of flowstate and flowtype
+        self.log("FLOWSTATE FROM DB")
+        self.log(flow_state['flowState'])
+        self.log("FLOWTYPE FROM DB")
+        self.log(flow_state['flowType'])
+        self.log(self.valueFromResponse)
+        
+        #return flowState
+        
+        return
+        
+        # #check if the user's flow selection matches the flowType in the db
+        # if flow_type not in self.valueFromResponse:
+        #     self.log("flowState sent and db flowState don't match")
+        #     ##let the user know that they did not do it right
+        #     ##resend request based on current flow
+        
+        # #if the user's flow selection matches, get the user's info from the db
+        # else:
+        #     self.userStateInfo = self.dbLink.get_state_info(self.senderID)
+        #     self.log(self.userStateInfo)
+        
+        
+        #####################################################
+    
+    """
+    __getFlowStateInfo__
+    puts the state info dictionary into an instance variable
+    """
+    def __getFlowStateInfo__(self):
+        self.userStateInfo = self.dbLink.get_state_info(self.senderID)
+        self.log(self.userStateInfo)
+    
+    """
+    responseTypeConditions
+    Provides the conditions for each responseType and value
+    """
+    def triggerResponseTypeConditions(self):
+        
+        #for the pay, request, split buttons
+        if self.responseType in "action":
+            self.log("triggered action")
+        
+        #for the person selection buttons
+        elif self.responseType in "selectPerson":
+            self.log("triggered selectPerson")
+        
+        #for the person selection buttons
+        elif self.responseType in "confirmDeny":
+            self.log("triggered confirmDeny")
     
     """
     prints the instance variables as a dictionary

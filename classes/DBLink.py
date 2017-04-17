@@ -433,7 +433,27 @@ class DBLink(object):
             count = count + 1
         
         return owedToDict
-    
+        
+    """
+    delete_pay_request
+    Deletes the pay request from the db
+    Uses the payeeID, and timestamp
+    """
+    def delete_pay_request(self, payeeID, the_ts):
+        the_ts = str(the_ts)
+        record = models.Pay.query.filter(and_(models.Pay.pay_ID == payeeID, models.Pay.time_stamp == the_ts)).first()
+        PayInfoDict = {}
+        
+        if record is not None:
+            PayInfoDict['owed_ID'] = record.owed_ID
+            PayInfoDict['pay_ID'] = record.pay_ID
+            PayInfoDict['amount'] = record.amount
+            PayInfoDict['timestamp'] = record.time_stamp
+        
+        models.db.session.delete(record)        
+        models.db.session.commit()
+        return PayInfoDict
+        
     """
     ===END PAY TABLE METHODS
     ============================================================================
@@ -469,27 +489,22 @@ class DBLink(object):
     
     """
     Gets the state information based on the person who started the flow
-    Returns all the info from the row
+    Returns all the info from the row ONLY 1 ROW
     """
     def get_state_info(self, userID):
         
-        stateInfoRecords = models.StateInfo.query.filter_by(senderID=str(userID)).all()
+        stateInfoRecords = models.StateInfo.query.filter_by(senderID=str(userID)).first()
         stateInfoDict = {}
         
-        count = 0
-        for row in stateInfoRecords:
+        if stateInfoRecords is not None:
+            
             # print row.owed_ID
-            
-            stateInfoDict[count] = {}
-            
-            stateInfoDict[count][row.recipientID] = {}
-            stateInfoDict[count][row.recipientID]['amount'] = row.amount
-            stateInfoDict[count][row.recipientID]['flowType'] = row.flowType
-            stateInfoDict[count][row.recipientID]['splitID'] = row.splitID
-            stateInfoDict[count][row.recipientID]['timestamp'] = row.time_stamp
-            
-            count = count + 1
-        
+            stateInfoDict['recipientID'] = stateInfoRecords.recipientID
+            stateInfoDict['amount'] = stateInfoRecords.amount
+            stateInfoDict['flowType'] = stateInfoRecords.flowType
+            stateInfoDict['splitID'] = stateInfoRecords.splitID
+            stateInfoDict['timestamp'] = stateInfoRecords.time_stamp
+                
         return stateInfoDict
     
     """
@@ -609,6 +624,20 @@ class DBLink(object):
         else:
             return False
     
+    """
+    perform_payment_transaction
+    
+    aLink = DBLink.DBLink()
+    
+    a = aLink.perform_payment_transaction("1596606567017003", 1491129978)
+    """
+    def perform_payment_transaction(self, payeeID, time_stamp):
+        #delete payment from db
+        deletedInfo = self.delete_pay_request(payeeID, time_stamp)
+        #add it to the payed(paid) table
+        self.add_payment(deletedInfo['owed_ID'], deletedInfo['pay_ID'], deletedInfo['amount'])
+        
+        
     """
     Displays the instance variables of the object
     """

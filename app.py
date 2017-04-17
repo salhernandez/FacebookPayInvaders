@@ -11,7 +11,6 @@ import classes.MessageBuilder as MsgBuilder
 from classes.Pay import PayGate
 import classes.GraphRequests as GraphRequests
 import classes.QuickReply as QuickReply
-import classes.QuickReplyParser as QuickReplyParser
 import numpy as np
 import pandas as pd
 
@@ -26,9 +25,19 @@ import models
 db = flask_sqlalchemy.SQLAlchemy(app)
 
 import classes.DBLink as DBLink
+import classes.QuickReplyParser as QuickReplyParser
 
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
+
+@app.route('/test', methods = ['POST', 'GET'])
+def test():
+    aReply = QuickReply.QuickReply()
+    dbLink = DBLink.DBLink()
+    dbLink.update_flow("1204927079622878", "pay", 4)
+
+    return "test"
+
 @app.route('/data', methods = ['POST', 'GET'])
 def hello():
     # 
@@ -270,82 +279,65 @@ def webhook():
                         json_acceptable_string = info.replace("'", "\"")
                         d = json.loads(json_acceptable_string)
                         
+                        #CHANGE flowType to responseType 
                         #grabs the values
-                        flowTypeFromResponse = str(d['flowType'])
+                        responseTypeFromResponse = str(d['responseType'])
                         valueFromResponse = str(d['value'])
                         
                         log(d)
-                        log("flowType from quick reply: "+flowTypeFromResponse)
+                        log("flowType from quick reply: "+responseTypeFromResponse)
                         log("value from quick reply: "+valueFromResponse)
-                        
                         
                         #if the quickreply is awknowledged, then it breaks out of the loop
                         #dbLink = DBLink.DBLink()
-                        qrParser = QuickReplyParser.QuickReplyParser(flowTypeFromResponse, valueFromResponse, sender_id)
-                        isValid = qrParser.isQRValid()
+                        qrParser = QuickReplyParser.QuickReplyParser(responseTypeFromResponse, valueFromResponse, sender_id)
+                        isValid = qrParser.isQRActionValid()
+                        isValidConfirmDeny = qrParser.isQRConfirmDenyValid()
                         
-                        if qrParser is True:
+                        if isValid is True:
+                            log("isValid is TRUE")
+                            if qrParser.valueFromResponse in "pay":
+                                
+                                log("VALUE FROM RESPONSE IS PAY")
+                                
+                                someUser = UserInfo.UserInfo("",sender_id)
+                                anotherUser = UserInfo.UserInfo("","")
                             
-                            someUser = UserInfo.UserInfo("",sender_i)
-                            anotherUser = UserInfo.UserInfo("","")
-                        
-                            sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                            sendMsg.send_default_message()
-                            return
-                        
-                        
-                        #####################################################
-                        # #Check where sender is in flow
-                        # dbLink = DBLink.DBLink()
-                        # flow_info = dbLink.get_flow_state(sender_id)
-                        
-                        # someUser = UserInfo.UserInfo("",messaging_event["sender"]["id"])
-                        # anotherUser = UserInfo.UserInfo("","")
-                        
-                        # sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                        
-                        
-                        # flow_type = flow_info['flowType']
-                        # flow_state = flow_info['flowState']
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                
+                                aLink = DBLink.DBLink()
+                                
+                                if qrParser.flowStateFromDB == 1:
+                                    #increment flowState in DB
+                                    a = aLink.update_flow(sender_id, "pay", 2)
                     
-                        # #for testing values of flowstate and flowtype
+                                    #send pay who message
+                                    sendMsg.send_pay_who_message1()
+
+                                # elif qrParser.flowStateFromDB == 3:
+                                #     a = aLink.update_flow(recipient_id, "pay", 4)
+
+                                # elif qrParser.flowStateFromDB == 5:
+                                #     a = aLink.update_flow(recipient_id, "pay", 6)
+                                #     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                                #     the_payment.send_payment_gateway()
+                            break
                         
-                        # log("FLOWSTATE FROM DB")
-                        # log(flow_info['flowState'])
-                        # log("FLOWTYPE FROM DB")
-                        # log(flow_info['flowType'])
-                        
-                        #####################################################
-                        
-                        # #if state is 0 we want to send the default buttons no matter what
-                        # if flow_state == 0:
-                        #     #send pay, request, split quick reply
-                        #     #sendMsg.send_default_message()
-                        #     #break
-                        #     pass
-                        
-                        # #if state not 0 we need to parse the message further
-                        # elif flow_state != 0:  
-                        #     #check if the user used a quick_reply
+                        elif isValidConfirmDeny is True:
+                            if qrParser.valueFromResponse is "confirm":
+                                someUser = UserInfo.UserInfo("",sender_id)
+                                anotherUser = UserInfo.UserInfo("","")
                             
-                        #     # log("QUICK REPLY")
-                        #     # quick_reply = messaging_event["message"]["quick_reply"]
-                        #     # log("flowType: "+messaging_event["message"]["quick_reply"]['flowType'])
-                    
-                        #     if flow_state == 2:
-                        #         the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                        #         the_payment.send_user_table()
-                        #         break
-                        #     elif flow_state == 4:
-                        #         sendMsg.send_confirmation_message()
-                        #         break
-                        #         #pass
-                        
-                        # else:#default
-                        #     aReply = QuickReply.QuickReply()
-                        #     aReply.send_action_quick_reply(messaging_event["sender"]["id"])
-                        #     break
-                        
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                sendMsg.send_default_message()
+                                
+                            elif qrParser.valueFromResponse is "deny":
+                                someUser = UserInfo.UserInfo("",sender_id)
+                                anotherUser = UserInfo.UserInfo("","")
+                            
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                sendMsg.send_default_message()
+                            break
                     except KeyError:
                         log("KEYERROR FROM REPLY")
                         
@@ -398,7 +390,7 @@ def webhook():
                             if "josh venmo demo" in message_text:
                                 the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                 the_payment.send_payment_gateway()
-                                
+                                break
                             
                             #sends buttons with images to josh
                             if "Josh button demo" in message_text:
@@ -412,53 +404,49 @@ def webhook():
                                 break
                             
                             
-                            aReply = QuickReply.QuickReply()
-                            aReply.send_action_quick_reply(messaging_event["sender"]["id"])
-                            # # if sendMsg.messageType is "default":
-                            # #     sendMsg.send_default_message()
-                                
-                            # if sendMsg.messageType is "yes":
-                            #     sendMsg.send_payment_log_message()
-                                
-                            # elif sendMsg.messageType is "pay" and sendMsg.toName in "" and str(sendMsg.amount) not in SENTINEL:
-                            #     # let the user know that they payed the person
-                            #     log("share link message")
-                            #     sendMsg.send_share_link_message()
-        
-                            # elif sendMsg.messageType is "pay":
-                            #     if sendMsg.toID not in SENTINEL:
-                            #         if sendMsg.amount is not SENTINEL_FLOAT:
-                            #             sendMsg.notify_payee_and_payer_of_payment()
-                            #     else:
-                            #         sendMsg.send_pay_who_message1()
-                                    
-                            # elif sendMsg.messageType is "request":
-                            #     if sendMsg.toID not in SENTINEL:
-                            #         if sendMsg.amount is not SENTINEL_FLOAT:
-                            #             sendMsg.notify_requestee_and_requester_of_request()
-                            #     else:
-                            #         sendMsg.send_request_from_who_message()
-                                    
-                            # # elif sendMsg.messageType is "split":
-                            # #     if sendMsg.toID not in SENTINEL:
-                            # #         if sendMsg.amount not in SENTINEL_FLOAT:
-                            # #             sendMsg.notify_bill_splitters_of_request()
-                            # #     else:
-                            # #         sendMsg.send_split_how_many_ways()
-        
-                            # elif sendMsg.messageType is "knownName":
-                            #     sendMsg.send_how_much_message()
+                            aLink = DBLink.DBLink()
+                            flow_info = aLink.get_flow_state(sender_id)
                             
-                            # elif sendMsg.messageType is "unknownName":
-                            #     sendMsg.send_share_link_message()
+                            # aReply = QuickReply.QuickReply()
+                            # aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                            
+                            if flow_info['flowState'] == 0:
+                                log("FLOWSTATE == 0")
+                                log(flow_info['flowState'])
+                                aLink.update_flow(sender_id, "", 1)
+
+                                aReply = QuickReply.QuickReply()
+                                aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                                break
+                            
+                            if flow_info['flowState'] == 1:
+                                if flow_info['flowType'] in "":
+                                    log("FLOWSTATE == 1")
+                                    aReply = QuickReply.QuickReply()
+                                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                                    break
                                 
-                            # elif sendMsg.messageType is "amount":
-                            #     sendMsg.send_confirmation_message()
+                                    
+                                # elif flow_info['flowState'] == 2:   
                                 
-    
-                            # elif sendMsg.messageType is "clear":
-                            #     sendMsg.send_clear_message()
-        
+                            if flow_info['flowState'] == 4: 
+                                log("FLOWSTATE IS 4")
+                                #if correct amout input, increment flow and send message
+                                
+                                
+                                # #store amount into state table
+                                # aLink.update_state_info_amount(sender_id, "", "-1", msgObj.amount)
+                                
+                                # aLink.update_flow(sender_id, "pay", 5)
+                                
+                                aReply = QuickReply.QuickReply()
+                                aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
+                                break
+
+                                #else resend how much message
+                                    
+                            # elif flow_info['flowState'] == 6:   
+
                         else:
     
                             payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
@@ -580,7 +568,6 @@ def log(message):  # simple wrapper for logging to stdout on heroku
 
 if __name__ == '__main__':
     app.run(
-
         host=os.getenv('IP', '0.0.0.0'),
         port=int(os.getenv('PORT', 8080))
     )
