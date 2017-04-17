@@ -30,6 +30,14 @@ import classes.QuickReplyParser as QuickReplyParser
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
 
+@app.route('/test', methods = ['POST', 'GET'])
+def test():
+    aReply = QuickReply.QuickReply()
+    dbLink = DBLink.DBLink()
+    dbLink.init_flow_state("1204927079622878")
+
+    return "test"
+
 @app.route('/data', methods = ['POST', 'GET'])
 def hello():
     # 
@@ -318,7 +326,7 @@ def webhook():
                             sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                             sendMsg.send_default_message()
                             
-                            return
+                            break
                         
                         
                         #####################################################
