@@ -274,7 +274,7 @@ def webhook():
                         valueFromResponse = str(d['value'])
                         
                         log(d)
-                        log("flowType from quick reply: "+flowTypeFromResponse)
+                        log("flowType from quick reply: "+responseTypeFromResponse)
                         log("value from quick reply: "+valueFromResponse)
                         
                         
