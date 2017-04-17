@@ -266,7 +266,9 @@ def webhook():
                     #check if recipient user is already in the Users db
                     #if isUserInDB(recipient_id) == false
                     #add new user to db
-                
+                    
+                    
+                    
                   #Anna's new flow code
 ###################################################################################################   
                     #checks that the message has a quick reply, if not, it breaks out
@@ -292,6 +294,9 @@ def webhook():
                         isValid = qrParser.isQRActionValid()
                         isValidConfirmDeny = qrParser.isQRConfirmDenyValid()
                         
+                        aLink = DBLink.DBLink()
+
+                        
                         if isValid is True:
                             log("isValid is TRUE")
                             if qrParser.valueFromResponse in "pay":
@@ -303,31 +308,21 @@ def webhook():
                             
                                 sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                 
-                                aLink = DBLink.DBLink()
-                                
                                 if qrParser.flowStateFromDB == 1:
                                     #increment flowState in DB
                                     a = aLink.update_flow(sender_id, "pay", 2)
                     
                                     #send pay who message
                                     sendMsg.send_pay_who_message1()
-
-                                # elif qrParser.flowStateFromDB == 3:
-                                #     a = aLink.update_flow(recipient_id, "pay", 4)
-
-                                # elif qrParser.flowStateFromDB == 5:
-                                #     a = aLink.update_flow(recipient_id, "pay", 6)
-                                #     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                                #     the_payment.send_payment_gateway()
                             break
                         
                         elif isValidConfirmDeny is True:
-                            if qrParser.valueFromResponse is "confirm":
-                                someUser = UserInfo.UserInfo("",sender_id)
-                                anotherUser = UserInfo.UserInfo("","")
-                            
-                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                                sendMsg.send_default_message()
+                            if qrParser.valueFromResponse in "confirm":
+                                aLink.update_flow(sender_id, "", 0)
+                                the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                                the_payment.send_payment_gateway()
+
+                                break
                                 
                             elif qrParser.valueFromResponse is "deny":
                                 someUser = UserInfo.UserInfo("",sender_id)
@@ -383,7 +378,7 @@ def webhook():
                             
                             
                             the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                                
+                            
                             #triggers venmo
                             if "josh venmo demo" in message_text:
                                 the_payment = PayGate(toUser = messaging_event["sender"]["id"])
@@ -401,9 +396,18 @@ def webhook():
                                 # print len(the_user)
                                 break
                             
+                            
+                            
                             #get the message, and id, check if the message containts the right info for the current flow
                             aLink = DBLink.DBLink()
                             flow_info = aLink.get_flow_state(sender_id)
+                            
+                            if msgObj.ogMsg in "clear" or msgObj.ogMsg in "exit":
+                                aLink.update_flow(sender_id, "", 1)
+                                sendMsg.send_clear_message()
+                                aReply = QuickReply.QuickReply()
+                                aReply.send_action_quick_reply(messaging_event["sender"]["id"])                                
+                                break
                             
                             # aReply = QuickReply.QuickReply()
                             # aReply.send_action_quick_reply(messaging_event["sender"]["id"])
@@ -445,9 +449,11 @@ def webhook():
                                 
                             if flow_info['flowState'] == 2:
                                 aLink.update_flow(sender_id, "pay", 3)
+                                sendMsg.send_which_user()
                             
                             if flow_info['flowState'] == 3:
                                 aLink.update_flow(sender_id, "pay", 4)
+                                sendMsg.send_how_much_message()
                                 
                             if flow_info['flowState'] == 4: 
                                 log("FLOWSTATE IS 4")
@@ -455,9 +461,10 @@ def webhook():
                                 
                                 
                                 # #store amount into state table
-                                # aLink.update_state_info_amount(sender_id, "", "-1", msgObj.amount)
+                                #debug this
+                                aLink.update_state_info_amount(sender_id, "", "-1", msgObj.amount)
                                 
-                                # aLink.update_flow(sender_id, "pay", 5)
+                                aLink.update_flow(sender_id, "pay", 5)
                                 
                                 aReply = QuickReply.QuickReply()
                                 aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
