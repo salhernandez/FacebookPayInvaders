@@ -53,28 +53,30 @@ class MessageParser(object):
         userID = "-1"
         userFirst = ""
         
-        print someText
+        userID = str(1596606567017003)
+        userFirst = "sal"
+        # print someText
         
-        if 'josh' in someText:
-            userID = str(985245348244242)
-            userFirst = "josh"
+        # if 'josh' in someText:
+        #     userID = str(985245348244242)
+        #     userFirst = "josh"
 
-        elif 'sal' in someText:
-            userID = str(1596606567017003)
-            userFirst = "sal"
+        # elif 'sal' in someText:
+        #     userID = str(1596606567017003)
+        #     userFirst = "sal"
 
-        elif 'anna' in someText:
-            userID = str(1204927079622878)
-            userFirst = "anna"
+        # elif 'anna' in someText:
+        #     userID = str(1204927079622878)
+        #     userFirst = "anna"
         
 
-        else:
-            userID = "-1"
-            userFirst = ""
+        # else:
+        #     userID = "-1"
+        #     userFirst = ""
 
         self.userID = userID
         self.userFirst = userFirst
-        self.__identifyTypeOfMessage__(someText)
+        #self.__identifyTypeOfMessage__(someText)
         
     def __getAmount__(self,data):
         # get words in string
