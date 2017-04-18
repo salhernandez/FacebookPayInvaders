@@ -5,7 +5,6 @@ import requests
 import time
 from flask import Flask, render_template, request, jsonify
 import flask_sqlalchemy
-import classes.MsgParser as MsgParser
 import classes.UserInfo as UserInfo
 import classes.MessageBuilder as MsgBuilder
 from classes.Pay import PayGate
@@ -31,12 +30,20 @@ import classes.MsgParser as MsgParser
 SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
 
+@app.route('/saltest', methods = ['POST', 'GET'])
+def saltest():
+    aReply = QuickReply.QuickReply()
+    dbLink = DBLink.DBLink()
+    the_users = dbLink.get_all_user_in_db()
+    aReply.send_users_quick_reply("1596606567017003", the_users)
+    
+    return "test"
+
 @app.route('/test', methods = ['POST', 'GET'])
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
     dbLink.set_state_info("1204927079622878", "985245348244242", 0, "pay", "-1")
-
     return "test"
 
 @app.route('/data', methods = ['POST', 'GET'])
