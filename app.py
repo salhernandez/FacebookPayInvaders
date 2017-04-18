@@ -292,6 +292,7 @@ def webhook():
                         isValid = qrParser.isQRActionValid()
                         isValidConfirmDeny = qrParser.isQRConfirmDenyValid()
                         
+                        
                         if isValid is True:
                             log("isValid is TRUE")
                             if qrParser.valueFromResponse in "pay":
@@ -401,6 +402,7 @@ def webhook():
                                 # print len(the_user)
                                 break
                             
+                            
                             #get the message, and id, check if the message containts the right info for the current flow
                             aLink = DBLink.DBLink()
                             flow_info = aLink.get_flow_state(sender_id)
@@ -416,6 +418,25 @@ def webhook():
                                 aReply = QuickReply.QuickReply()
                                 aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                                 break
+                            
+                            #text based responses for split
+                            #1, 3
+                            if flow_info['flowType'] in "split":
+                                if flow_info['flowState'] == 1:
+                                    log("FLOWSTATE == 1")
+                                    #check if the user entered a full name (first and last name)
+                                    aName = message_text.split()
+                                    if aName == 2:
+                                        if flow_info['flowType'] in "":
+                                            log("FLOWSTATE == 1")
+                                            #send the buttons
+                                            #update flow
+                                            
+                                            aLink.update_flow(sender_id, "split", 2)
+                                    else:
+                                        pass
+                                        #resend the infor for the state
+                                    
                             
                             if flow_info['flowState'] == 1:
                                 log("FLOWSTATE == 1")
