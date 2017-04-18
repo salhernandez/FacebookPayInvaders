@@ -81,7 +81,10 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "Who would you like to request money from?")
     
     def send_pay_who_message1(self):
-        self.message_template_simple(self.fromID, "Who would you like to pay?")
+        self.message_template_simple(self.fromID, "Type the first and last name of the user you'd like to pay")
+    
+    def send_your_request_was_sent(self):
+        self.message_template_simple(self.fromID, "Your request was sent")
     
     def send_pay_who_message2(self):
         self.message_template_simple(self.fromID, "Who would you like to pay $" + self.amount + "?")
@@ -93,13 +96,16 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "How may ways would you like to split the bill?")
 
     def send_clear_message(self):
-        self.message_template_simple(self.fromID, "The conversation has been cleared! " + self.defaultMessage)
+        self.message_template_simple(self.fromID, "The conversation has been cleared!")
 
     def send_how_much_message(self):
         self.message_template_simple(self.fromID, "Please specify an amount")
 
     def send_payment_log_message(self):
         self.message_template_simple(self.fromID, "You paid $" + self.amount + " to " + self.toName)
+        
+    def send_which_user(self):
+        self.message_template_simple(self.fromID, "Which user?")
 
     def send_confirmation_message(self):
         self.message_template_simple(self.fromID, "Please confirm this action by typing '<action> <name> <amount>'?")
