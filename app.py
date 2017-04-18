@@ -260,7 +260,8 @@ def webhook():
                     #############################################
                     aReply = QuickReply.QuickReply()
                     aReply = QuickReply.QuickReply()
-                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])    
+                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                    return
                     #################################################
                     
                     # #gets info from the db
