@@ -337,7 +337,14 @@ def webhook():
                                     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                     the_payment.send_payment_gateway()
                                     break
+                                
+                                if qrParser.flowTypeFromDB in "request":
+                                    aLink.update_flow(sender_id, "", 0)
 
+                                    sendMsg.send_your_request_was_sent()
+
+                                    break
+                            
                             elif qrParser.valueFromResponse is "deny":
                                 aLink.update_flow(sender_id, "", 1)
                                 sendMsg.send_clear_message()
