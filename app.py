@@ -424,13 +424,20 @@ def webhook():
                             
                             #print msgObj.getMessage()
                             
-                            payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
+                            #payedUser = UserInfo.UserInfo( msgObj.userFirst, msgObj.userID)
                             
-                            messType = str(msgObj.msgType)
+                            #messType = str(msgObj.msgType)
                             #messageBuilder takes in kwargs as arguments, its up to the developer to keep track of the variables that have been used or not
                             #and make the proper calls for now
                             #initialze message builder
-                            sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType=messType, amount = msgObj.amount)
+                            #sendMsg = MsgBuilder.MessageBuilder(fromUser = senderUser, toUser = payedUser, messageType=messType, amount = msgObj.amount)
+                            someUser = UserInfo.UserInfo("",sender_id)
+                            anotherUser = UserInfo.UserInfo("","")
+                                                
+                            #send share link message
+                            sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                                
+                            
                             
                             log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS: "+str(sendMsg))
                             #if there is no name and amount, it will reply to the user with a static response
@@ -610,6 +617,9 @@ def webhook():
                         #anotherUser = UserInfo.UserInfo("", messaging_event["sender"]["id"])
                         aReply = QuickReply.QuickReply()
                         aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                        
+                        
+                        
                         
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
