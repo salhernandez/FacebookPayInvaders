@@ -49,7 +49,7 @@ class MessageParser(object):
     def __getIDofUser__(self,someText):
         
         print type(someText.lower())
-        someText = str(someText.lower())
+        #someText = str(someText.lower())
         userID = "-1"
         userFirst = ""
         
