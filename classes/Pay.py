@@ -1,5 +1,5 @@
 import json, os, sys, requests
-
+import urllib
 #all in order to send a message to a user, you need to initialize the MessageBuilder witht the user objects,
 #the sendUser object will always be there, but not the payedUser. The class is based on kwargs
 #after initializing the class you can call on the send functions to either share a link or notify of payments
@@ -96,7 +96,7 @@ class PayGate(object):
             # the_dict['message']['quick_replies'][i]['payload']['value'] = str(users[i]['userID'])
             # print the_dict['message']['quick_replies'][i]['payload']['value']
 
-        data = json.dumps(the_dict)
+        data = urllib.urlencode(json.dumps(the_dict))
         #######################################
         r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
         if r.status_code != 200:
