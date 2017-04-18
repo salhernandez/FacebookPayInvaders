@@ -37,7 +37,13 @@ def saltest():
     #the_users = dbLink.get_all_user_in_db()
     #aReply.send_users_quick_reply("1596606567017003", the_users)
     #dbLink.init_flow_state
-    dbLink.delete_user_from_db("1596606567017003")
+    #dbLink.delete_user_from_db("1596606567017003")
+    #request_info = GraphRequests.GraphRequests()
+    #request_info.getUserInfo("1596606567017003")
+    #dbLink.add_user("1596606567017003", request_info.firstName, request_info.lastName, "salvhernandez@csmub.edu", request_info.profile_pic, "6197345766")
+    dbLink.update_flow("1596606567017003", "", 0)
+    #sendMsg.send_signedup()
+    
     return "test"
 
 @app.route('/test', methods = ['POST', 'GET'])
