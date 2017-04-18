@@ -81,10 +81,10 @@ class PayGate(object):
         # convert dict into json
         #####################################
 
-        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"Josh","payload":"{{"responseType":"selectedPerson"},{"value':"id"}}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"Josh","payload":{{"responseType":"selectedPerson"},{"value':"id"}},"image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
        
         for i in range(len(users)-1):
-            JSON_Datalist = JSON_Datalist + """,{"content_type":"text","title":"Josh","payload":"{{"responseType":"selectedPerson"},{"value":"id"}}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
+            JSON_Datalist = JSON_Datalist + """,{"content_type":"text","title":"Josh","payload":{{"responseType":"selectedPerson"},{"value":"id"}},"image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
         JSON_Datalist = JSON_Datalist + """]}}"""
         
         the_dict = json.loads(JSON_Datalist)
