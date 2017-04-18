@@ -236,7 +236,30 @@ class DBLink(object):
         elif aFlag is True:
             admin = models.Users.query.filter_by(user_id=uID).update(dict(phoneNumber=new_phone))
             models.db.session.commit()
+    
+    
+    """
+    delete_user_from_db
+    Deletes the user from the database
+    """
+    def delete_user_from_db(self, userID):
+        record = models.Users.query.filter_by(user_id=userID).first()
+        userInDBDict = {}
         
+        if record is not None:
+            userInDBDict['userID'] = record.user_id
+            userInDBDict['firstName'] = record.firstName
+            userInDBDict['lastName'] = record.lastName
+            userInDBDict['email'] = record.email
+            userInDBDict['imgUrl'] = record.imgUrl
+            userInDBDict['phoneNumber'] = record.phoneNumber
+            
+        
+            models.db.session.delete(record)        
+            models.db.session.commit()
+            return userInDBDict
+        else:
+            return None
     """
     ===END USERS TABLE METHODS
     ============================================================================

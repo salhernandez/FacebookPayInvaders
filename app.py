@@ -34,9 +34,10 @@ SENTINEL_FLOAT = -1.0
 def saltest():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    the_users = dbLink.get_all_user_in_db()
-    aReply.send_users_quick_reply("1596606567017003", the_users)
-    
+    #the_users = dbLink.get_all_user_in_db()
+    #aReply.send_users_quick_reply("1596606567017003", the_users)
+    #dbLink.init_flow_state
+    dbLink.delete_user_from_db("1596606567017003")
     return "test"
 
 @app.route('/test', methods = ['POST', 'GET'])
@@ -474,38 +475,7 @@ def webhook():
                                 aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                                 break
                             
-                            #text based responses for split
-                            #1, 3
-                            if flow_info['flowType'] in "split":
-                                if flow_info['flowState'] == 1:
-                                    log("FLOWSTATE == 1")
-                                    #check if the user entered a full name (first and last name)
-                                    aName = message_text.split()
-                                    if aName == 2:
-                                        if flow_info['flowType'] in "":
-                                            log("FLOWSTATE == 1")
-                                            #send the buttons
-                                            dbLink = DBLink.DBLink()
-                                            the_users = dbLink.get_users_with_first_last_name(aName[0], aName[1])
-                                            
-                                            #if there are users in the db with that name
-                                            if someUsers is not None:
-                                                aReply = QuickReply.QuickReply()
-                                                aReply.send_users_quick_reply(user_id, the_users)
-                                                #increase flow number
-                                                aLink.update_flow(sender_id, "split", 2)
-                                            else:
-                                                #let the user know that the person does not exist and to share the link
-                                                someUser = UserInfo.UserInfo("",sender_id)
-                                                anotherUser = UserInfo.UserInfo("","")
-                                                
-                                                #send share link message
-                                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                                                sendMsg.send_share_link_message()
-                                                break
-                                    else:
-                                        pass
-                                        #resend the infor for the state
+                            
                             # #check if the response belongs to that flow
                             # if messmessage_text in "pay":
                             #     pass
@@ -521,6 +491,41 @@ def webhook():
                             #             aReply = QuickReply.QuickReply()
                             #             aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                             #             break
+                            
+                            
+                            #text based responses for split
+                            #1, 3
+                            if flow_info['flowType'] in "split":
+                                if flow_info['flowState'] == 1:
+                                    log("FLOWSTATE == 1")
+                                    #check if the user entered a full name (first and last name)
+                                    aName = message_text.split()
+                                    if aName == 2:
+                                        if flow_info['flowType'] in "":
+                                            log("FLOWSTATE == 1")
+                                            #send the buttons
+                                            dbLink = DBLink.DBLink()
+                                            the_users = dbLink.get_users_with_first_last_name(aName[0], aName[1])
+                                            
+                                            #if there are users in the db with that name
+                                            if the_users is not None:
+                                                aReply = QuickReply.QuickReply()
+                                                aReply.send_users_quick_reply(sender_id, the_users)
+                                                #increase flow number
+                                                aLink.update_flow(sender_id, "split", 2)
+                                            else:
+                                                #let the user know that the person does not exist and to share the link
+                                                someUser = UserInfo.UserInfo("",sender_id)
+                                                anotherUser = UserInfo.UserInfo("","")
+                                                
+                                                #send share link message
+                                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                                sendMsg.send_share_link_message()
+                                                break
+                                    else:
+                                        pass
+                                        #resend the infor for the state
+                            
                             if flow_info['flowState'] == 1:
                                 log("FLOWSTATE == 1")
                                 if flow_info['flowType'] in "":
