@@ -291,6 +291,7 @@ def webhook():
                         qrParser = QuickReplyParser.QuickReplyParser(responseTypeFromResponse, valueFromResponse, sender_id)
                         isValid = qrParser.isQRActionValid()
                         isValidConfirmDeny = qrParser.isQRConfirmDenyValid()
+                        isValidSelectPerson = qrParser.isQRSelectPersonValid()
                         
                         
                         if isValid is True:
@@ -337,6 +338,15 @@ def webhook():
                                 sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                 sendMsg.send_default_message()
                             break
+                        
+                        #if the reply was a person selected
+                        elif isValidSelectPerson is True:
+                            flow_info = aLink.get_flow_state(sender_id)
+                            if flow_info['flowState'] == 2:
+                                log("FLOWSTATE == 2")
+                                #grab the id
+                                #updates the flow
+                                
                     except KeyError:
                         log("KEYERROR FROM REPLY")
                         

@@ -58,17 +58,32 @@ class QuickReplyParser(object):
         self.log("entering isQRConfirmDenyValid")
         accepted_strings = {'confirm', 'deny'}
         
-        isValid = True;
+        isValid = True
         
         # if self.valueFromResponse not in accepted_strings:
         #     self.log("QR is not accepted")
         #     isValid = False
         
         if self.valueFromResponse in "confirm":
-            self.__payFlow__()
+            pass
         elif self.valueFromResponse in "deny":
-            self.__requestFlow__()
+            pass
         else:
+            isValid = False
+            
+        return isValid
+    
+    """
+    Checks if the quick reply for the selectedPerson type
+    """
+    def isQRSelectPersonValid(self):
+        self.log("entering isQRSelectPersonValid")
+        accepted_strings = {'selectedPerson'}
+        
+        isValid = True
+        
+        if self.responseType not in accepted_strings:
+            self.log("QR is not accepted")
             isValid = False
             
         return isValid
