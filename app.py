@@ -338,6 +338,21 @@ def webhook():
                                     #send pay who message
                                     sendMsg.send_request_from_who_message()
                                     break
+                            
+                            elif qrParser.valueFromResponse in "split":
+                                someUser = UserInfo.UserInfo("",sender_id)
+                                anotherUser = UserInfo.UserInfo("","")
+                                
+                                log("INSIDE QR SPLIT")
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                
+                                if qrParser.flowStateFromDB == 2:
+                                    log("INSIDE QR SPLIT 2")
+                                    #increment flowState in DB
+                                    #process payload info
+                                    #update flow
+                                    a = aLink.update_flow(sender_id, "split", 3)
+                                    break
                         
                         elif isValidConfirmDeny is True:
                             if qrParser.valueFromResponse in "confirm":
@@ -470,9 +485,24 @@ def webhook():
                                         if flow_info['flowType'] in "":
                                             log("FLOWSTATE == 1")
                                             #send the buttons
-                                            #update flow
+                                            dbLink = DBLink.DBLink()
+                                            the_users = dbLink.get_users_with_first_last_name(aName[0], aName[1])
                                             
-                                            aLink.update_flow(sender_id, "split", 2)
+                                            #if there are users in the db with that name
+                                            if someUsers is not None:
+                                                aReply = QuickReply.QuickReply()
+                                                aReply.send_users_quick_reply(user_id, the_users)
+                                                #increase flow number
+                                                aLink.update_flow(sender_id, "split", 2)
+                                            else:
+                                                #let the user know that the person does not exist and to share the link
+                                                someUser = UserInfo.UserInfo("",sender_id)
+                                                anotherUser = UserInfo.UserInfo("","")
+                                                
+                                                #send share link message
+                                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                                sendMsg.send_share_link_message()
+                                                break
                                     else:
                                         pass
                                         #resend the infor for the state
