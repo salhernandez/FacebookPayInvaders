@@ -96,7 +96,7 @@ class PayGate(object):
             # the_dict['message']['quick_replies'][i]['payload']['value'] = str(users[i]['userID'])
             # print the_dict['message']['quick_replies'][i]['payload']['value']
 
-        data = urllib.urlencode(json.dumps(the_dict))
+        data = json.dumps(the_dict)
         #######################################
         r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
         if r.status_code != 200:
