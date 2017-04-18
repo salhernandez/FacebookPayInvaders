@@ -1,5 +1,5 @@
 import json, os, sys, requests
-import urllib
+
 #all in order to send a message to a user, you need to initialize the MessageBuilder witht the user objects,
 #the sendUser object will always be there, but not the payedUser. The class is based on kwargs
 #after initializing the class you can call on the send functions to either share a link or notify of payments
@@ -81,10 +81,10 @@ class PayGate(object):
         # convert dict into json
         #####################################
 
-        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"Josh","payload":"{'responseType':'selectedPerson'},"image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"Josh","payload":"{'user':'josh'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
        
         for i in range(len(users)-1):
-            JSON_Datalist = JSON_Datalist + """,{"content_type":"text","title":"Josh","payload":"{'responseType':'stuff'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
+            JSON_Datalist = JSON_Datalist + """,{"content_type":"text","title":"Josh","payload":"{'user':'josh'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
         JSON_Datalist = JSON_Datalist + """]}}"""
         
         the_dict = json.loads(JSON_Datalist)
@@ -93,8 +93,8 @@ class PayGate(object):
         for i in range(len(users)-1):
             the_dict['message']['quick_replies'][i]['title'] = users[i]['firstName']
             the_dict['message']['quick_replies'][i]['image_url'] = users[i]['imgUrl']
-            # the_dict['message']['quick_replies'][i]['payload']['value'] = str(users[i]['userID'])
-            # print the_dict['message']['quick_replies'][i]['payload']['value']
+            the_dict['message']['quick_replies'][i]['payload'] = "{'responseType': 'selectedPerson', 'value': " + str(users[i]['userID']) + "}"
+
 
         data = json.dumps(the_dict)
         #######################################
