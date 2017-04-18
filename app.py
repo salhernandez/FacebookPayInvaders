@@ -332,10 +332,11 @@ def webhook():
                         
                         elif isValidConfirmDeny is True:
                             if qrParser.valueFromResponse in "confirm":
-                                aLink.update_flow(sender_id, "", 0)
-                                the_payment = PayGate(toUser = messaging_event["sender"]["id"])
-                                the_payment.send_payment_gateway()
-                                break
+                                if qrParser.flowTypeFromDB in "pay":
+                                    aLink.update_flow(sender_id, "", 0)
+                                    the_payment = PayGate(toUser = messaging_event["sender"]["id"])
+                                    the_payment.send_payment_gateway()
+                                    break
 
                             elif qrParser.valueFromResponse is "deny":
                                 aLink.update_flow(sender_id, "", 1)
@@ -481,8 +482,30 @@ def webhook():
                                     aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
                                     break
                             
-                            # if flow_info['flowType'] in "request":
-
+                            if flow_info['flowType'] in "request":
+                                
+                                if flow_info['flowState'] == 2:
+                                    aLink.update_flow(sender_id, "request", 3)
+                                    sendMsg.send_which_user()
+                                
+                                if flow_info['flowState'] == 3:
+                                    aLink.update_flow(sender_id, "request", 4)
+                                    sendMsg.send_how_much_message()
+                                    
+                                if flow_info['flowState'] == 4: 
+                                    log("FLOWSTATE IS 4")
+                                    #if correct amout input, increment flow and send message
+                                    
+                                    
+                                    # #store amount into state table
+                                    #debug this
+                                    aLink.update_state_info_amount(sender_id, "", "-1", msgObj.amount)
+                                    
+                                    aLink.update_flow(sender_id, "request", 5)
+                                    
+                                    aReply = QuickReply.QuickReply()
+                                    aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
+                                    break                        
                         else:
     
                             payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
