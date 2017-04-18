@@ -256,6 +256,13 @@ def webhook():
                     # the facebook ID of the person sending you the message
                     sender_id = messaging_event["sender"]["id"]
                     
+                    #quickreply fix
+                    #############################################
+                    aReply = QuickReply.QuickReply()
+                    aReply = QuickReply.QuickReply()
+                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])    
+                    #################################################
+                    
                     # #gets info from the db
                     # dbLink = DBLink.DBLink()
                     # aUserInfo = dbLink.get_user_in_db(sender_id)
