@@ -52,15 +52,9 @@ def saltest():
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-<<<<<<< HEAD
     print "#######################"
     print dbLink.get_users_with_first_name("Hsoj")
     
-    
-
-=======
-    print dbLink.get_users_with_first_name("Anna")
->>>>>>> 6036c06ca8ada504a325aed3a1250844425c348a
     return "test"
 
 @app.route('/data', methods = ['POST', 'GET'])
