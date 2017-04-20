@@ -43,7 +43,8 @@ def saltest():
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    dbLink.set_state_info("1204927079622878", "985245348244242", 0, "pay", "-1")
+    dbLink.update_state_info_amount("1204927079622878", "985245348244242", "-1", 20)
+
     return "test"
 
 @app.route('/data', methods = ['POST', 'GET'])
@@ -515,7 +516,9 @@ def webhook():
                                     
                                     # #store amount into state table
                                     #debug this
-                                    aLink.update_state_info_amount(sender_id, "", "-1", float(msgObj.amount))
+                                    aLink.update_state_info_amount("1204927079622878", "985245348244242", "-1", float(msgObj.amount))
+
+                                    # aLink.update_state_info_amount(sender_id, "", "-1", float(msgObj.amount))
                                     
                                     aLink.update_flow(sender_id, "pay", 5)
                                     
