@@ -56,8 +56,6 @@ class QuickReply(object):
         JSON_Datalist = JSON_Datalist.replace(" ", "")
         the_dict = json.loads(JSON_Datalist)
         the_dict['recipient']['id'] = str(toID)
-        the_dict['message']['quick_replies']['payload']['responseType'] = "RAWR"
-        the_dict['message']['quick_replies']['payload']['value'] = "DERP"
         
         
 
