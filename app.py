@@ -53,7 +53,7 @@ def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
     print "#######################"
-    print dbLink.delete_userID_state_info("1204927079622878")
+    print dbLink.init_state_info("1204927079622878", "pay")
     
     return "test"
 
