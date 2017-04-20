@@ -428,6 +428,7 @@ def webhook():
                             if "info" in message_text:
                                 payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
                                 sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = "hi")
+                                break
                             #sends buttons with images to josh
                             if "Josh button demo" in message_text:
                                 dbLink = DBLink.DBLink()
