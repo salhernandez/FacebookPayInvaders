@@ -43,7 +43,8 @@ def saltest():
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    dbLink.set_state_info("1204927079622878", "985245348244242", 0, "pay", "-1")
+    dbLink.update_state_info_amount("1204927079622878", "", "-1", 40)
+
     return "test"
 
 @app.route('/data', methods = ['POST', 'GET'])
