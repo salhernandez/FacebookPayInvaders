@@ -540,6 +540,26 @@ class DBLink(object):
         
         admin = models.StateInfo.query.filter(and_(models.StateInfo.senderID==sender_id, models.StateInfo.recipientID==recipient_id, models.StateInfo.splitID == split_id)).update(dict(amount=new_amount))
         models.db.session.commit()
+    
+    """
+    Gets a user state info table started
+    pass in the userID and the flowType
+    dbLink.init_state_info("1596606567017003", "split")
+    """
+    def init_state_info(self, senderID, flowType):
+        splitID = "-1"
+        recipientID=""
+        amount= 0.0
+        
+        senderID = str(senderID)
+        recipientID = str(recipientID)
+        ts = str(int(time.time()))
+        flowType = flowType.lower()
+        
+        newStateInfo = models.StateInfo(senderID, recipientID, amount, flowType, splitID, ts)
+        models.db.session.add(newStateInfo)
+        
+        models.db.session.commit()
     """
     ===END STATE INFO TABLE METHODS
     ============================================================================
