@@ -584,7 +584,6 @@ class DBLink(object):
             stateInfoDict['splitID'] = record.splitID
             stateInfoDict['timestamp'] = record.time_stamp
             
-            
             models.db.session.delete(record)
             models.db.session.commit()
         else:
