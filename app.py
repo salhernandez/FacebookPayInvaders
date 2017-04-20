@@ -348,7 +348,7 @@ def webhook():
 
                             elif qrParser.valueFromResponse in "request":
                                 
-                                aLink.init_state_info(sender_id, "pay")
+                                aLink.init_state_info(sender_id, "request")
                                 
                                 someUser = UserInfo.UserInfo("",sender_id)
                                 anotherUser = UserInfo.UserInfo("","")
@@ -492,8 +492,7 @@ def webhook():
                                 # print the_user[3]
                                 # print len(the_user)
                                 break
-                            
-                            
+
                             #get the message, and id, check if the message containts the right info for the current flow
                             aLink = DBLink.DBLink()
                             flow_info = aLink.get_flow_state(sender_id)
