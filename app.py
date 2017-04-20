@@ -53,7 +53,7 @@ def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
     print "#######################"
-    print dbLink.get_users_with_first_name("Hsoj")
+    print dbLink.delete_userID_state_info("1204927079622878")
     
     return "test"
 
@@ -592,9 +592,6 @@ def webhook():
                                         sendMsg.send_error_try_again()
                                         sendMsg.send_enter_amount()
                                         break
-                                    
-                                    
-                                    
                                     
                             if flow_info['flowType'] in "pay":
                                 if flow_info['flowState'] == 2:
