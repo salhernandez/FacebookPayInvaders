@@ -347,6 +347,9 @@ def webhook():
                                     break
 
                             elif qrParser.valueFromResponse in "request":
+                                
+                                aLink.init_state_info(sender_id, "pay")
+                                
                                 someUser = UserInfo.UserInfo("",sender_id)
                                 anotherUser = UserInfo.UserInfo("","")
                             
