@@ -118,13 +118,13 @@ class DBLink(object):
             for row in userInDB:
                 # print row.owed_ID
                 userInDBDict[count] = {}
-                userInDBDict[count][row.user_id] = {}
-                userInDBDict[count][row.user_id]['userID'] = row.user_id
-                userInDBDict[count][row.user_id]['firstName'] = row.firstName
-                userInDBDict[count][row.user_id]['lastName'] = row.lastName
-                userInDBDict[count][row.user_id]['email'] = row.email
-                userInDBDict[count][row.user_id]['imgUrl'] = row.imgUrl
-                userInDBDict[count][row.user_id]['phoneNumber'] = row.phoneNumber
+                # userInDBDict[count][row.user_id] = {}
+                userInDBDict[count]['userID'] = row.user_id
+                userInDBDict[count]['firstName'] = row.firstName
+                userInDBDict[count]['lastName'] = row.lastName
+                userInDBDict[count]['email'] = row.email
+                userInDBDict[count]['imgUrl'] = row.imgUrl
+                userInDBDict[count]['phoneNumber'] = row.phoneNumber
                 
                 count = count + 1
             return userInDBDict
