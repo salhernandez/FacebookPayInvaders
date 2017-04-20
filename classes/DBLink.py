@@ -458,8 +458,12 @@ class DBLink(object):
             PayInfoDict['amount'] = record.amount
             PayInfoDict['timestamp'] = record.time_stamp
         
-        models.db.session.delete(record)        
-        models.db.session.commit()
+            models.db.session.delete(record)        
+            models.db.session.commit()
+            
+        else:
+            PayInfoDict = None
+            
         return PayInfoDict
         
     """
@@ -539,6 +543,53 @@ class DBLink(object):
         
         admin = models.StateInfo.query.filter(and_(models.StateInfo.senderID==sender_id, models.StateInfo.recipientID==recipient_id, models.StateInfo.splitID == split_id)).update(dict(amount=new_amount))
         models.db.session.commit()
+    
+    """
+    Gets a user state info table started
+    pass in the userID and the flowType
+    dbLink.init_state_info("1596606567017003", "split")
+    """
+    def init_state_info(self, senderID, flowType):
+        splitID = "-1"
+        recipientID=""
+        amount= 0.0
+        
+        senderID = str(senderID)
+        recipientID = str(recipientID)
+        ts = str(int(time.time()))
+        flowType = flowType.lower()
+        
+        newStateInfo = models.StateInfo(senderID, recipientID, amount, flowType, splitID, ts)
+        models.db.session.add(newStateInfo)
+        
+        models.db.session.commit()
+        
+    
+    """
+    delete_userID_state_info
+    deletes the user id row from the state info table
+    
+    dbLink.delete_userID_state_info("15966017003")
+    """
+    def delete_userID_state_info(self, userID):
+        record = models.StateInfo.query.filter_by(senderID=str(userID)).first()
+        stateInfoDict = {}
+        
+        if record is not None:
+            # print row.owed_ID
+            stateInfoDict['recipientID'] = record.recipientID
+            stateInfoDict['amount'] = record.amount
+            stateInfoDict['flowType'] = record.flowType
+            stateInfoDict['splitID'] = record.splitID
+            stateInfoDict['timestamp'] = record.time_stamp
+            
+            models.db.session.delete(record)
+            models.db.session.commit()
+        else:
+            stateInfoDict = None
+        
+        return stateInfoDict
+       
     """
     ===END STATE INFO TABLE METHODS
     ============================================================================
