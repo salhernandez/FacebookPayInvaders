@@ -43,6 +43,7 @@ def saltest():
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
+    print "#######################"
     print dbLink.get_users_with_first_name("Anna")
     
     
