@@ -174,15 +174,12 @@ def hello():
 
 
 def getNameOfUser(anID):
-    userFirst = False
-    if str(985245348244242) in anID:
-        userFirst = "josh"
     
-    elif str(1596606567017003) in anID:
-        userFirst = "sal"
-    
-    elif str(1204927079622878) in anID:
-        userFirst = "anna"
+    aLink = DBLink.DBLink()
+    try:
+        userFirst = aLink.get_user_in_db(anID)    
+    except ValueError:
+        userFirst = False
     
     return userFirst
 
