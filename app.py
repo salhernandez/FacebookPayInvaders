@@ -516,7 +516,7 @@ def webhook():
                                     
                                     # #store amount into state table
                                     #debug this
-                                    dbLink.update_state_info_amount("1204927079622878", "985245348244242", "-1", float(msgObj.amount))
+                                    aLink.update_state_info_amount("1204927079622878", "985245348244242", "-1", float(msgObj.amount))
 
                                     # aLink.update_state_info_amount(sender_id, "", "-1", float(msgObj.amount))
                                     
