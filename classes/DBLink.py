@@ -459,8 +459,12 @@ class DBLink(object):
             PayInfoDict['amount'] = record.amount
             PayInfoDict['timestamp'] = record.time_stamp
         
-        models.db.session.delete(record)        
-        models.db.session.commit()
+            models.db.session.delete(record)        
+            models.db.session.commit()
+            
+        else:
+            PayInfoDict = None
+            
         return PayInfoDict
         
     """
@@ -560,6 +564,34 @@ class DBLink(object):
         models.db.session.add(newStateInfo)
         
         models.db.session.commit()
+        
+    
+    """
+    delete_userID_state_info
+    deletes the user id row from the state info table
+    
+    dbLink.delete_userID_state_info("15966017003")
+    """
+    def delete_userID_state_info(self, userID):
+        record = models.StateInfo.query.filter_by(senderID=str(userID)).first()
+        stateInfoDict = {}
+        
+        if record is not None:
+            # print row.owed_ID
+            stateInfoDict['recipientID'] = record.recipientID
+            stateInfoDict['amount'] = record.amount
+            stateInfoDict['flowType'] = record.flowType
+            stateInfoDict['splitID'] = record.splitID
+            stateInfoDict['timestamp'] = record.time_stamp
+            
+            
+            models.db.session.delete(record)
+            models.db.session.commit()
+        else:
+            stateInfoDict = None
+        
+        return stateInfoDict
+       
     """
     ===END STATE INFO TABLE METHODS
     ============================================================================
