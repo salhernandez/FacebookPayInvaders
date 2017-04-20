@@ -428,6 +428,7 @@ def webhook():
                             if "Info" in message_text:
                                 payedUser = UserInfo.UserInfo("Hsoj", messaging_event["sender"]["id"])
                                 sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = "hi")
+                                sendMsg.send_payment_made_message()
                                 log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS2: "+str(sendMsg))
                                 break
                             #sends buttons with images to josh
