@@ -396,6 +396,7 @@ def webhook():
                             
                             elif qrParser.valueFromResponse is "deny":
                                 aLink.update_flow(sender_id, "", 1)
+                                aLink.delete_userID_state_info(sender_id)
                                 sendMsg.send_clear_message()
                                 aReply = QuickReply.QuickReply()
                                 aReply.send_action_quick_reply(messaging_event["sender"]["id"])                                
