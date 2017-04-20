@@ -425,8 +425,8 @@ def webhook():
                                 break
                             
                             # gets the who owes how
-                            if "info" in message_text:
-                                payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
+                            if "Info" in message_text:
+                                payedUser = UserInfo.UserInfo("Hsoj", messaging_event["sender"]["id"])
                                 MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = "hi")
                                 break
                             #sends buttons with images to josh
