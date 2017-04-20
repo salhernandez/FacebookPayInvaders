@@ -258,10 +258,10 @@ def webhook():
                     
                     #quickreply fix
                     #############################################
-                    aReply = QuickReply.QuickReply()
-                    aReply = QuickReply.QuickReply()
-                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])
-                    break
+                    # aReply = QuickReply.QuickReply()
+                    # aReply = QuickReply.QuickReply()
+                    # aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                    # break
                     #################################################
                     
                     # #gets info from the db
@@ -362,12 +362,13 @@ def webhook():
                                 log("INSIDE QR SPLIT")
                                 sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                 
-                                if qrParser.flowStateFromDB == 2:
-                                    log("INSIDE QR SPLIT 2")
-                                    #increment flowState in DB
-                                    #process payload info
+                                #start of the flow
+                                if qrParser.flowStateFromDB == 1:
+                                    log("INSIDE QR SPLIT 1")
+                                    #send message to ask the person to enter a full name
+                                    sendMsg.send_pay_who_message1()
                                     #update flow
-                                    a = aLink.update_flow(sender_id, "split", 3)
+                                    aLink.update_flow(sender_id, "split", 2)
                                     break
                         
                         elif isValidConfirmDeny is True:
@@ -395,10 +396,22 @@ def webhook():
                         #if the reply was a person selected
                         elif isValidSelectPerson is True:
                             flow_info = aLink.get_flow_state(sender_id)
-                            if flow_info['flowState'] == 2:
-                                log("FLOWSTATE == 2")
-                                #grab the id
-                                #updates the flow
+                            
+                            if flow_info['flowType'] in "pay":
+                                pass
+                            if flow_info['flowType'] in "request":
+                                pass
+                            if flow_info['flowType'] in "split":
+                                if flow_info['flowState'] == 3:
+                                    log("SELECTED PERSON == 3")
+                                    #grab the id
+                                    #updates the flow
+                                    aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
+                                    #updates the flow state
+                                    aLink.update_flow(sender_id, "split", 4)
+                                    #sends next flow state
+                                    sendMsg.send_enter_amount()
+                                    
                                 
                     except KeyError:
                         log("KEYERROR FROM REPLY")
@@ -497,6 +510,13 @@ def webhook():
                                 aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                                 break
                             
+                            if flow_info['flowState'] == 1:
+                                log("FLOWSTATE == 1")
+                                if flow_info['flowType'] in "":
+                                    log("FLOWSTATE == 1")
+                                    aReply = QuickReply.QuickReply()
+                                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                                    break
                             
                             # #check if the response belongs to that flow
                             # if messmessage_text in "pay":
@@ -518,8 +538,8 @@ def webhook():
                             #text based responses for split
                             #1, 3
                             if flow_info['flowType'] in "split":
-                                if flow_info['flowState'] == 1:
-                                    log("FLOWSTATE == 1")
+                                if flow_info['flowState'] == 2:
+                                    log("SPLIT CHECK NAME FLOWSTATE == 2")
                                     #check if the user entered a full name (first and last name)
                                     aName = message_text.split()
                                     if aName == 2:
@@ -534,7 +554,7 @@ def webhook():
                                                 aReply = QuickReply.QuickReply()
                                                 aReply.send_users_quick_reply(sender_id, the_users)
                                                 #increase flow number
-                                                aLink.update_flow(sender_id, "split", 2)
+                                                aLink.update_flow(sender_id, "split", 3)
                                             else:
                                                 #let the user know that the person does not exist and to share the link
                                                 someUser = UserInfo.UserInfo("",sender_id)
@@ -546,16 +566,33 @@ def webhook():
                                                 break
                                     else:
                                         pass
-                                        #resend the infor for the state
-                            
-                            if flow_info['flowState'] == 1:
-                                log("FLOWSTATE == 1")
-                                if flow_info['flowType'] in "":
-                                    log("FLOWSTATE == 1")
-                                    aReply = QuickReply.QuickReply()
-                                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])
-                                    break
-                            
+                                        #resend the info for the state
+                                        sendMsg.send_pay_who_message1()
+                                        break
+                                        
+                                elif flow_info['flowState'] == 4:
+                                    #get amount, check if its a number, if it is, increase flow,
+                                    #if not send error message to re-enter amount
+                                    anAmount = __getAmount__(message_text)
+                                    
+                                    #if the amount is valid, update state info
+                                    # update flow
+                                    # ask if they want to enter another person
+                                    if anAmount is not None:
+                                        pass
+                                    else:
+                                        #re-enter information
+                                        someUser = UserInfo.UserInfo("",sender_id)
+                                        anotherUser = UserInfo.UserInfo("","")
+                                        
+                                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                        sendMsg.send_error_try_again()
+                                        sendMsg.send_enter_amount()
+                                        break
+                                    
+                                    
+                                    
+                                    
                             if flow_info['flowType'] in "pay":
                                 if flow_info['flowState'] == 2:
                                     aLink.update_flow(sender_id, "pay", 3)
@@ -724,6 +761,26 @@ def getUserInfo(anId):
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
     sys.stdout.flush()
+
+"""
+gets the amount from the string and determines if is a valid string or not
+"""
+def __getAmount__(data):
+    # get words in string
+    splits = data.split(" ")
+    amount = "-1"
+    # grab the word that has the $ char
+    for word in splits:
+        if '$' in word:
+            # get number
+            amount = word[1:]
+            break
+    try:
+        amount = float(amount)
+    except:
+        amount = None
+
+    return amount
 
 
 if __name__ == '__main__':
