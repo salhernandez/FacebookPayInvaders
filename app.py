@@ -43,7 +43,9 @@ def saltest():
 def test():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    dbLink.update_state_info_amount("1204927079622878", "985245348244242", "-1", 20)
+    print dbLink.get_users_with_first_name("Anna")
+    
+    
 
     return "test"
 
