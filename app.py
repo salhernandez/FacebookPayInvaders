@@ -331,6 +331,8 @@ def webhook():
                                 
                                 log("VALUE FROM RESPONSE IS PAY")
                                 
+                                aLink.init_state_info(sender_id, "pay")
+
                                 someUser = UserInfo.UserInfo("",sender_id)
                                 anotherUser = UserInfo.UserInfo("","")
                             
