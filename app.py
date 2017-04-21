@@ -463,6 +463,7 @@ def webhook():
                                 #ask if they want to pay another person
                                 if flow_info['flowType'] in "split":
                                     flow_info['flowState'] == 5:
+                                        log("SPLIT FLOWSTATE == 5")
                                         aLink.perform_request_transaction(sender_id)
                                         #ask if they want to pay another person
                                         aReply = QuickReply.QuickReply()
@@ -472,6 +473,7 @@ def webhook():
                                         break
                                     
                             elif qrParser.valueFromResponse in "deny":
+                                log("DENY")
                                 aReply = QuickReply.QuickReply()
                                 aLink.update_flow(sender_id, "", 1)
                                 aLink.delete_userID_state_info(sender_id)
@@ -493,7 +495,7 @@ def webhook():
                                 pass
                             if flow_info['flowType'] in "split":
                                 if flow_info['flowState'] == 3:
-                                    log("SELECTED PERSON == 3")
+                                    log("SELECTED PERSON SPLIT == 3")
                                     #grab the id
                                     #updates the flow
                                     aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
@@ -508,8 +510,10 @@ def webhook():
                             
                             if aReply.valueFromResponse in "yes":
                                 if flow_info['flowType'] in "split":
+                                    log("YES NO SPLIT")
                                     #user want to charge another person
                                     if flow_info['flowState'] == 6:
+                                        log("YES SPLIT == 6")
                                         #reset flow to 1 and split
                                         aLink.update_flow(sender_id, "split", 1)
                                         dbLink.delete_userID_state_info(sender_id)
@@ -518,6 +522,7 @@ def webhook():
                             elif aReply.valueFromResponse in "no":
                                 if flow_info['flowType'] in "split":
                                     if flow_info['flowState'] == 6:
+                                        log("NO SPLIT == 6")
                                         #reset flow to 0
                                         aLink.update_flow(sender_id, "", 0)
                                         aLink.delete_userID_state_info(sender_id)
@@ -642,18 +647,20 @@ def webhook():
                                     aName = message_text.split()
                                     if aName == 2:
                                         if flow_info['flowType'] in "":
-                                            log("FLOWSTATE == 1")
+                                            log("SPLIT CHECK NAME FLOWSTATE == 2")
                                             #send the buttons
                                             dbLink = DBLink.DBLink()
                                             the_users = dbLink.get_users_with_first_last_name(aName[0], aName[1])
                                             
                                             #if there are users in the db with that name
                                             if the_users is not None:
+                                                log("USER EXISTS - SPLIT CHECK NAME FLOWSTATE == 2")
                                                 aReply = QuickReply.QuickReply()
                                                 aReply.send_users_quick_reply(sender_id, the_users)
                                                 #increase flow number
                                                 aLink.update_flow(sender_id, "split", 3)
                                             else:
+                                                log("USER DOESNT EXIST - SPLIT CHECK NAME FLOWSTATE == 2")
                                                 #let the user know that the person does not exist and to share the link
                                                 someUser = UserInfo.UserInfo("",sender_id)
                                                 anotherUser = UserInfo.UserInfo("","")
@@ -675,6 +682,7 @@ def webhook():
                                         break
                                         
                                 elif flow_info['flowState'] == 4:
+                                    log("SPLIT == 4")
                                     #get amount, check if its a number, if it is, increase flow,
                                     #if not send error message to re-enter amount
                                     anAmount = __getAmount__(message_text)
@@ -683,6 +691,7 @@ def webhook():
                                     # update flow
                                     # ask if what they entered is correct w/ confirm/deny QR buttons
                                     if anAmount is not None:
+                                        log("SPLIT VALID == 6")
                                         aLink.update_flow(sender_id, "split", 5)
                                         #get flow state info
                                         tempInfo = aLink.get_state_info(sender_id)
@@ -692,6 +701,7 @@ def webhook():
                                         aReply = QuickReply.QuickReply()
                                         aReply.send_confirmDeny_quick_reply(sender_id)
                                     else:
+                                        log("SPLIT VALID == 6")
                                         #re-enter information
                                         someUser = UserInfo.UserInfo("",sender_id)
                                         anotherUser = UserInfo.UserInfo("","")
