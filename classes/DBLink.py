@@ -563,6 +563,31 @@ class DBLink(object):
         
         admin = models.StateInfo.query.filter(and_(models.StateInfo.senderID==sender_id, models.StateInfo.recipientID==recipient_id, models.StateInfo.splitID == split_id)).update(dict(amount=new_amount))
         models.db.session.commit()
+        
+    """
+    delete_userID_state_info
+    deletes the user id row from the state info table
+    
+    dbLink.delete_userID_state_info("15966017003")
+    """
+    def delete_userID_state_info(self, userID):
+        record = models.StateInfo.query.filter_by(senderID=str(userID)).first()
+        stateInfoDict = {}
+        
+        if record is not None:
+            # print row.owed_ID
+            stateInfoDict['recipientID'] = record.recipientID
+            stateInfoDict['amount'] = record.amount
+            stateInfoDict['flowType'] = record.flowType
+            stateInfoDict['splitID'] = record.splitID
+            stateInfoDict['timestamp'] = record.time_stamp
+            
+            models.db.session.delete(record)
+            models.db.session.commit()
+        else:
+            stateInfoDict = None
+        
+        return stateInfoDict
     """
     ===END STATE INFO TABLE METHODS
     ============================================================================
@@ -674,8 +699,18 @@ class DBLink(object):
         deletedInfo = self.delete_pay_request(payeeID, time_stamp)
         #add it to the payed(paid) table
         self.add_payment(deletedInfo['owed_ID'], deletedInfo['pay_ID'], deletedInfo['amount'])
-        
-        
+    
+    """
+    perform_payment_transaction
+    
+    aLink = DBLink.DBLink()
+    
+    a = aLink.perform_payment_transaction("1596606567017003")
+    """
+    def perform_request_transaction(self, payeeID):
+            deletedInfo = self.delete_userID_state_info(payeeID)
+            #add the info to the pay table
+            self.add_request(payeeID, deletedInfo['recipientID'], deletedInfo['amount'])
     """
     Displays the instance variables of the object
     """

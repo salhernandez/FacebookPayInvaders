@@ -383,10 +383,30 @@ def webhook():
                                     aLink.update_flow(sender_id, "", 0)
 
                                     sendMsg.send_your_request_was_sent()
-
                                     break
+                                
+                                if qrParser.flowTypeFromDB in "request":
+                                    aLink.update_flow(sender_id, "", 0)
+
+                                    sendMsg.send_your_request_was_sent()
+                                    break
+                                
+                                flow_info = aLink.get_flow_state(sender_id)
+                                
+                                #specific confirm for split
+                                #add all the information from the state info onto the pay table
+                                #delete from state info
+                                #ask if they want to pay another person
+                                if flow_info['flowType'] in "split":
+                                    aLink.perform_request_transaction(sender_id)
+                                    #ask if they want to pay another person
+                                    
                             
                             elif qrParser.valueFromResponse is "deny":
+                                
+                                #if deny payment confirmation in split
+                                #payment confirmation
+                                
                                 aLink.update_flow(sender_id, "", 1)
                                 sendMsg.send_clear_message()
                                 aReply = QuickReply.QuickReply()
@@ -577,9 +597,16 @@ def webhook():
                                     
                                     #if the amount is valid, update state info
                                     # update flow
-                                    # ask if they want to enter another person
+                                    # ask if what they entered is correct w/ confirm/deny QR buttons
                                     if anAmount is not None:
-                                        pass
+                                        aLink.update_flow(sender_id, "split", 5)
+                                        #get flow state info
+                                        tempInfo = aLink.get_state_info(sender_id)
+                                        #update flow state info
+                                        aLink.update_state_info_amount(sender_id, amount)
+                                        #send QR confirm/deny buttons
+                                        aReply = QuickReply.QuickReply()
+                                        aReply.send_confirmDeny_quick_reply(sender_id)
                                     else:
                                         #re-enter information
                                         someUser = UserInfo.UserInfo("",sender_id)
@@ -589,9 +616,6 @@ def webhook():
                                         sendMsg.send_error_try_again()
                                         sendMsg.send_enter_amount()
                                         break
-                                    
-                                    
-                                    
                                     
                             if flow_info['flowType'] in "pay":
                                 if flow_info['flowState'] == 2:

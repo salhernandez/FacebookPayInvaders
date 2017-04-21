@@ -111,6 +111,35 @@ class QuickReply(object):
             self.log(r.status_code)
             self.log(r.text)
     
+    """
+    Sends a quick reply with the buttons "yes", "no" with the proper payload
+    
+    aReply = QuickReply.QuickReply()
+    """
+    def send_action_quick_reply(self, toID):
+        
+        params = {
+            "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+        }
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # convert dict into json
+        #####################################
+        JSON_Datalist = """"""
+        JSON_Datalist = JSON_Datalist.replace(" ", "")
+        the_dict = json.loads(JSON_Datalist)
+        the_dict['recipient']['id'] = str(toID)
+        
+
+        data = json.dumps(the_dict)
+        #######################################
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+        if r.status_code != 200:
+            self.log(r.status_code)
+            self.log(r.text)
+    
     ##send message to user 
     ############################################################################
             
