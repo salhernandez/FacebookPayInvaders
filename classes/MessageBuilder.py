@@ -77,12 +77,21 @@ class MessageBuilder(object):
     def send_default_message(self):
         self.message_template_simple(self.fromID, self.defaultMessage)
 
+    def send_help_response(self):
+        self.message_template_simple(self.fromID, "Hello there! I am a payment bot. I can help you complete transactions like paying a friend, requesting money from a friend, and splitting bills with friends. You can clear your conversation with me at any time by typing 'clear'")
+
     def send_request_from_who_message(self):
-        self.message_template_simple(self.fromID, "Who would you like to request money from?")
+        self.message_template_simple(self.fromID, "Type the first and last name of the user you'd like to request money from as it appears on Facebook")
     
     def send_pay_who_message1(self):
-        self.message_template_simple(self.fromID, "Type the first and last name of the user you'd like to pay")
+        self.message_template_simple(self.fromID, "Type the first and last name of the user you'd like to pay as it appears on Facebook")
     
+    def send_use_dollar_sign(self):
+        self.message_template_simple(self.fromID, "Please use a dollar sign when specifying your amount")
+    
+    def send_correct_amount_format_message(self):
+        self.message_template_simple(self.fromID, "The correct message format is '$10' or '$10.25' ")
+
     def send_your_request_was_sent(self):
         self.message_template_simple(self.fromID, "Your request was sent")
     
