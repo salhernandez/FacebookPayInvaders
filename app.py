@@ -394,7 +394,7 @@ def webhook():
                                     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                     the_payment.send_payment_gateway()
                                     
-                                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])   
+                                    # aReply.send_action_quick_reply(messaging_event["sender"]["id"])   
                                     
                                     break
                                 
