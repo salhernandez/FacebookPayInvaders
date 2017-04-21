@@ -381,6 +381,7 @@ def webhook():
                                     aLink.update_flow(sender_id, "", 0)
 
                                     sendMsg.send_your_request_was_sent()
+                                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])   
 
                                     break
                                 
