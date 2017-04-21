@@ -621,17 +621,22 @@ def webhook():
                                 if flow_info['flowState'] == 4: 
                                     log("FLOWSTATE IS 4")
                                     #if correct amout input, increment flow and send message
-                                    
-                                    
+                                    if '$' not in msgObj.getMessage():
+                                        sendMsg.send_use_dollar_sign()
+                                        sendMsg.send_how_much_message()
+                                        
+                                        break
+                                    else:
+                                        aLink.update_state_info_amount(sender_id, "", "-1", float(msgObj.amount))
+                                        
+                                        aLink.update_flow(sender_id, "pay", 5)
+                                        
+                                        aReply = QuickReply.QuickReply()
+                                        aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
+                                        break                                    
                                     # #store amount into state table
                                     #debug this
-                                    aLink.update_state_info_amount(sender_id, "", "-1", float(msgObj.amount))
                                     
-                                    aLink.update_flow(sender_id, "pay", 5)
-                                    
-                                    aReply = QuickReply.QuickReply()
-                                    aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
-                                    break
                             
                             if flow_info['flowType'] in "request":
                                 

@@ -83,6 +83,9 @@ class MessageBuilder(object):
     def send_pay_who_message1(self):
         self.message_template_simple(self.fromID, "Type the first and last name of the user you'd like to pay")
     
+    def send_use_dollar_sign(self):
+        self.message_template_simple(self.fromID, "Please use a dollar sign when specifying your amount")
+    
     def send_your_request_was_sent(self):
         self.message_template_simple(self.fromID, "Your request was sent")
     
