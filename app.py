@@ -652,22 +652,20 @@ def webhook():
                                 if flow_info['flowState'] == 4: 
                                     m = re.search('\$(?!0\d)\d+(?:\.\d{2})?(?=\s|$)', msgObj.getMessage())
                                     if m:
-                                        sendMsg.send_correct_amount_format_message()
-                                        sendMsg.send_how_much_message()
-                                        
-                                        break                                    
-                                    #if correct amout input, increment flow and send message
-                                    
-                                    else:
-                                    # #store amount into state table
-                                    #debug this
                                         aLink.update_state_info_amount(sender_id, "", "-1", msgObj.amount)
                                         
                                         aLink.update_flow(sender_id, "request", 5)
                                         
                                         aReply = QuickReply.QuickReply()
                                         aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
-                                        break                        
+                                        break    
+                                
+                                    else:
+                                        sendMsg.send_correct_amount_format_message()
+                                        sendMsg.send_how_much_message()
+                                        
+                                        break 
+                                                            
                         else:
     
                             payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
