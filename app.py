@@ -351,7 +351,8 @@ def webhook():
                                 if qrParser.flowStateFromDB == 1:
                                     #increment flowState in DB
                                     a = aLink.update_flow(sender_id, "request", 2)
-                    
+                                    #init state info
+                                    aLink.init_flow_state(sender_id)
                                     #send pay who message
                                     sendMsg.send_request_from_who_message()
                                     break
@@ -367,7 +368,7 @@ def webhook():
                                 if qrParser.flowStateFromDB == 1:
                                     log("INSIDE QR SPLIT 1")
                                     #send message to ask the person to enter a full name
-                                    sendMsg.send_pay_who_message1()
+                                    sendMsg.send_request_from_who_message()
                                     #update flow
                                     aLink.update_flow(sender_id, "split", 2)
                                     break
@@ -399,13 +400,14 @@ def webhook():
                                 #delete from state info
                                 #ask if they want to pay another person
                                 if flow_info['flowType'] in "split":
-                                    aLink.perform_request_transaction(sender_id)
-                                    #ask if they want to pay another person
-                                    aReply = QuickReply.QuickReply()
-                                    aReply.send_yesNo_quick_reply(sender_id)
-                                    #increase flow
-                                    aLink.update_flow(sender_id, "", 6)
-                                    break
+                                    flow_info['flowState'] == 5:
+                                        aLink.perform_request_transaction(sender_id)
+                                        #ask if they want to pay another person
+                                        aReply = QuickReply.QuickReply()
+                                        aReply.send_yesNo_quick_reply(sender_id)
+                                        #increase flow
+                                        aLink.update_flow(sender_id, "", 6)
+                                        break
                             
                             elif qrParser.valueFromResponse is "deny":
                                 
@@ -446,15 +448,17 @@ def webhook():
                                     #user want to charge another person
                                     if flow_info['flowState'] == 6:
                                         #reset flow to 1 and split
-                                        aLink.update_flow(sender_id, "split", 4)
-                                        sendMsg.send_pay_who_message1()
+                                        aLink.update_flow(sender_id, "split", 1)
+                                        dbLink.delete_userID_state_info(sender_id)
+                                        sendMsg.send_request_from_who_message()
                                         break
                             elif aReply.valueFromResponse in "no":
                                 if flow_info['flowType'] in "split":
                                     if flow_info['flowState'] == 6:
                                         #reset flow to 0
-                                        aLink.update_flow(sender_id, "split", 0)
-                                        aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                                        aLink.update_flow(sender_id, "", 0)
+                                        aLink.delete_userID_state_info(sender_id)
+                                        aReply.send_action_quick_reply(sender_id)
                                     
                     except KeyError:
                         log("KEYERROR FROM REPLY")
@@ -501,13 +505,10 @@ def webhook():
                             #send share link message
                             sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                                 
-                            
-                            
                             log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS: "+str(sendMsg))
                             #if there is no name and amount, it will reply to the user with a static response
                             #josh stuff is beklow here
                             #checks that the user and the amount is there
-                            
                             
                             the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                             
@@ -606,6 +607,12 @@ def webhook():
                                                 #send share link message
                                                 sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                                 sendMsg.send_share_link_message()
+                                                
+                                                #deletes the flow state row
+                                                dbLink.delete_userID_state_info(sender_id)
+                                                
+                                                #reset flow state
+                                                aLink.update_flow(sender_id, "", 1)
                                                 break
                                     else:
                                         pass
