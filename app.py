@@ -11,6 +11,7 @@ from classes.Pay import PayGate
 import classes.GraphRequests as GraphRequests
 import classes.QuickReply as QuickReply
 import numpy as np
+import re
 import pandas as pd
 
 app = Flask(__name__)
@@ -649,9 +650,9 @@ def webhook():
                                     sendMsg.send_how_much_message()
                                     
                                 if flow_info['flowState'] == 4: 
-                                    if '$' not in msgObj.getMessage():
+                                    if not re.search(ur'([£\$€])(\d+(?:\.\d{2})?)', msgObj.getMessage()).groups():
                                         
-                                        sendMsg.send_use_dollar_sign()
+                                        sendMsg.send_correct_amount_format_message()
                                         sendMsg.send_how_much_message()
                                         
                                         break                                    
