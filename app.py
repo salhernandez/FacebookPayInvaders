@@ -622,12 +622,19 @@ def webhook():
                                     
                             if flow_info['flowType'] in "pay":
                                 if flow_info['flowState'] == 2:
+                                    
+                                    #check name in db
+                                    
+                                    dbLink = DBLink.DBLink()
+                                    the_user = dbLink.get_users_with_first_name(msgObj.getMessage())
+                                    the_payment.send_user_table(the_user)
+                                    
                                     aLink.update_flow(sender_id, "pay", 3)
-                                    sendMsg.send_which_user()
+                                    break
                                 
-                                if flow_info['flowState'] == 3:
-                                    aLink.update_flow(sender_id, "pay", 4)
-                                    sendMsg.send_how_much_message()
+                                # if flow_info['flowState'] == 3:
+                                #     aLink.update_flow(sender_id, "pay", 4)
+                                #     sendMsg.send_how_much_message()
                                     
                                 if flow_info['flowState'] == 4: 
                                     log("FLOWSTATE IS 4")
