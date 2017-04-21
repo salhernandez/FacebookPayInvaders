@@ -77,6 +77,9 @@ class MessageBuilder(object):
     def send_default_message(self):
         self.message_template_simple(self.fromID, self.defaultMessage)
 
+    def send_help_response(self):
+        self.message_template_simple(self.fromID, "Hello there! I am a payment bot. I can help you complete transactions like paying a friend, requesting money from a friend, and splitting bills with friends. You can clear your conversation with me at any time by typing 'clear'")
+
     def send_request_from_who_message(self):
         self.message_template_simple(self.fromID, "Who would you like to request money from?")
     

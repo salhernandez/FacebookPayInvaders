@@ -515,13 +515,19 @@ def webhook():
 
                             #get the message, and id, check if the message containts the right info for the current flow
                             aLink = DBLink.DBLink()
+                            aReply = QuickReply.QuickReply()
                             flow_info = aLink.get_flow_state(sender_id)
+                            
+                            if message_text.lower() in "help":
+                                sendMsg.send_help_response()
+                                aReply.send_action_quick_reply(messaging_event["sender"]["id"])                                
+                                
+                                break
                             
                             if message_text.lower() in "clear" or message_text.lower() in "exit" or message_text.lower() in "cancel":
                                 aLink.update_flow(sender_id, "", 1)
                                 aLink.delete_userID_state_info(sender_id)
                                 sendMsg.send_clear_message()
-                                aReply = QuickReply.QuickReply()
                                 aReply.send_action_quick_reply(messaging_event["sender"]["id"])                                
                                 break
                             
