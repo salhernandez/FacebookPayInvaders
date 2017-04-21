@@ -292,8 +292,7 @@ def webhook():
                     #quickreply fix
                     #############################################
                     aReply = QuickReply.QuickReply()
-                    aReply = QuickReply.QuickReply()
-                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                    aReply.send_action_quick_reply(sender_id)
                     break
                     #################################################
                     
