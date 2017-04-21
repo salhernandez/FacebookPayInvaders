@@ -517,7 +517,7 @@ def webhook():
                             aLink = DBLink.DBLink()
                             flow_info = aLink.get_flow_state(sender_id)
                             
-                            if message_text in "clear" or message_text in "exit":
+                            if message_text.lower() in "clear" or message_text.lower() in "exit" or message_text.lower() in "cancel":
                                 aLink.update_flow(sender_id, "", 1)
                                 aLink.delete_userID_state_info(sender_id)
                                 sendMsg.send_clear_message()
