@@ -381,10 +381,16 @@ def webhook():
                         
 
                         elif isValidConfirmDeny is True:
-                            
-                            aReply = QuickReply.QuickReply()
+                            if qrParser.flowTypeFromDB in "request":
+                                    aLink.update_flow(sender_id, "", 0)
+
+                                    sendMsg.send_your_request_was_sent()
+
+                                    break
                             
                             if qrParser.valueFromResponse in "confirm":
+                                aReply = QuickReply.QuickReply()
+
                                 qrParser.getFlowState()
                                 if qrParser.flowTypeFromDB in "pay":
                                     aLink.update_flow(sender_id, "", 1)
@@ -408,15 +414,9 @@ def webhook():
                                     aReply.send_action_quick_reply(messaging_event["sender"]["id"])   
                                     
                                     break
-                                
-                                if qrParser.flowTypeFromDB in "request":
-                                    aLink.update_flow(sender_id, "", 0)
 
-                                    sendMsg.send_your_request_was_sent()
-
-                                    break
-                            
                             elif qrParser.valueFromResponse is "deny":
+                                aReply = QuickReply.QuickReply()
                                 aLink.update_flow(sender_id, "", 1)
                                 aLink.delete_userID_state_info(sender_id)
                                 sendMsg.send_clear_message()
@@ -535,6 +535,7 @@ def webhook():
                             # aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                             
                             #if the user is not in a flow, then it send the action quick message reply
+
                             if flow_info['flowState'] == 0:
                                 log("FLOWSTATE == 0")
                                 log(flow_info['flowState'])
@@ -551,24 +552,7 @@ def webhook():
                                     aReply = QuickReply.QuickReply()
                                     aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                                     break
-                            
-                            # #check if the response belongs to that flow
-                            # if messmessage_text in "pay":
-                            #     pass
-                            # if messmessage_text in "request":
-                            #     pass
-                            # if messmessage_text in "split":
-                            #     #check the flow state
-                            #     if flow_info['flowState'] == 1:
-                            #         log("FLOWSTATE == 1")
-                            #         #check for the proper value
-                            #         if flow_info['flowType'] in "":
-                            #             log("FLOWSTATE == 1")
-                            #             aReply = QuickReply.QuickReply()
-                            #             aReply.send_action_quick_reply(messaging_event["sender"]["id"])
-                            #             break
-                            
-                            
+
                             #text based responses for split
                             #1, 3
                             if flow_info['flowType'] in "split":
