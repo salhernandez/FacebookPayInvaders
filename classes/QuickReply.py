@@ -51,7 +51,7 @@ class QuickReply(object):
 
         # convert dict into json
         #####################################
-        JSON_Datalist = """{ "recipient":{ "id":"USER_ID" }, "message":{ "text":"What do you want to do?", "quick_replies":[ { "content_type":"text", "title":"Confirm", "payload":" 'responseType':'confirmDeny', 'value':'confirm' " }, { "content_type":"text", "title":"Deny", "payload":" 'responseType':'confirmDeny', 'value':'deny' " } ] } }"""
+        JSON_Datalist = """{ "recipient":{ "id":"USER_ID" }, "message":{ "text":"Options:", "quick_replies":[ { "content_type":"text", "title":"Confirm", "payload":" 'responseType':'confirmDeny', 'value':'confirm' " }, { "content_type":"text", "title":"Deny", "payload":" 'responseType':'confirmDeny', 'value':'deny' " } ] } }"""
         #gets rid of white space
         JSON_Datalist = JSON_Datalist.replace(" ", "")
         the_dict = json.loads(JSON_Datalist)
