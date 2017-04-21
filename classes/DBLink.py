@@ -116,15 +116,14 @@ class DBLink(object):
             
             count = 0
             for row in userInDB:
-                # print row.owed_ID
                 userInDBDict[count] = {}
-                userInDBDict[count][row.user_id] = {}
-                userInDBDict[count][row.user_id]['userID'] = row.user_id
-                userInDBDict[count][row.user_id]['firstName'] = row.firstName
-                userInDBDict[count][row.user_id]['lastName'] = row.lastName
-                userInDBDict[count][row.user_id]['email'] = row.email
-                userInDBDict[count][row.user_id]['imgUrl'] = row.imgUrl
-                userInDBDict[count][row.user_id]['phoneNumber'] = row.phoneNumber
+                # userInDBDict[count][row.user_id] = {}
+                userInDBDict[count]['userID'] = row.user_id
+                userInDBDict[count]['firstName'] = row.firstName
+                userInDBDict[count]['lastName'] = row.lastName
+                userInDBDict[count]['email'] = row.email
+                userInDBDict[count]['imgUrl'] = row.imgUrl
+                userInDBDict[count]['phoneNumber'] = row.phoneNumber
                 
                 count = count + 1
             return userInDBDict
@@ -482,8 +481,12 @@ class DBLink(object):
             PayInfoDict['amount'] = record.amount
             PayInfoDict['timestamp'] = record.time_stamp
         
-        models.db.session.delete(record)        
-        models.db.session.commit()
+            models.db.session.delete(record)        
+            models.db.session.commit()
+            
+        else:
+            PayInfoDict = None
+            
         return PayInfoDict
         
     """
@@ -565,6 +568,27 @@ class DBLink(object):
         models.db.session.commit()
         
     """
+    Gets a user state info table started
+    pass in the userID and the flowType
+    dbLink.init_state_info("1596606567017003", "split")
+    """
+    def init_state_info(self, senderID, flowType):
+        splitID = "-1"
+        recipientID=""
+        amount= 0.0
+        
+        senderID = str(senderID)
+        recipientID = str(recipientID)
+        ts = str(int(time.time()))
+        flowType = flowType.lower()
+        
+        newStateInfo = models.StateInfo(senderID, recipientID, amount, flowType, splitID, ts)
+        models.db.session.add(newStateInfo)
+        
+        models.db.session.commit()
+        
+    
+    """
     delete_userID_state_info
     deletes the user id row from the state info table
     
@@ -588,6 +612,7 @@ class DBLink(object):
             stateInfoDict = None
         
         return stateInfoDict
+
     """
     ===END STATE INFO TABLE METHODS
     ============================================================================
