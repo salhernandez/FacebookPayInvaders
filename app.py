@@ -390,11 +390,22 @@ def webhook():
                                     aLink.update_flow(sender_id, "", 0)
                                     
                                     #set state info row to paid table
+                                    state_info = aLink.get_state_info(sender_id)
+                                    
+                                    recipientID = state_info['recipientID']
+                                    amount = state_info['amount']
+                                    flowType = state_info['flowType']
+                                    splitID = state_info['splitID']
+                                    timeStamp = state_info['timestamp']
+                                    
+                                    aLink.add_payment(recipientID, sender_id, amount)
+                                    
+                                    aLink.delete_userID_state_info(sender_id)
                                     
                                     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                     the_payment.send_payment_gateway()
                                     
-                                    # aReply.send_action_quick_reply(messaging_event["sender"]["id"])   
+                                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])   
                                     
                                     break
                                 
