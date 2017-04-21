@@ -378,20 +378,23 @@ def webhook():
                                     #update flow
                                     aLink.update_flow(sender_id, "split", 2)
                                     break
-                        
 
                         elif isValidConfirmDeny is True:
-                            if qrParser.flowTypeFromDB in "request":
+                        
+                            if qrParser.valueFromResponse in "confirm":
+                                aReply = QuickReply.QuickReply()
+
+                                qrParser.getFlowState()
+                                
+                                if qrParser.flowTypeFromDB in "request":
+                                    qrParser.getFlowState()
+
                                     aLink.update_flow(sender_id, "", 0)
 
                                     sendMsg.send_your_request_was_sent()
 
                                     break
-                            
-                            if qrParser.valueFromResponse in "confirm":
-                                aReply = QuickReply.QuickReply()
-
-                                qrParser.getFlowState()
+                                
                                 if qrParser.flowTypeFromDB in "pay":
                                     aLink.update_flow(sender_id, "", 1)
                                     
