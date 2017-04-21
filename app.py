@@ -291,10 +291,10 @@ def webhook():
                     
                     #quickreply fix
                     #############################################
-                    # aReply = QuickReply.QuickReply()
-                    # aReply = QuickReply.QuickReply()
-                    # aReply.send_action_quick_reply(messaging_event["sender"]["id"])
-                    # break
+                    aReply = QuickReply.QuickReply()
+                    aReply = QuickReply.QuickReply()
+                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])
+                    break
                     #################################################
                     
                     # #gets info from the db
@@ -606,7 +606,6 @@ def webhook():
                             
                             if message_text.lower() in "help":
                                 sendMsg.send_help_response()
-
                                 break
                             
                             if message_text.lower() in "clear" or message_text.lower() in "exit" or message_text.lower() in "cancel":
