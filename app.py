@@ -462,7 +462,7 @@ def webhook():
                                 #delete from state info
                                 #ask if they want to pay another person
                                 if flow_info['flowType'] in "split":
-                                    flow_info['flowState'] == 5:
+                                    if flow_info['flowState'] == 5:
                                         log("SPLIT FLOWSTATE == 5")
                                         aLink.perform_request_transaction(sender_id)
                                         #ask if they want to pay another person
