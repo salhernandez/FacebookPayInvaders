@@ -379,13 +379,23 @@ def webhook():
                                     aLink.update_flow(sender_id, "split", 2)
                                     break
                         
+
                         elif isValidConfirmDeny is True:
+                            
+                            aReply = QuickReply.QuickReply()
+                            
                             if qrParser.valueFromResponse in "confirm":
                                 qrParser.getFlowState()
                                 if qrParser.flowTypeFromDB in "pay":
                                     aLink.update_flow(sender_id, "", 0)
+                                    
+                                    #set state info row to paid table
+                                    
                                     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                     the_payment.send_payment_gateway()
+                                    
+                                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])   
+                                    
                                     break
                                 
                                 if qrParser.flowTypeFromDB in "request":
@@ -399,7 +409,6 @@ def webhook():
                                 aLink.update_flow(sender_id, "", 1)
                                 aLink.delete_userID_state_info(sender_id)
                                 sendMsg.send_clear_message()
-                                aReply = QuickReply.QuickReply()
                                 aReply.send_action_quick_reply(messaging_event["sender"]["id"])                                
                             break
                         
