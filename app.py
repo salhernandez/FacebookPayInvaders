@@ -649,19 +649,24 @@ def webhook():
                                     sendMsg.send_how_much_message()
                                     
                                 if flow_info['flowState'] == 4: 
-                                    log("FLOWSTATE IS 4")
+                                    if '$' not in msgObj.getMessage():
+                                        
+                                        sendMsg.send_use_dollar_sign()
+                                        sendMsg.send_how_much_message()
+                                        
+                                        break                                    
                                     #if correct amout input, increment flow and send message
                                     
-                                    
+                                    else:
                                     # #store amount into state table
                                     #debug this
-                                    aLink.update_state_info_amount(sender_id, "", "-1", msgObj.amount)
-                                    
-                                    aLink.update_flow(sender_id, "request", 5)
-                                    
-                                    aReply = QuickReply.QuickReply()
-                                    aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
-                                    break                        
+                                        aLink.update_state_info_amount(sender_id, "", "-1", msgObj.amount)
+                                        
+                                        aLink.update_flow(sender_id, "request", 5)
+                                        
+                                        aReply = QuickReply.QuickReply()
+                                        aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
+                                        break                        
                         else:
     
                             payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
