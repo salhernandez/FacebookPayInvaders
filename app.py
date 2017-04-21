@@ -428,9 +428,10 @@ def webhook():
                             flow_info = aLink.get_flow_state(sender_id)
                             
                             if flow_info['flowType'] in "pay":
-                                if flow_info['flowState'] == 3:
-                                    aLink.update_flow(sender_id, "pay", 4)
-                                    sendMsg.send_how_much_message()
+                                # if flow_info['flowState'] == 3:
+                                #     aLink.update_flow(sender_id, "pay", 4)
+                                #     sendMsg.send_how_much_message()
+                                pass
                                     
                             if flow_info['flowType'] in "request":
                                 pass
@@ -635,9 +636,9 @@ def webhook():
                                     aLink.update_flow(sender_id, "pay", 3)
                                     break
                                 
-                                # if flow_info['flowState'] == 3:
-                                #     aLink.update_flow(sender_id, "pay", 4)
-                                #     sendMsg.send_how_much_message()
+                                if flow_info['flowState'] == 3:
+                                    aLink.update_flow(sender_id, "pay", 4)
+                                    sendMsg.send_how_much_message()
                                     
                                 if flow_info['flowState'] == 4: 
                                     log("FLOWSTATE IS 4")
