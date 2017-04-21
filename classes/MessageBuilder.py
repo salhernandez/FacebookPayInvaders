@@ -87,7 +87,7 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "Please use a dollar sign when specifying your amount")
     
     def send_correct_amount_format_message(self):
-        self.message_template_simple(self.fromID, "The correct message format is '$10' ")
+        self.message_template_simple(self.fromID, "The correct message format is '$10' or '$10.25' ")
 
     def send_your_request_was_sent(self):
         self.message_template_simple(self.fromID, "Your request was sent")

@@ -620,25 +620,22 @@ def webhook():
                                     sendMsg.send_how_much_message()
                                     
                                 if flow_info['flowState'] == 4: 
-                                    log("FLOWSTATE IS 4")
-                                    #if correct amout input, increment flow and send message
-                                    if '$' not in msgObj.getMessage():
-                                        sendMsg.send_use_dollar_sign()
-                                        sendMsg.send_how_much_message()
-                                        
-                                        break
-                                    else:
+                                    m = re.search('\$(?!0\d)\d+(?:\.\d{2})?(?=\s|$)', msgObj.getMessage())
+                                    if m:
                                         aLink.update_state_info_amount(sender_id, "", "-1", float(msgObj.amount))
                                         
                                         aLink.update_flow(sender_id, "pay", 5)
                                         
                                         aReply = QuickReply.QuickReply()
                                         aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
-                                        break                                    
-                                    # #store amount into state table
-                                    #debug this
+                                        break  
+                                        
+                                    else:
+                                        sendMsg.send_correct_amount_format_message()
+                                        sendMsg.send_how_much_message()
+                                        
+                                        break    
                                     
-                            
                             if flow_info['flowType'] in "request":
                                 
                                 if flow_info['flowState'] == 2:
