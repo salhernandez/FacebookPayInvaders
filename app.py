@@ -387,7 +387,7 @@ def webhook():
                             if qrParser.valueFromResponse in "confirm":
                                 qrParser.getFlowState()
                                 if qrParser.flowTypeFromDB in "pay":
-                                    aLink.update_flow(sender_id, "", 0)
+                                    aLink.update_flow(sender_id, "", 1)
                                     
                                     #set state info row to paid table
                                     state_info = aLink.get_state_info(sender_id)
