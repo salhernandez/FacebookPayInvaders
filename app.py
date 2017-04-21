@@ -634,7 +634,7 @@ def webhook():
                                     # the_payment.send_user_table(the_user)
                                     
                                     aLink.update_flow(sender_id, "pay", 3)
-                                    sendMsg.send_how_much_message()
+                                    sendMsg.send_which_user()
                                     break
                                 
                                 if flow_info['flowState'] == 3:
