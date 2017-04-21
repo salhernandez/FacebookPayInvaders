@@ -381,6 +381,7 @@ def webhook():
                         
                         elif isValidConfirmDeny is True:
                             if qrParser.valueFromResponse in "confirm":
+                                qrParser.getFlowState()
                                 if qrParser.flowTypeFromDB in "pay":
                                     aLink.update_flow(sender_id, "", 0)
                                     the_payment = PayGate(toUser = messaging_event["sender"]["id"])
