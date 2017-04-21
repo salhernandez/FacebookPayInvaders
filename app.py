@@ -408,7 +408,7 @@ def webhook():
                                     
                                     break
 
-                            elif qrParser.valueFromResponse is "deny":
+                            elif qrParser.valueFromResponse in "deny":
                                 aReply = QuickReply.QuickReply()
                                 aLink.update_flow(sender_id, "", 1)
                                 aLink.delete_userID_state_info(sender_id)
