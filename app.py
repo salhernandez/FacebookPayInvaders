@@ -650,8 +650,8 @@ def webhook():
                                     sendMsg.send_how_much_message()
                                     
                                 if flow_info['flowState'] == 4: 
-                                    if not re.search(ur'([\$])(\d+(?:\.\d{2})?)', msgObj.getMessage()).groups():
-                                        
+                                    m = re.search('\$(?!0\d)\d+(?:\.\d{2})?(?=\s|$)', msgObj.getMessage())
+                                    if m:
                                         sendMsg.send_correct_amount_format_message()
                                         sendMsg.send_how_much_message()
                                         
