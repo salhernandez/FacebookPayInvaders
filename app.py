@@ -323,7 +323,12 @@ def webhook():
                         
                         
                         aLink = DBLink.DBLink()
-
+                        
+                        someUser = UserInfo.UserInfo("",sender_id)
+                        
+                        anotherUser = UserInfo.UserInfo("","")
+                            
+                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                         
                         if isValid is True:
                             log("isValid is TRUE")
@@ -332,11 +337,6 @@ def webhook():
                                 log("VALUE FROM RESPONSE IS PAY")
                                 
                                 aLink.init_state_info(sender_id, "pay")
-
-                                someUser = UserInfo.UserInfo("",sender_id)
-                                anotherUser = UserInfo.UserInfo("","")
-                            
-                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                 
                                 if qrParser.flowStateFromDB == 1:
                                     #increment flowState in DB
@@ -350,11 +350,6 @@ def webhook():
                                 
                                 aLink.init_state_info(sender_id, "request")
                                 
-                                someUser = UserInfo.UserInfo("",sender_id)
-                                anotherUser = UserInfo.UserInfo("","")
-                            
-                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                                
                                 if qrParser.flowStateFromDB == 1:
                                     #increment flowState in DB
                                     a = aLink.update_flow(sender_id, "request", 2)
@@ -364,11 +359,6 @@ def webhook():
                                     break
                             
                             elif qrParser.valueFromResponse in "split":
-                                someUser = UserInfo.UserInfo("",sender_id)
-                                anotherUser = UserInfo.UserInfo("","")
-                                
-                                log("INSIDE QR SPLIT")
-                                sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                 
                                 #start of the flow
                                 if qrParser.flowStateFromDB == 1:
@@ -380,7 +370,6 @@ def webhook():
                                     break
 
                         elif isValidConfirmDeny is True:
-                        
                             if qrParser.valueFromResponse in "confirm":
                                 aReply = QuickReply.QuickReply()
 
