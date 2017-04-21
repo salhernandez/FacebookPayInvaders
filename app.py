@@ -317,10 +317,11 @@ def webhook():
                         isValid = qrParser.isQRActionValid()
                         isValidConfirmDeny = qrParser.isQRConfirmDenyValid()
                         isValidSelectPerson = qrParser.isQRSelectPersonValid()
+                        isYesNo = qrParser.isQRYesNoValid()
                         
                         
                         aLink = DBLink.DBLink()
-
+                        flow_info = aLink.get_flow_state(sender_id)
                         
                         if isValid is True:
                             log("isValid is TRUE")
@@ -400,7 +401,8 @@ def webhook():
                                 if flow_info['flowType'] in "split":
                                     aLink.perform_request_transaction(sender_id)
                                     #ask if they want to pay another person
-                                    aLink.send_yesNo_quick_reply(sender_id)
+                                    aReply = QuickReply.QuickReply()
+                                    aReply.send_yesNo_quick_reply(sender_id)
                                     #increase flow
                                     aLink.update_flow(sender_id, "", 6)
                                     break
@@ -434,8 +436,26 @@ def webhook():
                                     aLink.update_flow(sender_id, "split", 4)
                                     #sends next flow state
                                     sendMsg.send_enter_amount()
+                        
+                        #if the response is yes or no
+                        elif isYesNo is True:
+                            #stateInfo = aLink.get_state_info(sender_id)
+                            
+                            if aReply.valueFromResponse in "yes":
+                                if flow_info['flowType'] in "split":
+                                    #user want to charge another person
+                                    if flow_info['flowState'] == 6:
+                                        #reset flow to 1 and split
+                                        aLink.update_flow(sender_id, "split", 4)
+                                        sendMsg.send_pay_who_message1()
+                                        break
+                            elif aReply.valueFromResponse in "no":
+                                if flow_info['flowType'] in "split":
+                                    if flow_info['flowState'] == 6:
+                                        #reset flow to 0
+                                        aLink.update_flow(sender_id, "split", 0)
+                                        aReply.send_action_quick_reply(messaging_event["sender"]["id"])
                                     
-                                
                     except KeyError:
                         log("KEYERROR FROM REPLY")
                         
