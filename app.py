@@ -35,6 +35,10 @@ def saltest():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
     the_users = dbLink.get_all_user_in_db()
+    
+    #reset user
+    dbLink.update_flow("1596606567017003", "", 0)
+    dbLink.delete_userID_state_info("1596606567017003")
     #aReply.send_users_quick_reply("1596606567017003", the_users)
     #dbLink.init_flow_state
     #dbLink.delete_user_from_db("1596606567017003")
@@ -377,6 +381,8 @@ def webhook():
                                     #send message to ask the person to enter a full name
                                     sendMsg.send_request_from_who_message()
                                     #update flow
+                                    #init state info
+                                    aLink.init_state_info(sender_id, "split")
                                     aLink.update_flow(sender_id, "split", 2)
                                     break
                         
