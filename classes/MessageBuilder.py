@@ -81,7 +81,7 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "Hello there! I am a payment bot. I can help you complete transactions like paying a friend, requesting money from a friend, and splitting bills with friends. You can clear your conversation with me at any time by typing 'clear'")
 
     def send_request_from_who_message(self):
-        self.message_template_simple(self.fromID, "Who would you like to request money from?")
+        self.message_template_simple(self.fromID, "Type the first and last name of the user you'd like to request money from as it appears on Facebook")
     
     def send_pay_who_message1(self):
         self.message_template_simple(self.fromID, "Type the first and last name of the user you'd like to pay as it appears on Facebook")
