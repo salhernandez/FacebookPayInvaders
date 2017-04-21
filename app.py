@@ -520,8 +520,7 @@ def webhook():
                             
                             if message_text.lower() in "help":
                                 sendMsg.send_help_response()
-                                aReply.send_action_quick_reply(messaging_event["sender"]["id"])                                
-                                
+
                                 break
                             
                             if message_text.lower() in "clear" or message_text.lower() in "exit" or message_text.lower() in "cancel":
