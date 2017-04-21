@@ -56,11 +56,7 @@ class QuickReply(object):
         JSON_Datalist = JSON_Datalist.replace(" ", "")
         the_dict = json.loads(JSON_Datalist)
         the_dict['recipient']['id'] = str(toID)
-        the_dict['message']['quick_replies']['payload']['responseType'] = "RAWR"
-        the_dict['message']['quick_replies']['payload']['value'] = "DERP"
         
-        
-
         data = json.dumps(the_dict)
         #######################################
         r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
@@ -140,6 +136,36 @@ class QuickReply(object):
             self.log(r.status_code)
             self.log(r.text)
     
+    """
+    Sends a quick reply with the buttons "Confirm", "Deny" with the proper payload
+    
+    aReply = QuickReply.QuickReply()
+    aReply.send_yesNo_quick_reply("1596606567017003")
+    """
+    def send_yesNo_quick_reply(self, toID):
+        
+        params = {
+            "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+        }
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # convert dict into json
+        #####################################
+        JSON_Datalist = """{ "recipient":{ "id":"USER_ID" }, "message":{ "text":"Add Another Person?", "quick_replies":[ { "content_type":"text", "title":"Yes", "payload":" 'responseType':'yesNo', 'value':'yes' " }, { "content_type":"text", "payload":" "title":"No", 'responseType':'yesNo', 'value':'no' " } ] } }"""
+        #gets rid of white space
+        JSON_Datalist = JSON_Datalist.replace(" ", "")
+        the_dict = json.loads(JSON_Datalist)
+        the_dict['recipient']['id'] = str(toID)
+        
+        data = json.dumps(the_dict)
+        #######################################
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+        if r.status_code != 200:
+            self.log(r.status_code)
+            self.log(r.text)
+            
     ##send message to user 
     ############################################################################
             

@@ -400,7 +400,10 @@ def webhook():
                                 if flow_info['flowType'] in "split":
                                     aLink.perform_request_transaction(sender_id)
                                     #ask if they want to pay another person
-                                    
+                                    aLink.send_yesNo_quick_reply(sender_id)
+                                    #increase flow
+                                    aLink.update_flow(sender_id, "", 6)
+                                    break
                             
                             elif qrParser.valueFromResponse is "deny":
                                 
