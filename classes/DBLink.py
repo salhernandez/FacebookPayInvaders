@@ -408,9 +408,9 @@ class DBLink(object):
             for row in owedRecords:
                 # print row.owed_ID
                 owedDict[count] = {}
-                owedDict[count][row.owed_ID] = {}
-                owedDict[count][row.owed_ID]['amount'] = row.amount
-                owedDict[count][row.owed_ID]['timestamp'] = row.time_stamp
+                owedDict[count]['owed_ID'] = row.owed_ID
+                owedDict[count]['owed_ID']['amount'] = row.amount
+                owedDict[count]['owed_ID']['timestamp'] = row.time_stamp
                 
                 count = count + 1
             return owedDict
