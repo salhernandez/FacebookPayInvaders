@@ -329,7 +329,7 @@ class DBLink(object):
     """
     def get_all_paid_to(self, userID):
         
-        paidToRecords = models.Payed.query.filter_by(payed_ID=str(userID)).all()
+        paidToRecords = models.Pay.query.filter_by(payed_ID=str(userID)).all()
         
         # print userInDB
         paidToDict = {}
@@ -337,7 +337,7 @@ class DBLink(object):
         if paidToRecords is not None:
             count = 0
             for row in paidToRecords:
-                print row.amount
+                print row.owed_ID
                 # paidToDict[count] = {}
                 # paidToDict[count]['owed_ID'] = row.owed_ID
                 # paidToDict[count]['amount'] = row.amount
