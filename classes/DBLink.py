@@ -337,11 +337,11 @@ class DBLink(object):
         if paidToRecords is not None:
             count = 0
             for row in paidToRecords:
-                # print row.owed_ID
-                paidToDict[count] = {}
-                paidToDict[count]['owed_ID'] = row.owed_ID
-                paidToDict[count]['amount'] = row.amount
-                paidToDict[count]['timestamp'] = row.time_stamp
+                print row.owed_ID
+                # paidToDict[count] = {}
+                # paidToDict[count]['owed_ID'] = row.owed_ID
+                # paidToDict[count]['amount'] = row.amount
+                # paidToDict[count]['timestamp'] = row.time_stamp
                 
                 count = count + 1
             return paidToDict
