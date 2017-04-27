@@ -339,9 +339,9 @@ class DBLink(object):
             for row in paidToRecords:
                 # print row.owed_ID
                 paidToDict[count] = {}
-                paidToDict[count][row.payee_ID] = {}
-                paidToDict[count][row.payee_ID]['amount'] = row.amount
-                paidToDict[count][row.payee_ID]['timestamp'] = row.time_stamp
+                paidToDict[count]['owed_ID'] = row.owed_ID
+                paidToDict[count]['amount'] = row.amount
+                paidToDict[count]['timestamp'] = row.time_stamp
                 
                 count = count + 1
             return paidToDict
