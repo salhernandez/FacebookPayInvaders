@@ -432,11 +432,12 @@ def webhook():
                                 result = dbLink.get_all_paid_to(messaging_event["sender"]["id"])
                                 people = []
                                 p_count = 0;
-                                # for a_result in result:
-                                #     got_user = dbLink.get_user_in_db(a_result['owed_ID'])
-                                #     people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(a_result['owed_ID']['amount'])
+                                for a_result in result:
+                                    got_user = dbLink.get_user_in_db(str(a_result['owed_ID']))
+                                    people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(a_result['owed_ID']['amount'])
+                                    p_count = p_count + 1
                                 
-                                # print people
+                                print people
                                 
                                 sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(result))
                                 sendMsg.send_payment_made_message()
