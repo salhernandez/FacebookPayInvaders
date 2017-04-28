@@ -139,7 +139,7 @@ def hello():
     # populate the payed dataframe
     for i in range(len(message3)):
         the_account2 = str(message3[i]).split()
-        df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[1], float(the_account2[2]), the_account2[3]]
+        # df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[1], float(the_account2[2]), the_account2[3]]
     # print(df2)
     
     # populate the friends dataframe
