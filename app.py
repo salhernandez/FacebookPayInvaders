@@ -515,7 +515,7 @@ def webhook():
                                         log("YES SPLIT == 6")
                                         #reset flow to 1 and split
                                         aLink.update_flow(sender_id, "split", 1)
-                                        dbLink.delete_userID_state_info(sender_id)
+                                        aLink.delete_userID_state_info(sender_id)
                                         sendMsg.send_request_from_who_message()
                                         break
                             elif aReply.valueFromResponse in "no":
