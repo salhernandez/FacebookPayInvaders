@@ -142,6 +142,7 @@ def hello():
         # df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[1], float(the_account2[2]), the_account2[3]]
     print "--------------"
     print(the_account2)
+    print "--------------"
     
     # populate the friends dataframe
     for i in range(len(message)):
