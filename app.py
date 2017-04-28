@@ -32,29 +32,35 @@ SENTINEL = "-1"
 SENTINEL_FLOAT = -1.0
 
 
-# @app.route('/cleanUsers', methods = ['POST', 'GET'])
-# def saltest():
-#     aReply = QuickReply.QuickReply()
-#     dbLink = DBLink.DBLink()
-#     request_info = GraphRequests.GraphRequests()
+@app.route('/cleanUsers', methods = ['POST', 'GET'])
+def cleanUsers():
+    aReply = QuickReply.QuickReply()
+    dbLink = DBLink.DBLink()
+    request_info = GraphRequests.GraphRequests()
     
-#     #SAL
-#     request_info.getUserInfo("1596606567017003")
-#     dbLink.add_user("1596606567017003", request_info.firstName, request_info.lastName, "salvhernandez@csmub.edu", request_info.profile_pic, "6197345766")
     
-#     #ANNA
-#     request_info.getUserInfo("1204927079622878")
-#     dbLink.add_user("1204927079622878", request_info.firstName, request_info.lastName, "apomelovz@csumb.edu", request_info.profile_pic, "4152839158")
     
-#     #TALA
-#     request_info.getUserInfo("1207261099394590")
-#     dbLink.add_user("1207261099394590", request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, "6508628427")
+    #SAL
+    dbLink.delete_user_from_db("1596606567017003")
+    request_info.getUserInfo("1596606567017003")
+    dbLink.add_user("1596606567017003", request_info.firstName, request_info.lastName, "salvhernandez@csmub.edu", request_info.profile_pic, "6197345766")
     
-#     #JOSH
-#     request_info.getUserInfo("985245348244242")
-#     dbLink.add_user("985245348244242", request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, "8314285108")
+    #ANNA
+    dbLink.delete_user_from_db("1204927079622878")
+    request_info.getUserInfo("1204927079622878")
+    dbLink.add_user("1204927079622878", request_info.firstName, request_info.lastName, "apomelovz@csumb.edu", request_info.profile_pic, "4152839158")
     
-#     return "cleanUsers"
+    #TALA
+    dbLink.delete_user_from_db("1207261099394590")
+    request_info.getUserInfo("1207261099394590")
+    dbLink.add_user("1207261099394590", request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, "6508628427")
+    
+    #JOSH
+    request_info.getUserInfo("985245348244242")
+    dbLink.delete_user_from_db("985245348244242")
+    dbLink.add_user("985245348244242", request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, "8314285108")
+    
+    return "cleanUsers"
     
 
 @app.route('/saltest', methods = ['POST', 'GET'])
