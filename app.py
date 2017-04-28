@@ -149,11 +149,11 @@ def hello():
     print(df3)
 
     # group and sum the pay table
-    g1 = df.groupby(["owed", "needs_to_pay"], as_index=False).agg({'amount':'sum'}).apply(pd.to_numeric, errors='coerce')
+    g1 = df.groupby(["owed", "needs_to_pay"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
     print g1
     
     # group and sum the payed table
-    g2 = df2.groupby(["payer", "payed_to"], as_index=False).agg({'amount':'sum'}).apply(pd.to_numeric, errors='coerce')
+    g2 = df2.groupby(["payer", "payed_to"], as_index=False).agg({'amount':'sum'}).convert_objects(convert_numeric=True)
     # print g2
     
     # subtract and see who owes who
