@@ -294,9 +294,9 @@ def webhook():
                     
                     #quickreply fix
                     #############################################
-                    # aReply = QuickReply.QuickReply()
-                    # aReply.send_action_quick_reply(sender_id)
-                    # break
+                    aReply = QuickReply.QuickReply()
+                    aReply.send_action_quick_reply(sender_id)
+                    break
                     #################################################
                     
                     # #gets info from the db
@@ -332,7 +332,7 @@ def webhook():
                     #checks that the message has a quick reply, if not, it breaks out
                     try:
                         log("QUICK REPLY ERROR CHECK")
-                        
+                        log("THE QUICK REPLY PAYLOAD"+str(messaging_event['message']['quick_reply']['payload']))
                         info = "{"+str(messaging_event['message']['quick_reply']['payload'])+"}"
                         json_acceptable_string = info.replace("'", "\"")
                         d = json.loads(json_acceptable_string)
