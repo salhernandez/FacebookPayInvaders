@@ -137,12 +137,12 @@ def hello():
     # print(df)
 
     # populate the payed dataframe
-    for i in message3:
+    for i in range(len(message3)):
         
-        the_account2 = str(message3).split()
+        the_account2 = str(message3[i]).split()
         
         print "--------------"
-        print(the_account2)
+        print(len(message3))
         print "--------------"
         # df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[1], float(the_account2[2]), the_account2[3]]
 
