@@ -329,7 +329,7 @@ class DBLink(object):
     """
     def get_all_paid_to(self, userID):
         
-        paidToRecords = models.Pay.query.filter_by(payed_ID=str(userID)).all()
+        paidToRecords = models.Pay.query.filter_by(pay_ID=str(userID)).all()
         
         # print userInDB
         paidToDict = {}
