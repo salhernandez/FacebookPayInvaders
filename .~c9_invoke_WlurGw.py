@@ -137,8 +137,10 @@ def hello():
     # print(df)
 
     # populate the payed dataframe
-    for i in range(len(message3)):
-        the_account2 = str(message3[i]).split()
+    for i in message3:
+        
+        the_account2 = str(message3).split()
+        
         print "--------------"
         print(the_account2)
         print "--------------"
