@@ -646,6 +646,8 @@ def webhook():
                                     log("SPLIT CHECK NAME FLOWSTATE == 2")
                                     #check if the user entered a full name (first and last name)
                                     aName = message_text.split()
+                                    
+                                    log("values in string: "+aName)
                                     if aName == 2:
                                         if flow_info['flowType'] in "":
                                             log("SPLIT CHECK NAME FLOWSTATE == 2")
@@ -679,6 +681,7 @@ def webhook():
                                     else:
                                         pass
                                         #resend the info for the state
+                                        
                                         sendMsg.send_pay_who_message1()
                                         break
                                         
