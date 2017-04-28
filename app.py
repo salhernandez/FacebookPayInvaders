@@ -648,7 +648,7 @@ def webhook():
                                     aName = message_text.split()
                                     log("length of string: "+str(len(aName)))
                                     if len(aName) == 2:
-                                        if flow_info['flowType'] in "":
+                                        if flow_info['flowType'] in "split":
                                             log("SPLIT CHECK NAME FLOWSTATE == 2")
                                             #send the buttons
                                             dbLink = DBLink.DBLink()
@@ -678,9 +678,6 @@ def webhook():
                                                 aLink.update_flow(sender_id, "", 1)
                                                 break
                                     else:
-                                        pass
-                                        #resend the info for the state
-                                        
                                         sendMsg.send_pay_who_message1()
                                         break
                                         
