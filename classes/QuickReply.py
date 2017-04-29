@@ -84,22 +84,23 @@ class QuickReply(object):
 
         # convert dict into json
         #####################################
+        self.log(users)
 
-        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"Josh","payload":"{'user':'josh'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"not here","payload":"{'responseType': 'selectedPerson','value':'notHere'}","image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
        
-        for i in range(len(users)-1):
-            JSON_Datalist = JSON_Datalist + """,{"content_type":"text","title":"Josh","payload":"{'user':'josh'}","image_url":"https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/14457456_10210934688542219_8214757857053421347_n.jpg?oh=5ec34a9a1eefce4482fede3274e189eb&oe=5997A28C"}"""
+        for i in range(len(users)):
+            self.log(str(i))
+            JSON_Datalist = JSON_Datalist + """,{"content_type":"text","title":"x","payload":"{'responseType': 'selectedPerson','value':'default'}}","image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
         JSON_Datalist = JSON_Datalist + """]}}"""
         
         the_dict = json.loads(JSON_Datalist)
 
         the_dict['recipient']['id'] = str(toID)
-        for i in range(len(users)-1):
-            the_dict['message']['quick_replies'][i]['title'] = users[i]['firstName']
-            the_dict['message']['quick_replies'][i]['image_url'] = users[i]['imgUrl']
-            the_dict['message']['quick_replies'][i]['payload'] = "{'responseType': 'selectedPerson', 'value': " + str(users[i]['userID']) + "}"
-
-
+        for i in range(len(users)):
+            the_dict['message']['quick_replies'][i+1]['title'] = users[i]['firstName']
+            the_dict['message']['quick_replies'][i+1]['image_url'] = users[i]['imgUrl']
+            the_dict['message']['quick_replies'][i+1]['payload'] = "{'responseType': 'selectedPerson', 'value': " + str(users[i]['userID']) + "}"
+        
         data = json.dumps(the_dict)
         #######################################
         r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
