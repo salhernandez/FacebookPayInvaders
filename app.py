@@ -440,11 +440,11 @@ def webhook():
                                     got_user = dbLink.get_user_in_db(str(result1[j]['owed_ID']))
                                     print "------------------------"
                                     print got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
-                                    print p_count
+                              
                                     print "------------------------"
                                     # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
                                     output = output + got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']) + "\n"
-                                    p_count = p_count + 1
+                             
                                 
                                 
                                 
