@@ -456,7 +456,7 @@ def webhook():
                                 payedUser = UserInfo.UserInfo("Hsoj", messaging_event["sender"]["id"])
                                 
                                 dbLink = DBLink.DBLink()
-                                result1 = dbLink.get_all_paid_to(messaging_event["sender"]["id"])
+                                result1 = dbLink.get_all_owed_to(messaging_event["sender"]["id"])
                                 people = []
                                 output = "money payed log: \n"
                                 for j in range(len(result1)):
