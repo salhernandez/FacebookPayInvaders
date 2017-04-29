@@ -127,9 +127,11 @@ def hello():
 
     # populate the payed dataframe
     for i in range(len(message3)):
+        time.sleep(1)
         the_account2 = str(message3[i]).split()
+        
         df2.loc[i] = [i, names[int(the_account2[0])], the_account2[0], names[int(the_account2[1])], the_account2[1], float(the_account2[2]), the_account2[3]]
-    # print(df2)
+
     
     # populate the friends dataframe
     for i in range(len(message)):
@@ -171,6 +173,7 @@ def hello():
 #         userFirst = "anna"
     
 #     return usrID, userFirst
+
 
 
 def getNameOfUser(anID):
@@ -437,6 +440,7 @@ def webhook():
                                     # got_user = dbLink.get_user_in_db(str(a_result['owed_ID']))
                                     print "------------------------"
                                     print result1[j]
+                                    print "------------------------"
                                     # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(a_result['owed_ID']['amount'])
                                     # p_count = p_count + 1
                                 
