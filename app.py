@@ -69,9 +69,11 @@ def saltest():
     #reset user
     # dbLink.update_flow("1596606567017003", "", 0)
     # dbLink.delete_userID_state_info("1596606567017003")
-    aName = "anna pomelov"
+    aName = "anna pomelov".split()
+    
     log("length of string: "+str(len(aName)))
-    the_users = dbLink.get_users_with_first_last_name("anna", "pomelov")
+    log(aName[0])
+    the_users = dbLink.get_users_with_first_last_name("anna", "pomelo")
     log(the_users)
     #aReply.send_users_quick_reply("1596606567017003", the_users)
     #dbLink.init_flow_state
