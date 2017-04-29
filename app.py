@@ -447,7 +447,7 @@ def webhook():
                                 
                                 
                                 
-                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']))
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(result1))
                                 sendMsg.send_payment_made_message()
                                 log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS2: "+str(sendMsg))
                                 break
