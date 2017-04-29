@@ -73,7 +73,7 @@ def saltest():
     
     log("length of string: "+str(len(aName)))
     log(aName[0])
-    the_users = dbLink.get_users_with_first_last_name("anna", "pomelo")
+    the_users = dbLink.get_users_with_first_last_name(aName[0], aName[1])
     log(the_users)
     #aReply.send_users_quick_reply("1596606567017003", the_users)
     #dbLink.init_flow_state
@@ -649,17 +649,18 @@ def webhook():
                             #1, 3
                             if flow_info['flowType'] in "split":
                                 if flow_info['flowState'] == 2:
-                                    log("SPLIT CHECK NAME FLOWSTATE == 2")
+                                    log("FIRST SPLIT CHECK NAME FLOWSTATE == 2")
                                     #check if the user entered a full name (first and last name)
+                                    message_text = str(message_text)
                                     aName = message_text.split()
                                     log("length of string: "+str(len(aName)))
                                     if len(aName) == 2:
                                         if flow_info['flowType'] in "split":
-                                            log("SPLIT CHECK NAME FLOWSTATE == 2")
+                                            log("SECOND SPLIT CHECK NAME FLOWSTATE == 2")
                                             #send the buttons
                                             dbLink = DBLink.DBLink()
                                             the_users = dbLink.get_users_with_first_last_name(str(aName[0]), str(aName[1]))
-                                            
+                                            log()
                                             #if there are users in the db with that name
                                             if the_users is not None:
                                                 log("USER EXISTS - SPLIT CHECK NAME FLOWSTATE == 2")
