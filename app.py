@@ -652,7 +652,7 @@ def webhook():
                                             log("SPLIT CHECK NAME FLOWSTATE == 2")
                                             #send the buttons
                                             dbLink = DBLink.DBLink()
-                                            the_users = dbLink.get_users_with_first_last_name(aName[0], aName[1])
+                                            the_users = dbLink.get_users_with_first_last_name(str(aName[0]), str(aName[1]))
                                             
                                             #if there are users in the db with that name
                                             if the_users is not None:
