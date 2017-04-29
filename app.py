@@ -434,19 +434,19 @@ def webhook():
                                 dbLink = DBLink.DBLink()
                                 result1 = dbLink.get_all_paid_to(messaging_event["sender"]["id"])
                                 people = []
-                                p_count = 0;
+                               
                                 for j in range(len(result1)):
                                     
                                     got_user = dbLink.get_user_in_db(str(result1[j]['owed_ID']))
-                                    print "------------------------"
-                                    print got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
-                                    print "------------------------"
-                                    # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(a_result['owed_ID']['amount'])
-                                    # p_count = p_count + 1
+                                    # print "------------------------"
+                                    # print got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
+                                    # print "------------------------"
+                                    people[j] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
+                                    
                                 
                                 
                                 
-                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(result1))
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(people))
                                 sendMsg.send_payment_made_message()
                                 log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS2: "+str(sendMsg))
                                 break
