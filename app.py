@@ -443,6 +443,7 @@ def webhook():
                                     print p_count
                                     print "------------------------"
                                     # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
+                                    result1 = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
                                     p_count = p_count + 1
                                 
                                 
