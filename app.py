@@ -443,12 +443,12 @@ def webhook():
                                     print p_count
                                     print "------------------------"
                                     # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
-                                    result1 = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
+                                    output = output + got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']) + "\n"
                                     p_count = p_count + 1
                                 
                                 
                                 
-                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(result1))
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(output))
                                 sendMsg.send_payment_made_message()
                                 log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS2: "+str(sendMsg))
                                 break
