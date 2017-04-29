@@ -428,7 +428,7 @@ def webhook():
                                 break
                             
                             # gets the who owes how
-                            if "Info" in message_text:
+                            if "Info request" in message_text:
                                 payedUser = UserInfo.UserInfo("Hsoj", messaging_event["sender"]["id"])
                                 
                                 dbLink = DBLink.DBLink()
@@ -440,7 +440,30 @@ def webhook():
                                     got_user = dbLink.get_user_in_db(str(result1[j]['owed_ID']))
                                     print "------------------------"
                                     print got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
-                              
+                                    print "------------------------"
+                                    # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
+                                    output = output + got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']) + "\n"
+                             
+                                
+                                
+                                
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(output))
+                                sendMsg.send_info_log()
+                                log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS2: "+str(sendMsg))
+                                break
+                                                        # gets the who owes how
+                            if "Info pay" in message_text:
+                                payedUser = UserInfo.UserInfo("Hsoj", messaging_event["sender"]["id"])
+                                
+                                dbLink = DBLink.DBLink()
+                                result1 = dbLink.get_all_paid_to(messaging_event["sender"]["id"])
+                                people = []
+                                output = "money payed log: \n"
+                                for j in range(len(result1)):
+                                    
+                                    got_user = dbLink.get_user_in_db(str(result1[j]['payee_ID']))
+                                    print "------------------------"
+                                    print got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
                                     print "------------------------"
                                     # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
                                     output = output + got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']) + "\n"
