@@ -112,6 +112,8 @@ class MessageBuilder(object):
 
     def send_payment_made_message(self):
         self.message_template_simple(self.toID, "You got paid $" + self.amount + " from " + self.fromName)
+    def send_info_log(self):
+        self.message_template_simple(self.toID, self.amount)
         
     def send_split_log_message(self):
         self.message_template_simple(self.fromID, "You requested to split the bill with " + self.toName)

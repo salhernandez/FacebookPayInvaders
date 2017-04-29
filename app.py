@@ -434,7 +434,6 @@ def webhook():
                                 dbLink = DBLink.DBLink()
                                 result1 = dbLink.get_all_paid_to(messaging_event["sender"]["id"])
                                 people = []
-                                p_count = 0;
                                 output = "money requst log: \n"
                                 for j in range(len(result1)):
                                     
@@ -450,7 +449,7 @@ def webhook():
                                 
                                 
                                 sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(output))
-                                sendMsg.send_payment_made_message()
+                                sendMsg.send_info_log()
                                 log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS2: "+str(sendMsg))
                                 break
                             
