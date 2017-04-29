@@ -438,15 +438,16 @@ def webhook():
                                 for j in range(len(result1)):
                                     
                                     got_user = dbLink.get_user_in_db(str(result1[j]['owed_ID']))
-                                    # print "------------------------"
-                                    # print got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
-                                    # print "------------------------"
-                                    people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
+                                    print "------------------------"
+                                    print got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
+                                    print p_count
+                                    print "------------------------"
+                                    # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
                                     p_count = p_count + 1
                                 
                                 
                                 
-                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(people))
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']))
                                 sendMsg.send_payment_made_message()
                                 log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS2: "+str(sendMsg))
                                 break
