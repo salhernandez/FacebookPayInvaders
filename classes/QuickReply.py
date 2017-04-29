@@ -5,36 +5,6 @@ class QuickReply(object):
         pass
     
     """
-    Sends a quick reply with the buttons "Pay", "Request", "Split" with the proper payload
-    
-    aReply = QuickReply.QuickReply()
-    aReply.send_action_quick_reply("1596606567017003")
-    """
-    def send_action_quick_reply(self, toID):
-        
-        params = {
-            "access_token": os.environ["PAGE_ACCESS_TOKEN"]
-        }
-        headers = {
-            "Content-Type": "application/json"
-        }
-
-        # convert dict into json
-        #####################################
-        JSON_Datalist = """{ "recipient":{ "id":"USER_ID" }, "message":{ "text":"Options:", "quick_replies":[ { "content_type":"text", "title":"Pay", "payload":" 'responseType':'action', 'value':'pay' " }, { "content_type":"text", "title":"Request", "payload":" 'responseType':'action', 'value':'request' " }, { "content_type":"text", "title":"Split", "payload":" 'responseType':'action', 'value':'split' " } ] } }"""        #gets rid of white space
-        JSON_Datalist = JSON_Datalist.replace(" ", "")
-        the_dict = json.loads(JSON_Datalist)
-        the_dict['recipient']['id'] = str(toID)
-        
-
-        data = json.dumps(the_dict)
-        #######################################
-        r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
-        if r.status_code != 200:
-            self.log(r.status_code)
-            self.log(r.text)
-    
-    """
     Sends a quick reply with the buttons "Confirm", "Deny" with the proper payload
     
     aReply = QuickReply.QuickReply()
@@ -87,20 +57,42 @@ class QuickReply(object):
         self.log(users)
 
         JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"not here","payload":"{'responseType': 'selectedPerson','value':'notHere'}","image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
-       
+        totalPpl = 0
         for i in range(len(users)):
             self.log(str(i))
+            totalPpl = totalPpl +1
             JSON_Datalist = JSON_Datalist + """,{"content_type":"text","title":"x","payload":"{'responseType': 'selectedPerson','value':'default'}}","image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
         JSON_Datalist = JSON_Datalist + """]}}"""
-        
         the_dict = json.loads(JSON_Datalist)
-
-        the_dict['recipient']['id'] = str(toID)
-        for i in range(len(users)):
-            the_dict['message']['quick_replies'][i+1]['title'] = users[i]['firstName']
-            the_dict['message']['quick_replies'][i+1]['image_url'] = users[i]['imgUrl']
-            the_dict['message']['quick_replies'][i+1]['payload'] = "{'responseType': 'selectedPerson', 'value': " + str(users[i]['userID']) + "}"
         
+        #different access
+        if totalPpl == 1:
+            self.log("begin")
+            for key, value in users.iteritems():
+                self.log("key 1: "+str(key))
+                self.log("value 1: "+str(value))
+                for key_2, value_2 in value.iteritems():
+                    self.log("key 2: "+str(key_2))
+                    self.log("value 2: "+str(value_2))
+                    for key_3, value_3 in value_2.iteritems():
+                        if key_3 in "firstName":
+                            the_dict['message']['quick_replies'][1]['title'] = str(value_3)
+                        elif key_3 in "lastName":
+                            temp = the_dict['message']['quick_replies'][1]['title']
+                            the_dict['message']['quick_replies'][1]['title'] = temp+" "+str(value_3)
+                        elif key_3 in "imgUrl":
+                            the_dict['message']['quick_replies'][1]['image_url'] = str(value_3)
+                        elif key_3 in "userID":
+                            the_dict['message']['quick_replies'][i+1]['payload'] = "{'responseType': 'selectedPerson', 'value': " + str(value_3) + "}"
+        
+        else:    
+            for i in range(len(users)):
+                self.log(str(i))
+                the_dict['message']['quick_replies'][i+1]['title'] = users[i]['firstName']
+                the_dict['message']['quick_replies'][i+1]['image_url'] = users[i]['imgUrl']
+                the_dict['message']['quick_replies'][i+1]['payload'] = "{'responseType': 'selectedPerson', 'value': " + str(users[i]['userID']) + "}"
+        
+        the_dict['recipient']['id'] = str(toID)
         data = json.dumps(the_dict)
         #######################################
         r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)

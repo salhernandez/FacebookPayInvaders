@@ -73,9 +73,10 @@ def saltest():
     
     log("length of string: "+str(len(aName)))
     log(aName[0])
-    #the_users = dbLink.get_users_with_first_last_name(aName[0], aName[1])
-    the_users = dbLink.get_all_user_in_db()
+    the_users = dbLink.get_users_with_first_last_name(aName[0], aName[1])
     log(the_users)
+    the_users = dbLink.get_all_user_in_db()
+    #log(the_users)
     aReply.send_users_quick_reply("1596606567017003", the_users)
     #dbLink.init_flow_state
     #dbLink.delete_user_from_db("1596606567017003")
