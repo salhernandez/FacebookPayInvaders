@@ -423,7 +423,7 @@ class DBLink(object):
     """
     def get_all_owed_to(self, userID):
         
-        owedToRecords = models.Payed.query.filter_by(owed_ID=str(userID)).all()
+        owedToRecords = models.Payed.query.filter_by(payed_ID=str(userID)).all()
         
         if owedToRecords is not None:
             owedToDict = {}
