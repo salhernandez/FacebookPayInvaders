@@ -64,11 +64,15 @@ SENTINEL_FLOAT = -1.0
 def saltest():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    the_users = dbLink.get_all_user_in_db()
+    #the_users = dbLink.get_all_user_in_db()
     
     #reset user
-    dbLink.update_flow("1596606567017003", "", 0)
-    dbLink.delete_userID_state_info("1596606567017003")
+    # dbLink.update_flow("1596606567017003", "", 0)
+    # dbLink.delete_userID_state_info("1596606567017003")
+    aName = "anna pomelov"
+    log("length of string: "+str(len(aName)))
+    the_users = dbLink.get_users_with_first_last_name(str(aName[0]), str(aName[1]))
+    log(the_users)
     #aReply.send_users_quick_reply("1596606567017003", the_users)
     #dbLink.init_flow_state
     #dbLink.delete_user_from_db("1596606567017003")
