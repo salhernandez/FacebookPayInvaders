@@ -596,7 +596,7 @@ class DBLink(object):
     """
     def delete_userID_state_info(self, userID):
         userID = str(userID)
-        record = models.StateInfo.query.filter_by(senderID=userID.first()
+        record = models.StateInfo.query.filter_by(senderID=userID).first()
         stateInfoDict = {}
         
         if record is not None:
