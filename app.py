@@ -703,7 +703,7 @@ def webhook():
                                     log("SPLIT == 4")
                                     #get amount, check if its a number, if it is, increase flow,
                                     #if not send error message to re-enter amount
-                                    anAmount = __getAmount__(message_text)
+                                    anAmount = __getAmountRe__(message_text)
                                     
                                     #if the amount is valid, update state info
                                     # update flow
@@ -931,7 +931,20 @@ def __getAmount__(data):
 
     return amount
 
-
+def __getAmountRe__(data):
+    money = re.compile('|'.join([
+    r'^\$?(\d*\.\d{1,2})$',  # e.g., $.50, .50, $1.50, $.5, .5
+    r'^\$?(\d+)$',           # e.g., $500, $5, 500, 5
+    r'^\$(\d+\.?)$',         # e.g., $5.
+    ])).search(data)
+    
+    money = None
+    if money is not None:
+        money = data
+    else:
+        money = None
+    
+    return None
 if __name__ == '__main__':
     app.run(
         host=os.getenv('IP', '0.0.0.0'),
