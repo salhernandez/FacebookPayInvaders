@@ -708,7 +708,7 @@ def webhook():
                                         #get flow state info
                                         tempInfo = aLink.get_state_info(sender_id)
                                         #update flow state info
-                                        aLink.update_state_info_amount(sender_id, amount)
+                                        aLink.update_state_info_amount(sender_id, anAmount)
                                         #send QR confirm/deny buttons
                                         aReply = QuickReply.QuickReply()
                                         aReply.send_confirmDeny_quick_reply(sender_id)
