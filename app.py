@@ -501,11 +501,11 @@ def webhook():
                                 # if flow_info['flowState'] == 3:
                                 #     aLink.update_flow(sender_id, "pay", 4)
                                 #     sendMsg.send_how_much_message()
-                                pass
+                                break
                                     
-                            if flow_info['flowType'] in "request":
-                                pass
-                            if flow_info['flowType'] in "split":
+                            elif flow_info['flowType'] in "request":
+                                break
+                            elif flow_info['flowType'] in "split":
                                 if flow_info['flowState'] == 3:
                                     log("SELECTED PERSON SPLIT == 3")
                                     #grab the id
@@ -515,6 +515,7 @@ def webhook():
                                     aLink.update_flow(sender_id, "split", 4)
                                     #sends next flow state
                                     sendMsg.send_enter_amount()
+                                    break
                         
                         #if the response is yes or no
                         elif isYesNo is True:
