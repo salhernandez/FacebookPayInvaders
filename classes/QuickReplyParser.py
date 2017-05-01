@@ -94,7 +94,7 @@ class QuickReplyParser(object):
     """
     def isQRYesNoValid(self):
         self.log("entering isQRYesNoValid")
-        accepted_strings = {'yes', 'no'}
+        accepted_strings = {'yesno'}
         
         isValid = True
         
