@@ -521,7 +521,12 @@ def webhook():
                                         #reset flow to 0
                                         aLink.update_flow(sender_id, "", 0)
                                         aLink.delete_userID_state_info(sender_id)
-                                        aReply.send_action_quick_reply(sender_id)
+                                        someUser = UserInfo.UserInfo("",sender_id)
+                                        anotherUser = UserInfo.UserInfo("","")
+                                        
+                                        #send share link message
+                                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                        sendMsg.send_share_link_message()
                                     #grab the id
                                     #updates the flow
                                     aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
