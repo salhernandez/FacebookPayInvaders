@@ -65,8 +65,7 @@ SENTINEL_FLOAT = -1.0
 def saltest():
     aReply = QuickReply.QuickReply()
     dbLink = DBLink.DBLink()
-    record = dbLink.delete_userID_state_info("1596606567017003")
-    log(record)
+    record = aReply.send_yesNo_quick_reply("1596606567017003")
     #the_users = dbLink.get_all_user_in_db()
     
     #reset user
