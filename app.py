@@ -937,14 +937,17 @@ def __getAmountRe__(data):
     r'^\$?(\d+)$',           # e.g., $500, $5, 500, 5
     r'^\$(\d+\.?)$',         # e.g., $5.
     ])).search(data)
-    
-    money = None
+
+    amount = None
     if check is not None:
-        money = data
+        if "$" in data:
+            splits = data.split("$")
+            amount = float(splits[1])
     else:
-        money = None
+        amount = None
     
-    return money
+    return amount
+    
 if __name__ == '__main__':
     app.run(
         host=os.getenv('IP', '0.0.0.0'),
