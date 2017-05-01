@@ -479,7 +479,7 @@ def webhook():
                                 if flow_info['flowType'] in "split":
                                     if flow_info['flowState'] == 5:
                                         log("SPLIT FLOWSTATE == 5")
-                                        deletedInfo = aLink.delete_userID_state_info(payeeID)
+                                        deletedInfo = aLink.delete_userID_state_info(sender_id)
                                         #add the info to the pay table
                                         time.sleep(1)
                                         log(deletedInfo)
