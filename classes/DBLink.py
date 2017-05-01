@@ -733,11 +733,17 @@ class DBLink(object):
     a = aLink.perform_payment_transaction("1596606567017003")
     """
     def perform_request_transaction(self, payeeID):
-            deletedInfo = self.delete_userID_state_info(payeeID)
-            #add the info to the pay table
-            self.add_request(payeeID, deletedInfo['recipientID'], deletedInfo['amount'])
+        self.log("INSUDE PERFORM REQUEST TRANSACTION")
+        deletedInfo = self.delete_userID_state_info(payeeID)
+        #add the info to the pay table
+        self.log(deletedInfo)
+        self.add_request(payeeID, deletedInfo['recipientID'], deletedInfo['amount'])
     """
     Displays the instance variables of the object
     """
     def __str__(self):
         return str(self.__dict__)
+        
+    def log(self, text):  # simple wrapper for __log__ging to stdout on heroku
+        print str(text)
+        sys.stdout.flush()
