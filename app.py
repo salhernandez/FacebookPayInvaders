@@ -514,6 +514,14 @@ def webhook():
                             elif flow_info['flowType'] in "split":
                                 if flow_info['flowState'] == 3:
                                     log("SELECTED PERSON SPLIT == 3")
+                                    
+                                    #if the selected person is "nothere"
+                                    if qrParser.valueFromResponse in "nothere":
+                                        log("NOT THERE SPLIT == 3")
+                                        #reset flow to 0
+                                        aLink.update_flow(sender_id, "", 0)
+                                        aLink.delete_userID_state_info(sender_id)
+                                        aReply.send_action_quick_reply(sender_id)
                                     #grab the id
                                     #updates the flow
                                     aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
