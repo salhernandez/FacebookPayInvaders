@@ -483,7 +483,7 @@ def webhook():
                                         #add the info to the pay table
                                         time.sleep(1)
                                         log(deletedInfo)
-                                        aLink.add_request(payeeID, deletedInfo['recipientID'], deletedInfo['amount'])
+                                        aLink.add_request(sender_id, deletedInfo['recipientID'], deletedInfo['amount'])
                                         #ask if they want to pay another person
                                         aReply = QuickReply.QuickReply()
                                         aReply.send_yesNo_quick_reply(sender_id)
