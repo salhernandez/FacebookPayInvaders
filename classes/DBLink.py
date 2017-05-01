@@ -595,11 +595,13 @@ class DBLink(object):
     dbLink.delete_userID_state_info("15966017003")
     """
     def delete_userID_state_info(self, userID):
-        record = models.StateInfo.query.filter_by(senderID=str(userID)).first()
+        userID = str(userID)
+        record = models.StateInfo.query.filter_by(senderID=userID.first()
         stateInfoDict = {}
         
         if record is not None:
             # print row.owed_ID
+            self.log("there are records to delete")
             stateInfoDict['recipientID'] = record.recipientID
             stateInfoDict['amount'] = record.amount
             stateInfoDict['flowType'] = record.flowType
@@ -609,6 +611,7 @@ class DBLink(object):
             models.db.session.delete(record)
             models.db.session.commit()
         else:
+            self.log("no records to delete")
             stateInfoDict = None
         
         return stateInfoDict
@@ -733,7 +736,7 @@ class DBLink(object):
     a = aLink.perform_payment_transaction("1596606567017003")
     """
     def perform_request_transaction(self, payeeID):
-        self.log("INSUDE PERFORM REQUEST TRANSACTION")
+        self.log("INSIDE PERFORM REQUEST TRANSACTION")
         deletedInfo = self.delete_userID_state_info(payeeID)
         #add the info to the pay table
         self.log(deletedInfo)
