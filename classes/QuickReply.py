@@ -83,7 +83,7 @@ class QuickReply(object):
                         elif key_3 in "imgUrl":
                             the_dict['message']['quick_replies'][1]['image_url'] = str(value_3)
                         elif key_3 in "userID":
-                            the_dict['message']['quick_replies'][i+1]['payload'] = "{'responseType': 'selectedPerson', 'value': '" + str(value_3) + "'}"
+                            the_dict['message']['quick_replies'][i+1]['payload'] = "'responseType': 'selectedPerson', 'value': '" + str(value_3) + "'"
         
         else:    
             for i in range(len(users)):
