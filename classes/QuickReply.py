@@ -56,12 +56,12 @@ class QuickReply(object):
         #####################################
         self.log(users)
 
-        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"not here","payload":"{'responseType':'selectedPerson','value':'notHere'}","image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Who would you like to message?","quick_replies":[{"content_type":"text","title":"not here","payload":"{'responseType':'selectedperson','value':'notHere'}","image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
         totalPpl = 0
         for i in range(len(users)):
             self.log(str(i))
             totalPpl = totalPpl +1
-            JSON_Datalist = JSON_Datalist + """,{"content_type":"text","title":"x","payload":"{'responseType':'selectedPerson','value':'default'}}","image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
+            JSON_Datalist = JSON_Datalist + """,{"content_type":"text","title":"x","payload":"{'responseType':'selectedperson','value':'default'}}","image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
         JSON_Datalist = JSON_Datalist + """]}}"""
         the_dict = json.loads(JSON_Datalist)
         

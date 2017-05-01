@@ -78,12 +78,12 @@ class QuickReplyParser(object):
     """
     def isQRSelectPersonValid(self):
         self.log("entering isQRSelectPersonValid")
-        accepted_strings = {'selectedPerson'}
+        accepted_strings = {'selectedperson'}
         
         isValid = False
         
-        if self.responseType in "selectedPerson":
-            self.log("QR is selectedPerson")
+        if self.responseType in accepted_strings:
+            self.log("QR is selectedperson")
             isValid = True
             
         return isValid
