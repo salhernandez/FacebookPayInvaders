@@ -944,7 +944,7 @@ def __getAmountRe__(data):
     else:
         money = None
     
-    return None
+    return money
 if __name__ == '__main__':
     app.run(
         host=os.getenv('IP', '0.0.0.0'),
