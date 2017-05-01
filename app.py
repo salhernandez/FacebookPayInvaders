@@ -84,8 +84,8 @@ def saltest():
     #request_info.getUserInfo("1596606567017003")
     #dbLink.add_user("1596606567017003", request_info.firstName, request_info.lastName, "salvhernandez@csmub.edu", request_info.profile_pic, "6197345766")
     # dbLink.update_flow("1596606567017003", "", 0)
-    #sendMsg.send_signedup()
     #
+    #sendMsg.send_signedup()
     
     return "test"
 
@@ -342,7 +342,10 @@ def webhook():
                         log("QUICK REPLY ERROR CHECK")
                         log("THE QUICK REPLY PAYLOAD"+str(messaging_event['message']['quick_reply']['payload']))
                         info = "{"+str(messaging_event['message']['quick_reply']['payload'])+"}"
+                        log(info)
                         json_acceptable_string = info.replace("'", "\"")
+                        json_acceptable_string = json_acceptable_string.replace(" ", "")
+                        log(info)
                         d = json.loads(json_acceptable_string)
                         
                         #CHANGE flowType to responseType 
