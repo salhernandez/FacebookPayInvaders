@@ -932,14 +932,14 @@ def __getAmount__(data):
     return amount
 
 def __getAmountRe__(data):
-    money = re.compile('|'.join([
+    check = re.compile('|'.join([
     r'^\$?(\d*\.\d{1,2})$',  # e.g., $.50, .50, $1.50, $.5, .5
     r'^\$?(\d+)$',           # e.g., $500, $5, 500, 5
     r'^\$(\d+\.?)$',         # e.g., $5.
     ])).search(data)
     
     money = None
-    if money is not None:
+    if check is not None:
         money = data
     else:
         money = None
