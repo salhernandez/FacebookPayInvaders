@@ -527,7 +527,7 @@ def webhook():
                         elif isYesNo is True:
                             #stateInfo = aLink.get_state_info(sender_id)
                             
-                            if aReply.valueFromResponse in "yes":
+                            if qrParser.valueFromResponse in "yes":
                                 if flow_info['flowType'] in "split":
                                     log("YES NO SPLIT")
                                     #user want to charge another person
@@ -538,7 +538,7 @@ def webhook():
                                         aLink.delete_userID_state_info(sender_id)
                                         sendMsg.send_request_from_who_message()
                                         break
-                            elif aReply.valueFromResponse in "no":
+                            elif qrParser.valueFromResponse in "no":
                                 if flow_info['flowType'] in "split":
                                     if flow_info['flowState'] == 6:
                                         log("NO SPLIT == 6")
