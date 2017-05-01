@@ -13,6 +13,7 @@ import classes.QuickReply as QuickReply
 import numpy as np
 import re
 import pandas as pd
+import time
 
 app = Flask(__name__)
 
@@ -478,7 +479,11 @@ def webhook():
                                 if flow_info['flowType'] in "split":
                                     if flow_info['flowState'] == 5:
                                         log("SPLIT FLOWSTATE == 5")
-                                        aLink.perform_request_transaction(sender_id)
+                                        deletedInfo = aLink.delete_userID_state_info(payeeID)
+                                        #add the info to the pay table
+                                        time.sleep(1)
+                                        log(deletedInfo)
+                                        aLink.add_request(payeeID, deletedInfo['recipientID'], deletedInfo['amount'])
                                         #ask if they want to pay another person
                                         aReply = QuickReply.QuickReply()
                                         aReply.send_yesNo_quick_reply(sender_id)
