@@ -1,5 +1,4 @@
-import json
-
+import json, app
 #This class is used specidifcally for taking apart the message and get the info
 #we want from it. 
 
@@ -17,7 +16,8 @@ class MessageParser(object):
     def __identifyTypeOfMessage__(self,someText):
         msgType = ""
         someText = str(someText.lower())
-
+        someText = "pay"
+        
         if 'pay' in someText:
             msgType = "pay"
         
@@ -29,6 +29,9 @@ class MessageParser(object):
         
         elif 'clear' in someText:
             msgType = "clear"
+            
+        elif 'yes' in someText:
+            msgType = "yes"
             
         elif 'josh' == someText or 'sal' == someText or 'anna' == someText:
             msgType = "knownName"
@@ -51,8 +54,9 @@ class MessageParser(object):
         userID = "-1"
         userFirst = ""
         
-        print someText
-        
+        userID = str(1596606567017003)
+        userFirst = "sal"
+        # print someText
         
         if 'josh' in someText:
             userID = str(985245348244242)
@@ -67,15 +71,14 @@ class MessageParser(object):
             userFirst = "anna"
         
 
-        # else:
-        #     userID = "-1"
-        #     userFirst = ""
+        else:
+            userID = "-1"
+            userFirst = ""
 
         self.userID = userID
         self.userFirst = userFirst
-        
         self.__identifyTypeOfMessage__(someText)
-
+        
     def __getAmount__(self,data):
         # get words in string
         splits = data.split(" ")
@@ -89,9 +92,6 @@ class MessageParser(object):
 
         self.amount = amount
 
-    def __str__(self):
-        return str(self.__dict__)
-        
     def __getNumber__(self, data):
         # get words in string
         splits = data.split(" ")

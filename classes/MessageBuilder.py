@@ -77,11 +77,23 @@ class MessageBuilder(object):
     def send_default_message(self):
         self.message_template_simple(self.fromID, self.defaultMessage)
 
+    def send_help_response(self):
+        self.message_template_simple(self.fromID, "Hello there! I am a payment bot. I can help you complete transactions like paying a friend, requesting money from a friend, and splitting bills with friends. You can clear your conversation with me at any time by typing 'clear'")
+
     def send_request_from_who_message(self):
-        self.message_template_simple(self.fromID, "Who would you like to request money from?")
+        self.message_template_simple(self.fromID, "Type the first and last name of the user you'd like to request money from as it appears on Facebook")
     
     def send_pay_who_message1(self):
-        self.message_template_simple(self.fromID, "Who would you like to pay?")
+        self.message_template_simple(self.fromID, "Type the first and last name of the user you'd like to pay as it appears on Facebook")
+    
+    def send_use_dollar_sign(self):
+        self.message_template_simple(self.fromID, "Please use a dollar sign when specifying your amount")
+    
+    def send_correct_amount_format_message(self):
+        self.message_template_simple(self.fromID, "The correct message format is '$10' or '$10.25' ")
+
+    def send_your_request_was_sent(self):
+        self.message_template_simple(self.fromID, "Your request was sent")
     
     def send_pay_who_message2(self):
         self.message_template_simple(self.fromID, "Who would you like to pay $" + self.amount + "?")
@@ -93,19 +105,24 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "How may ways would you like to split the bill?")
 
     def send_clear_message(self):
-        self.message_template_simple(self.fromID, "The conversation has been cleared! " + self.defaultMessage)
+        self.message_template_simple(self.fromID, "The conversation has been cleared!")
 
     def send_how_much_message(self):
         self.message_template_simple(self.fromID, "Please specify an amount")
 
     def send_payment_log_message(self):
         self.message_template_simple(self.fromID, "You paid $" + self.amount + " to " + self.toName)
+        
+    def send_which_user(self):
+        self.message_template_simple(self.fromID, "Which user?")
 
     def send_confirmation_message(self):
         self.message_template_simple(self.fromID, "Please confirm this action by typing '<action> <name> <amount>'?")
 
     def send_payment_made_message(self):
         self.message_template_simple(self.toID, "You got paid $" + self.amount + " from " + self.fromName)
+    def send_info_log(self):
+        self.message_template_simple(self.toID, self.amount)
         
     def send_split_log_message(self):
         self.message_template_simple(self.fromID, "You requested to split the bill with " + self.toName)
@@ -130,6 +147,12 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "Please Enter a Phone Number: !!<Number> For Example: !!8882421111")
     def send_signedup(self):
         self.message_template_simple(self.fromID, "You're All Signed Up!")
+    
+    def send_enter_amount(self):
+        self.message_template_simple(self.fromID, "Enter an amount that starts with $")
+    
+    def send_error_try_again(self):
+        self.message_template_simple(self.fromID, "Error, please try again")
 
     def notify_payee_and_payer_of_payment(self):
         self.send_payment_made_message()

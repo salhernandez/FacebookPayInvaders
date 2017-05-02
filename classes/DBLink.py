@@ -41,45 +41,142 @@ class DBLink(object):
     """
     Checks if a user is in the db
     Return rows that match, otherwise it returns None
+    
+    
+    aLink = DBLink.DBLink()
+    a = aLink.get_user_in_db("985245348244242")
+    log(a['firstName'])
     """
     def get_user_in_db(self, userID):
         userInDB = models.Users.query.filter_by(user_id=str(userID)).all()
         
         #ID was found
         if userInDB is not None:
-            return userInDB
+            userDict = {}
+        
+            for row in userInDB:
+                userDict['userID'] = row.user_id
+                userDict['firstName'] = row.firstName
+                userDict['lastName'] = row.lastName
+                userDict['email'] = row.email
+                userDict['imgUrl'] = row.imgUrl
+                userDict['phoneNumber'] = row.phoneNumber
+                break
+            return userDict
         else:
             return None
+    """
+    Gets all the users in the database
     
+    
+    """
+    def get_all_user_in_db(self):
+        userInDB = models.Users.query.all()
+        
+        #ID was found
+        if userInDB is not None:
+           
+            # print userInDB
+            userInDBDict = {}
+            
+            count = 0
+            for row in userInDB:
+                # print row.owed_ID
+                userInDBDict[count] = {}
+                userInDBDict[count]['userID'] = row.user_id
+                userInDBDict[count]['firstName'] = row.firstName
+                userInDBDict[count]['lastName'] = row.lastName
+                userInDBDict[count]['email'] = row.email
+                userInDBDict[count]['imgUrl'] = row.imgUrl
+                userInDBDict[count]['phoneNumber'] = row.phoneNumber
+                
+                count = count + 1
+            return userInDBDict
+                
+        else:
+            return None
     """
     Gets all the users in the db based on the first name
     Returns users that match the first name
+    
+    make note of the number iterator that starts at 0
+    
+    aLink = DBLink.DBLink()
+    a = aLink.get_users_with_first_name("sal")
+    log(a[0][USER_ID_IS_HERE]['firstName'])
     """
     def get_users_with_first_name(self, first_name):
         first_name = first_name.lower()
         userInDB = models.Users.query.filter(models.Users.firstName.startswith(first_name)).all()
         
         if userInDB is not None:
-            return userInDB
+            
+            # print userInDB
+            userInDBDict = {}
+            
+            count = 0
+            for row in userInDB:
+                userInDBDict[count] = {}
+                # userInDBDict[count][row.user_id] = {}
+                userInDBDict[count]['userID'] = row.user_id
+                userInDBDict[count]['firstName'] = row.firstName
+                userInDBDict[count]['lastName'] = row.lastName
+                userInDBDict[count]['email'] = row.email
+                userInDBDict[count]['imgUrl'] = row.imgUrl
+                userInDBDict[count]['phoneNumber'] = row.phoneNumber
+                
+                count = count + 1
+            return userInDBDict
         else:
             return None
     
     """
     Gets all the users in the db based on the last name
     Returns users that match the last name
+    
+    make note of the number iterator that starts at 0
+    
+    aLink = DBLink.DBLink()
+    a = aLink.get_users_with_last_name("he")
+    log(a[0][userID]['firstName'])
+    return "test"
     """
     def get_users_with_last_name(self, last_name):
         last_name = last_name.lower()
         userInDB = models.Users.query.filter(models.Users.lastName.startswith(last_name)).all()
         
         if userInDB is not None:
-            return userInDB
+            # print userInDB
+            userInDBDict = {}
+            
+            count = 0
+            for row in userInDB:
+                # print row.owed_ID
+                userInDBDict[count] = {}
+                userInDBDict[count][row.user_id] = {}
+                userInDBDict[count][row.user_id]['userID'] = row.user_id
+                userInDBDict[count][row.user_id]['firstName'] = row.firstName
+                userInDBDict[count][row.user_id]['lastName'] = row.lastName
+                userInDBDict[count][row.user_id]['email'] = row.email
+                userInDBDict[count][row.user_id]['imgUrl'] = row.imgUrl
+                userInDBDict[count][row.user_id]['phoneNumber'] = row.phoneNumber
+                
+                count = count + 1
+            return userInDBDict
         else:
             return None
     
     """
     Gets all the users in the db based on first and last name
     Returns users that match the last name
+    
+    make note of the number iterator that starts at 0
+    
+    aLink = DBLink.DBLink()
+    a = aLink.get_users_with_first_last_name("anna", "pomelov")
+    log(a[0][userID]['firstName'])
+    return "test"
+    
     """
     def get_users_with_first_last_name(self, first_name, last_name):
         first_name = first_name.lower()
@@ -88,7 +185,22 @@ class DBLink(object):
         userInDB = models.Users.query.filter_by(firstName=first_name , lastName=last_name).all()
         
         if userInDB is not None:
-            return userInDB
+            userInDBDict = {}
+            
+            count = 0
+            for row in userInDB:
+                # print row.owed_ID
+                userInDBDict[count] = {}
+                userInDBDict[count][row.user_id] = {}
+                userInDBDict[count][row.user_id]['userID'] = row.user_id
+                userInDBDict[count][row.user_id]['firstName'] = row.firstName
+                userInDBDict[count][row.user_id]['lastName'] = row.lastName
+                userInDBDict[count][row.user_id]['email'] = row.email
+                userInDBDict[count][row.user_id]['imgUrl'] = row.imgUrl
+                userInDBDict[count][row.user_id]['phoneNumber'] = row.phoneNumber
+                
+                count = count + 1
+            return userInDBDict
         else:
             return None
             
@@ -123,7 +235,30 @@ class DBLink(object):
         elif aFlag is True:
             admin = models.Users.query.filter_by(user_id=uID).update(dict(phoneNumber=new_phone))
             models.db.session.commit()
+    
+    
+    """
+    delete_user_from_db
+    Deletes the user from the database
+    """
+    def delete_user_from_db(self, userID):
+        record = models.Users.query.filter_by(user_id=userID).first()
+        userInDBDict = {}
         
+        if record is not None:
+            userInDBDict['userID'] = record.user_id
+            userInDBDict['firstName'] = record.firstName
+            userInDBDict['lastName'] = record.lastName
+            userInDBDict['email'] = record.email
+            userInDBDict['imgUrl'] = record.imgUrl
+            userInDBDict['phoneNumber'] = record.phoneNumber
+            
+        
+            models.db.session.delete(record)        
+            models.db.session.commit()
+            return userInDBDict
+        else:
+            return None
     """
     ===END USERS TABLE METHODS
     ============================================================================
@@ -158,7 +293,7 @@ class DBLink(object):
                 
             return uniqueFriends 
         else:
-            return uniqueFriends
+            return None
     
     """
     Checks if user 1 is friends with user 2
@@ -216,22 +351,24 @@ class DBLink(object):
     """
     def get_all_paid_to(self, userID):
         
-        paidToRecords = models.Payed.query.filter_by(payed_ID=str(userID)).all()
+        paidToRecords = models.Pay.query.filter_by(pay_ID=str(userID)).all()
         
         # print userInDB
         paidToDict = {}
         
-        count = 0
-        for row in paidToRecords:
-            # print row.owed_ID
-            paidToDict[count] = {}
-            paidToDict[count][row.payee_ID] = {}
-            paidToDict[count][row.payee_ID]['amount'] = row.amount
-            paidToDict[count][row.payee_ID]['timestamp'] = row.time_stamp
-            
-            count = count + 1
-        return paidToDict
-    
+        if paidToRecords is not None:
+            count = 0
+            for row in paidToRecords:
+                # print row.owed_ID
+                paidToDict[count] = {}
+                paidToDict[count]['owed_ID'] = row.owed_ID
+                paidToDict[count]['amount'] = row.amount
+                paidToDict[count]['timestamp'] = row.time_stamp
+                
+                count = count + 1
+            return paidToDict
+        else:
+            return None
     """
     Get all the payments made by a user
     Returns a dictionary of ids, amount, and time stamp
@@ -241,19 +378,22 @@ class DBLink(object):
         
         paymentsMadeRecords = models.Payed.query.filter_by(payee_ID=str(userID)).all()
         
-        # print userInDB
-        paymentsMadeDict = {}
-        
-        count = 0
-        for row in paymentsMadeRecords:
-            # print row.owed_ID
-            paymentsMadeDict[count] = {}
-            paymentsMadeDict[count][row.payed_ID] = {}
-            paymentsMadeDict[count][row.payed_ID]['amount'] = row.amount
-            paymentsMadeDict[count][row.payed_ID]['timestamp'] = row.time_stamp
+        if paymentsMadeRecords is not None:
+            # print userInDB
+            paymentsMadeDict = {}
             
-            count = count + 1
-        return paymentsMadeDict
+            count = 0
+            for row in paymentsMadeRecords:
+                # print row.owed_ID
+                paymentsMadeDict[count] = {}
+                paymentsMadeDict[count][row.payed_ID] = {}
+                paymentsMadeDict[count][row.payed_ID]['amount'] = row.amount
+                paymentsMadeDict[count][row.payed_ID]['timestamp'] = row.time_stamp
+                
+                count = count + 1
+            return paymentsMadeDict
+        else:
+            return None
     
     """
     ===END PAYED(PAID) TABLE METHODS
@@ -282,19 +422,25 @@ class DBLink(object):
         
         owedRecords = models.Pay.query.filter_by(pay_ID=str(userID)).all()
         
-        # print userInDB
-        owedDict = {}
-        
-        count = 0
-        for row in owedRecords:
-            # print row.owed_ID
-            owedDict[count] = {}
-            owedDict[count][row.owed_ID] = {}
-            owedDict[count][row.owed_ID]['amount'] = row.amount
-            owedDict[count][row.owed_ID]['timestamp'] = row.time_stamp
+        if owedRecords is not None:
+            # print userInDB
+            owedDict = {}
             
-            count = count + 1
-        return owedDict
+            count = 0
+            for row in owedRecords:
+                # print row.owed_ID
+                unix_timestamp = int(row.time_stamp)
+                utc_time = time.gmtime(unix_timestamp)
+                
+                owedDict[count] = {}
+                owedDict[count]['owed_ID'] = row.owed_ID
+                owedDict[count]['amount'] = row.amount
+                owedDict[count]['timestamp'] = time.strftime("%Y-%m-%d", utc_time)
+                
+                count = count + 1
+            return owedDict
+        else:
+            return None
     
     """
     Gets amounts owed TO the user
@@ -302,23 +448,55 @@ class DBLink(object):
     """
     def get_all_owed_to(self, userID):
         
-        owedToRecords = models.Pay.query.filter_by(owed_ID=str(userID)).all()
+        owedToRecords = models.Payed.query.filter_by(payed_ID=str(userID)).all()
         
-        owedToDict = {}
-        
-        count = 0
-        for row in owedToRecords:
-            # print row.owed_ID
+        if owedToRecords is not None:
+            owedToDict = {}
             
-            owedToDict[count] = {}
-            owedToDict[count][row.pay_ID] = {}
-            owedToDict[count][row.pay_ID]['amount'] = row.amount
-            owedToDict[count][row.pay_ID]['timestamp'] = row.time_stamp
+            count = 0
+            for row in owedToRecords:
+                # print row.owed_ID
+                unix_timestamp = int(row.time_stamp)
+                utc_time = time.gmtime(unix_timestamp)
             
-            count = count + 1
+                owedToDict[count] = {}
+                owedToDict[count]['payee_ID'] = row.payee_ID
+                owedToDict[count]['amount'] = row.amount
+                owedToDict[count]['timestamp'] = time.strftime("%Y-%m-%d", utc_time)
+           
+
+
+                
+                count = count + 1
+            
+            return owedToDict
+        else:
+            return None
         
-        return owedToDict
-    
+    """
+    delete_pay_request
+    Deletes the pay request from the db
+    Uses the payeeID, and timestamp
+    """
+    def delete_pay_request(self, payeeID, the_ts):
+        the_ts = str(the_ts)
+        record = models.Pay.query.filter(and_(models.Pay.pay_ID == payeeID, models.Pay.time_stamp == the_ts)).first()
+        PayInfoDict = {}
+        
+        if record is not None:
+            PayInfoDict['owed_ID'] = record.owed_ID
+            PayInfoDict['pay_ID'] = record.pay_ID
+            PayInfoDict['amount'] = record.amount
+            PayInfoDict['timestamp'] = record.time_stamp
+        
+            models.db.session.delete(record)        
+            models.db.session.commit()
+            
+        else:
+            PayInfoDict = None
+            
+        return PayInfoDict
+        
     """
     ===END PAY TABLE METHODS
     ============================================================================
@@ -354,28 +532,26 @@ class DBLink(object):
     
     """
     Gets the state information based on the person who started the flow
-    Returns all the info from the row
+    Returns all the info from the row ONLY 1 ROW
     """
     def get_state_info(self, userID):
         
-        stateInfoRecords = models.StateInfo.query.filter_by(senderID=str(userID)).all()
+        stateInfoRecords = models.StateInfo.query.filter_by(senderID=str(userID)).first()
         stateInfoDict = {}
         
-        count = 0
-        for row in stateInfoRecords:
+        if stateInfoRecords is not None:
+            
             # print row.owed_ID
-            
-            stateInfoDict[count] = {}
-            
-            stateInfoDict[count][row.recipientID] = {}
-            stateInfoDict[count][row.recipientID]['amount'] = row.amount
-            stateInfoDict[count][row.recipientID]['flowType'] = row.flowType
-            stateInfoDict[count][row.recipientID]['splitID'] = row.splitID
-            stateInfoDict[count][row.recipientID]['timestamp'] = row.time_stamp
-            
-            count = count + 1
+            stateInfoDict['recipientID'] = stateInfoRecords.recipientID
+            stateInfoDict['amount'] = stateInfoRecords.amount
+            stateInfoDict['flowType'] = stateInfoRecords.flowType
+            stateInfoDict['splitID'] = stateInfoRecords.splitID
+            stateInfoDict['timestamp'] = stateInfoRecords.time_stamp
+                
+            return stateInfoDict
         
-        return stateInfoDict
+        else:
+            return None
     
     """
     Updates the recipient based on the senderID, new recipient id, and split id (even if its "-1")
@@ -398,6 +574,56 @@ class DBLink(object):
         
         admin = models.StateInfo.query.filter(and_(models.StateInfo.senderID==sender_id, models.StateInfo.recipientID==recipient_id, models.StateInfo.splitID == split_id)).update(dict(amount=new_amount))
         models.db.session.commit()
+        
+    """
+    Gets a user state info table started
+    pass in the userID and the flowType
+    dbLink.init_state_info("1596606567017003", "split")
+    """
+    def init_state_info(self, senderID, flowType):
+        splitID = "-1"
+        recipientID=""
+        amount= 0.0
+        
+        senderID = str(senderID)
+        recipientID = str(recipientID)
+        ts = str(int(time.time()))
+        flowType = flowType.lower()
+        
+        newStateInfo = models.StateInfo(senderID, recipientID, amount, flowType, splitID, ts)
+        models.db.session.add(newStateInfo)
+        
+        models.db.session.commit()
+        
+    
+    """
+    delete_userID_state_info
+    deletes the user id row from the state info table
+    
+    dbLink.delete_userID_state_info("15966017003")
+    """
+    def delete_userID_state_info(self, userID):
+        userID = str(userID)
+        record = models.StateInfo.query.filter_by(senderID=userID).first()
+        stateInfoDict = {}
+        
+        if record is not None:
+            # print row.owed_ID
+            self.log("there are records to delete")
+            stateInfoDict['recipientID'] = record.recipientID
+            stateInfoDict['amount'] = record.amount
+            stateInfoDict['flowType'] = record.flowType
+            stateInfoDict['splitID'] = record.splitID
+            stateInfoDict['timestamp'] = record.time_stamp
+            
+            models.db.session.delete(record)
+            models.db.session.commit()
+        else:
+            self.log("no records to delete")
+            stateInfoDict = None
+        
+        return stateInfoDict
+
     """
     ===END STATE INFO TABLE METHODS
     ============================================================================
@@ -442,13 +668,28 @@ class DBLink(object):
     
     """
     Gets the flow state for the user ID
+    
+    aLink = DBLink.DBLink()
+    flow_info = aLink.get_flow_state("985245348244242")
+    log(flow_info['userID'])
     """
     def get_flow_state(self, user_id):
         user_id = str(user_id)
         
         flowInfo = models.FlowStates.query.filter_by(userID=user_id).all()
+        flowInfoDict = {}
         
-        return flowInfo
+        if flowInfo is not None:
+            for row in flowInfo:
+                flowInfoDict['userID'] = row.userID
+                flowInfoDict['flowType'] = row.flowType
+                flowInfoDict['flowState'] = row.flowState
+                flowInfoDict['timestamp'] = row.time_stamp
+            
+            #print flowInfoDict
+            return flowInfoDict
+        else:
+            return None
     """
     ===END FLOW STATE TABLE METHODS
     ============================================================================
@@ -483,7 +724,37 @@ class DBLink(object):
             return False
     
     """
+    perform_payment_transaction
+    
+    aLink = DBLink.DBLink()
+    
+    a = aLink.perform_payment_transaction("1596606567017003", 1491129978)
+    """
+    def perform_payment_transaction(self, payeeID, time_stamp):
+        #delete payment from db
+        deletedInfo = self.delete_pay_request(payeeID, time_stamp)
+        #add it to the payed(paid) table
+        self.add_payment(deletedInfo['owed_ID'], deletedInfo['pay_ID'], deletedInfo['amount'])
+    
+    """
+    perform_payment_transaction
+    
+    aLink = DBLink.DBLink()
+    
+    a = aLink.perform_payment_transaction("1596606567017003")
+    """
+    def perform_request_transaction(self, payeeID):
+        self.log("INSIDE PERFORM REQUEST TRANSACTION")
+        deletedInfo = self.delete_userID_state_info(payeeID)
+        #add the info to the pay table
+        self.log(deletedInfo)
+        self.add_request(payeeID, deletedInfo['recipientID'], deletedInfo['amount'])
+    """
     Displays the instance variables of the object
     """
     def __str__(self):
         return str(self.__dict__)
+        
+    def log(self, text):  # simple wrapper for __log__ging to stdout on heroku
+        print str(text)
+        sys.stdout.flush()
