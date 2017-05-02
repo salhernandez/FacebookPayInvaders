@@ -187,6 +187,7 @@ def hello():
 #     return usrID, userFirst
 
 
+
 def getNameOfUser(anID):
     userFirst = False
     if str(985245348244242) in anID:
@@ -503,6 +504,55 @@ def webhook():
                             if "josh venmo demo" in message_text:
                                 the_payment = PayGate(toUser = messaging_event["sender"]["id"])
                                 the_payment.send_payment_gateway()
+                                break
+                            
+                            # gets the who owes how
+                            if "Info request" in message_text:
+                                payedUser = UserInfo.UserInfo("Hsoj", messaging_event["sender"]["id"])
+                                
+                                dbLink = DBLink.DBLink()
+                                result1 = dbLink.get_all_paid_to(messaging_event["sender"]["id"])
+                                people = []
+                                output = "money requst log: \n"
+                                for j in range(len(result1)):
+                                    
+                                    got_user = dbLink.get_user_in_db(str(result1[j]['owed_ID']))
+                                    print "------------------------"
+                                    print got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
+                                    print "------------------------"
+                                    # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
+                                    output = output + got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']) + "\n"
+                             
+                                
+                                
+                                
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(output))
+                                sendMsg.send_info_log()
+                                log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS2: "+str(sendMsg))
+                                break
+                                                        # gets the who owes how
+                            if "Info pay" in message_text:
+                                payedUser = UserInfo.UserInfo("Hsoj", messaging_event["sender"]["id"])
+                                
+                                dbLink = DBLink.DBLink()
+                                result1 = dbLink.get_all_owed_to(messaging_event["sender"]["id"])
+                                people = []
+                                output = "money payed log: \n"
+                                for j in range(len(result1)):
+                                    
+                                    got_user = dbLink.get_user_in_db(str(result1[j]['payee_ID']))
+                                    print "------------------------"
+                                    print got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
+                                    print "------------------------"
+                                    # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
+                                    output = output + got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']) + "\n"
+                             
+                                
+                                
+                                
+                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(output))
+                                sendMsg.send_info_log()
+                                log("WHAT THE MESSAGEBUILDER OBJECT CONTAINS2: "+str(sendMsg))
                                 break
                             
                             #sends buttons with images to josh

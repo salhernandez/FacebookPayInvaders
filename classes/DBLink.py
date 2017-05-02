@@ -328,7 +328,7 @@ class DBLink(object):
     """
     def get_all_paid_to(self, userID):
         
-        paidToRecords = models.Payed.query.filter_by(payed_ID=str(userID)).all()
+        paidToRecords = models.Pay.query.filter_by(pay_ID=str(userID)).all()
         
         # print userInDB
         paidToDict = {}
@@ -338,9 +338,9 @@ class DBLink(object):
             for row in paidToRecords:
                 # print row.owed_ID
                 paidToDict[count] = {}
-                paidToDict[count][row.payee_ID] = {}
-                paidToDict[count][row.payee_ID]['amount'] = row.amount
-                paidToDict[count][row.payee_ID]['timestamp'] = row.time_stamp
+                paidToDict[count]['owed_ID'] = row.owed_ID
+                paidToDict[count]['amount'] = row.amount
+                paidToDict[count]['timestamp'] = row.time_stamp
                 
                 count = count + 1
             return paidToDict
@@ -407,9 +407,9 @@ class DBLink(object):
             for row in owedRecords:
                 # print row.owed_ID
                 owedDict[count] = {}
-                owedDict[count][row.owed_ID] = {}
-                owedDict[count][row.owed_ID]['amount'] = row.amount
-                owedDict[count][row.owed_ID]['timestamp'] = row.time_stamp
+                owedDict[count]['owed_ID'] = row.owed_ID
+                owedDict[count]['amount'] = row.amount
+                owedDict[count]['timestamp'] = row.time_stamp
                 
                 count = count + 1
             return owedDict
@@ -422,7 +422,7 @@ class DBLink(object):
     """
     def get_all_owed_to(self, userID):
         
-        owedToRecords = models.Pay.query.filter_by(owed_ID=str(userID)).all()
+        owedToRecords = models.Payed.query.filter_by(payed_ID=str(userID)).all()
         
         if owedToRecords is not None:
             owedToDict = {}
@@ -432,9 +432,9 @@ class DBLink(object):
                 # print row.owed_ID
                 
                 owedToDict[count] = {}
-                owedToDict[count][row.pay_ID] = {}
-                owedToDict[count][row.pay_ID]['amount'] = row.amount
-                owedToDict[count][row.pay_ID]['timestamp'] = row.time_stamp
+                owedToDict[count]['payee_ID'] = row.payee_ID
+                owedToDict[count]['amount'] = row.amount
+                owedToDict[count]['timestamp'] = row.time_stamp
                 
                 count = count + 1
             
