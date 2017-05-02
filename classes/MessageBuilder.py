@@ -147,6 +147,12 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "Please Enter a Phone Number: !!<Number> For Example: !!8882421111")
     def send_signedup(self):
         self.message_template_simple(self.fromID, "You're All Signed Up!")
+    
+    def send_enter_amount(self):
+        self.message_template_simple(self.fromID, "Enter an amount that starts with $")
+    
+    def send_error_try_again(self):
+        self.message_template_simple(self.fromID, "Error, please try again")
 
     def notify_payee_and_payer_of_payment(self):
         self.send_payment_made_message()

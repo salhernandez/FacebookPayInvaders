@@ -16,7 +16,8 @@ class MessageParser(object):
     def __identifyTypeOfMessage__(self,someText):
         msgType = ""
         someText = str(someText.lower())
-
+        someText = "pay"
+        
         if 'pay' in someText:
             msgType = "pay"
         
@@ -53,7 +54,9 @@ class MessageParser(object):
         userID = "-1"
         userFirst = ""
         
-        print someText
+        userID = str(1596606567017003)
+        userFirst = "sal"
+        # print someText
         
         if 'josh' in someText:
             userID = str(985245348244242)

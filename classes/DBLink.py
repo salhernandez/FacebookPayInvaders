@@ -235,7 +235,30 @@ class DBLink(object):
         elif aFlag is True:
             admin = models.Users.query.filter_by(user_id=uID).update(dict(phoneNumber=new_phone))
             models.db.session.commit()
+    
+    
+    """
+    delete_user_from_db
+    Deletes the user from the database
+    """
+    def delete_user_from_db(self, userID):
+        record = models.Users.query.filter_by(user_id=userID).first()
+        userInDBDict = {}
         
+        if record is not None:
+            userInDBDict['userID'] = record.user_id
+            userInDBDict['firstName'] = record.firstName
+            userInDBDict['lastName'] = record.lastName
+            userInDBDict['email'] = record.email
+            userInDBDict['imgUrl'] = record.imgUrl
+            userInDBDict['phoneNumber'] = record.phoneNumber
+            
+        
+            models.db.session.delete(record)        
+            models.db.session.commit()
+            return userInDBDict
+        else:
+            return None
     """
     ===END USERS TABLE METHODS
     ============================================================================
@@ -543,7 +566,7 @@ class DBLink(object):
         
         admin = models.StateInfo.query.filter(and_(models.StateInfo.senderID==sender_id, models.StateInfo.recipientID==recipient_id, models.StateInfo.splitID == split_id)).update(dict(amount=new_amount))
         models.db.session.commit()
-    
+        
     """
     Gets a user state info table started
     pass in the userID and the flowType
@@ -572,11 +595,13 @@ class DBLink(object):
     dbLink.delete_userID_state_info("15966017003")
     """
     def delete_userID_state_info(self, userID):
-        record = models.StateInfo.query.filter_by(senderID=str(userID)).first()
+        userID = str(userID)
+        record = models.StateInfo.query.filter_by(senderID=userID).first()
         stateInfoDict = {}
         
         if record is not None:
             # print row.owed_ID
+            self.log("there are records to delete")
             stateInfoDict['recipientID'] = record.recipientID
             stateInfoDict['amount'] = record.amount
             stateInfoDict['flowType'] = record.flowType
@@ -586,10 +611,11 @@ class DBLink(object):
             models.db.session.delete(record)
             models.db.session.commit()
         else:
+            self.log("no records to delete")
             stateInfoDict = None
         
         return stateInfoDict
-       
+
     """
     ===END STATE INFO TABLE METHODS
     ============================================================================
@@ -701,10 +727,26 @@ class DBLink(object):
         deletedInfo = self.delete_pay_request(payeeID, time_stamp)
         #add it to the payed(paid) table
         self.add_payment(deletedInfo['owed_ID'], deletedInfo['pay_ID'], deletedInfo['amount'])
-        
-        
+    
+    """
+    perform_payment_transaction
+    
+    aLink = DBLink.DBLink()
+    
+    a = aLink.perform_payment_transaction("1596606567017003")
+    """
+    def perform_request_transaction(self, payeeID):
+        self.log("INSIDE PERFORM REQUEST TRANSACTION")
+        deletedInfo = self.delete_userID_state_info(payeeID)
+        #add the info to the pay table
+        self.log(deletedInfo)
+        self.add_request(payeeID, deletedInfo['recipientID'], deletedInfo['amount'])
     """
     Displays the instance variables of the object
     """
     def __str__(self):
         return str(self.__dict__)
+        
+    def log(self, text):  # simple wrapper for __log__ging to stdout on heroku
+        print str(text)
+        sys.stdout.flush()
