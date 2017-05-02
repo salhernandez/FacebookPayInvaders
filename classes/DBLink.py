@@ -453,11 +453,16 @@ class DBLink(object):
             count = 0
             for row in owedToRecords:
                 # print row.owed_ID
-                
+                unix_timestamp = int(row.time_stamp)
+                utc_time = time.gmtime(unix_timestamp)
+            
                 owedToDict[count] = {}
                 owedToDict[count]['payee_ID'] = row.payee_ID
                 owedToDict[count]['amount'] = row.amount
-                owedToDict[count]['timestamp'] = row.time_stamp
+                owedToDict[count]['timestamp'] = time.strftime("%Y-%m-%d %H:%M:%S+00:00 (UTC)", utc_time)
+           
+
+
                 
                 count = count + 1
             

@@ -637,7 +637,7 @@ def webhook():
                                     print got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
                                     print "------------------------"
                                     # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
-                                    output = output + got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']) + "\n"
+                                    output = output + got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']) + " " + str(result1[j]['timestamp']) + "\n"
                              
                                 
                                 
@@ -661,7 +661,7 @@ def webhook():
                                     print got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
                                     print "------------------------"
                                     # people[p_count] = got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount'])
-                                    output = output + got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']) + "\n"
+                                    output = output + got_user['firstName'] + " " + got_user['lastName'] + " " + str(result1[j]['amount']) + " " + str(result1[j]['timestamp']) + "\n"
                              
                                 
                                 
