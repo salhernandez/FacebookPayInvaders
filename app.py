@@ -466,12 +466,6 @@ def webhook():
                                     sendMsg.send_your_request_was_sent()
                                     break
                                 
-                                if qrParser.flowTypeFromDB in "request":
-                                    aLink.update_flow(sender_id, "", 0)
-
-                                    sendMsg.send_your_request_was_sent()
-                                    break
-                                
                                 flow_info = aLink.get_flow_state(sender_id)
                                 
                                 #specific confirm for split
@@ -989,10 +983,8 @@ def webhook():
                         #anotherUser = UserInfo.UserInfo("", messaging_event["sender"]["id"])
                         aReply = QuickReply.QuickReply()
                         aReply.send_action_quick_reply(messaging_event["sender"]["id"])
-                        
-                        
-                        
-                        
+   
+          
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
 
