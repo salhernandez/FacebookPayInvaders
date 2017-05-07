@@ -852,23 +852,34 @@ def webhook():
                                 if flow_info['flowState'] == 3:
                                     aLink.update_flow(sender_id, "pay", 4)
                                     sendMsg.send_how_much_message()
+                                
+                                elif flow_info['flowState'] == 4:
+                                    log("SPLIT == 4")
+                                    #get amount, check if its a number, if it is, increase flow,
+                                    #if not send error message to re-enter amount
+                                    anAmount = __getAmountRe__(message_text)
                                     
-                                if flow_info['flowState'] == 4: 
-                                    m = re.search('\$(?!0\d)\d+(?:\.\d{2})?(?=\s|$)', msgObj.getMessage())
-                                    if m:
-                                        aLink.update_state_info_amount(sender_id, "", "-1", float(msgObj.amount))
-                                        
+                                    #if the amount is valid, update state info
+                                    # update flow
+                                    # ask if what they entered is correct w/ confirm/deny QR buttons
+                                    if anAmount is not None:
                                         aLink.update_flow(sender_id, "pay", 5)
-                                        
+                                        #get flow state info
+                                        tempInfo = aLink.get_state_info(sender_id)
+                                        #update flow state info
+                                        aLink.update_state_info_amount(sender_id, tempInfo['recipientID'],"-1", anAmount)
+                                        #send QR confirm/deny buttons
                                         aReply = QuickReply.QuickReply()
-                                        aReply.send_confirmDeny_quick_reply(messaging_event["sender"]["id"])
-                                        break  
-                                        
+                                        aReply.send_confirmDeny_quick_reply(sender_id)
                                     else:
-                                        sendMsg.send_correct_amount_format_message()
-                                        sendMsg.send_how_much_message()
+                                        #re-enter information
+                                        someUser = UserInfo.UserInfo("",sender_id)
+                                        anotherUser = UserInfo.UserInfo("","")
                                         
-                                        break    
+                                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                        sendMsg.send_error_try_again()
+                                        sendMsg.send_enter_amount()
+                                        break   
                                     
                             if flow_info['flowType'] in "request":
                                 
