@@ -904,6 +904,7 @@ def webhook():
                                     
                             if flow_info['flowType'] in "request":
                                 if flow_info['flowState'] == 2:
+                                    
                                     message_text = str(message_text)
                                     aName = message_text.split()
                                     log("length of string: "+str(len(aName)))
