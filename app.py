@@ -903,41 +903,41 @@ def webhook():
                                         break   
                                     
                             if flow_info['flowType'] in "request":
-                                if flow_info['flowState'] == 2:
+                                # if flow_info['flowState'] == 2:
                                     
-                                    message_text = str(message_text)
-                                    aName = message_text.split()
-                                    log("length of string: "+str(len(aName)))
-                                    if len(aName) == 2:
-                                        #send the buttons
-                                        dbLink = DBLink.DBLink()
-                                        the_users = dbLink.get_users_with_first_last_name(str(aName[0]), str(aName[1]))
-                                        log(the_users)
-                                        #if there are users in the db with that name
-                                        if the_users is not None:
-                                            aReply = QuickReply.QuickReply()
-                                            aReply.send_users_quick_reply(sender_id, the_users)
-                                            #increase flow number
-                                            aLink.update_flow(sender_id, "request", 3)
+                                #     message_text = str(message_text)
+                                #     aName = message_text.split()
+                                #     log("length of string: "+str(len(aName)))
+                                #     if len(aName) == 2:
+                                #         #send the buttons
+                                #         dbLink = DBLink.DBLink()
+                                #         the_users = dbLink.get_users_with_first_last_name(str(aName[0]), str(aName[1]))
+                                #         log(the_users)
+                                #         #if there are users in the db with that name
+                                #         if the_users is not None:
+                                #             aReply = QuickReply.QuickReply()
+                                #             aReply.send_users_quick_reply(sender_id, the_users)
+                                #             #increase flow number
+                                #             aLink.update_flow(sender_id, "request", 3)
                                 
-                                        else:
-                                            #let the user know that the person does not exist and to share the link
-                                            someUser = UserInfo.UserInfo("",sender_id)
-                                            anotherUser = UserInfo.UserInfo("","")
+                                #         else:
+                                #             #let the user know that the person does not exist and to share the link
+                                #             someUser = UserInfo.UserInfo("",sender_id)
+                                #             anotherUser = UserInfo.UserInfo("","")
                                             
-                                            #send share link message
-                                            sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                                            sendMsg.send_share_link_message()
+                                #             #send share link message
+                                #             sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                #             sendMsg.send_share_link_message()
                                             
-                                            #deletes the flow state row
-                                            dbLink.delete_userID_state_info(sender_id)
+                                #             #deletes the flow state row
+                                #             dbLink.delete_userID_state_info(sender_id)
                                             
-                                            #reset flow state
-                                            aLink.update_flow(sender_id, "", 1)
-                                            break
+                                #             #reset flow state
+                                #             aLink.update_flow(sender_id, "", 1)
+                                #             break
                                 
-                                    else:
-                                        sendMsg.send_pay_who_message1()
+                                #     else:
+                                #         sendMsg.send_pay_who_message1()
                                         break
 
                                 if flow_info['flowState'] == 4: 
