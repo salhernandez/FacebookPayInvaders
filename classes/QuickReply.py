@@ -56,7 +56,7 @@ class QuickReply(object):
         #####################################
         self.log(users)
 
-        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Choose a friend","quick_replies":[{"content_type":"text","title":"not here","payload":"{'responseType':'selectedperson','value':'nothere'}","image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Choose a friend","quick_replies":[{"content_type":"text","title":"not here","payload":"{'responseType':'selectedperson','value':'nothere'}}","image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
         totalPpl = 0
         for i in range(len(users)):
             self.log(str(i))
@@ -67,6 +67,7 @@ class QuickReply(object):
         
         #different access
         if totalPpl == 1:
+            self.log("one for friend buttons")
             self.log("begin")
             for key, value in users.iteritems():
                 self.log("key 1: "+str(key))
@@ -87,10 +88,11 @@ class QuickReply(object):
         
         else:    
             for i in range(len(users)):
+                self.log("multiple for friend buttons")
                 self.log(str(i))
                 the_dict['message']['quick_replies'][i+1]['title'] = users[i]['firstName']
                 the_dict['message']['quick_replies'][i+1]['image_url'] = users[i]['imgUrl']
-                the_dict['message']['quick_replies'][i+1]['payload'] = "{'responseType': 'selectedPerson', 'value': " + str(users[i]['userID']) + "}"
+                the_dict['message']['quick_replies'][i+1]['payload'] = "'responseType': 'selectedPerson', 'value': '" + str(users[i]['userID']) + "'"
         
         the_dict['recipient']['id'] = str(toID)
         data = json.dumps(the_dict)
