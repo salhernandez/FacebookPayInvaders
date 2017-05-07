@@ -507,10 +507,27 @@ def webhook():
                             flow_info = aLink.get_flow_state(sender_id)
                             
                             if flow_info['flowType'] in "pay":
-                                # if flow_info['flowState'] == 3:
-                                #     aLink.update_flow(sender_id, "pay", 4)
-                                #     sendMsg.send_how_much_message()
-                                break
+                                 if flow_info['flowState'] == 3:
+
+                                    #if the selected person is "nothere"
+                                    if qrParser.valueFromResponse in "nothere":
+                                        #reset flow to 0
+                                        aLink.update_flow(sender_id, "", 0)
+                                        aLink.delete_userID_state_info(sender_id)
+                                        someUser = UserInfo.UserInfo("",sender_id)
+                                        anotherUser = UserInfo.UserInfo("","")
+                                        
+                                        #send share link message
+                                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                        sendMsg.send_share_link_message()
+                                    #grab the id
+                                    #updates the flow
+                                    aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
+                                    #updates the flow state
+                                    aLink.update_flow(sender_id, "pay", 4)
+                                    #sends next flow state
+                                    sendMsg.send_enter_amount()
+                                    break
                                     
                             elif flow_info['flowType'] in "request":
                                 break
@@ -797,14 +814,39 @@ def webhook():
                             if flow_info['flowType'] in "pay":
                                 if flow_info['flowState'] == 2:
                                     
-                                    #check name in db
-                                    
-                                    # dbLink = DBLink.DBLink()
-                                    # the_user = dbLink.get_users_with_first_name(msgObj.getMessage())
-                                    # the_payment.send_user_table(the_user)
-                                    
-                                    aLink.update_flow(sender_id, "pay", 3)
-                                    sendMsg.send_which_user()
+                                    message_text = str(message_text)
+                                    aName = message_text.split()
+                                    log("length of string: "+str(len(aName)))
+                                    if len(aName) == 2:
+                                        #send the buttons
+                                        dbLink = DBLink.DBLink()
+                                        the_users = dbLink.get_users_with_first_last_name(str(aName[0]), str(aName[1]))
+                                        log(the_users)
+                                        #if there are users in the db with that name
+                                        if the_users is not None:
+                                            aReply = QuickReply.QuickReply()
+                                            aReply.send_users_quick_reply(sender_id, the_users)
+                                            #increase flow number
+                                            aLink.update_flow(sender_id, "pay", 3)
+                                
+                                    else:
+                                        #let the user know that the person does not exist and to share the link
+                                        someUser = UserInfo.UserInfo("",sender_id)
+                                        anotherUser = UserInfo.UserInfo("","")
+                                        
+                                        #send share link message
+                                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                        sendMsg.send_share_link_message()
+                                        
+                                        #deletes the flow state row
+                                        dbLink.delete_userID_state_info(sender_id)
+                                        
+                                        #reset flow state
+                                        aLink.update_flow(sender_id, "", 1)
+                                        break
+                                
+                                else:
+                                    sendMsg.send_pay_who_message1()
                                     break
                                 
                                 if flow_info['flowState'] == 3:
