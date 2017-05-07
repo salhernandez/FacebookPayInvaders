@@ -56,7 +56,7 @@ class QuickReply(object):
         #####################################
         self.log(users)
 
-        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Choose a friend","quick_replies":[{"content_type":"text","title":"not here","payload":{"'responseType':'selectedperson','value':'nothere'"},"image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"text":"Choose a friend","quick_replies":[{"content_type":"text","title":"not here","payload":"{'responseType':'selectedperson','value':'nothere'}}","image_url":"https://nothere.me/app/themes/roots/assets/img/brandmark.svg"}"""
         totalPpl = 0
         for i in range(len(users)):
             self.log(str(i))
