@@ -347,7 +347,14 @@ def webhook():
                     try:
                         log("QUICK REPLY ERROR CHECK")
                         log("THE QUICK REPLY PAYLOAD"+str(messaging_event['message']['quick_reply']['payload']))
-                        info = "{"+str(messaging_event['message']['quick_reply']['payload'])+"}"
+                        info = str(messaging_event['message']['quick_reply']['payload'])
+                        #if the string starts with {, then don't add the { }
+                        if "{" in info[:1]:
+                            #dont add the ends
+                            pass
+                        else:
+                            #add the ends
+                            info = "{"+info+"}"
                         log(info)
                         json_acceptable_string = info.replace("'", "\"")
                         log(info)
