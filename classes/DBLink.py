@@ -707,13 +707,6 @@ class DBLink(object):
             return False
     
     """
-    Simple wrapper for logging to stdout on heroku
-    """
-    def log(self, text):
-        print str(text)
-        sys.stdout.flush()
-    
-    """
     checks the email with regex
     """
     def is_email_valid(self, email): 

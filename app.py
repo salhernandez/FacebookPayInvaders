@@ -59,6 +59,7 @@ SENTINEL_FLOAT = -1.0
 #     dbLink.delete_user_from_db("985245348244242")
 #     dbLink.add_user("985245348244242", request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, "8314285108")
     
+    
 #     return "cleanUsers"
 
 @app.route('/saltest', methods = ['POST', 'GET'])
@@ -346,7 +347,14 @@ def webhook():
                     try:
                         log("QUICK REPLY ERROR CHECK")
                         log("THE QUICK REPLY PAYLOAD"+str(messaging_event['message']['quick_reply']['payload']))
-                        info = "{"+str(messaging_event['message']['quick_reply']['payload'])+"}"
+                        info = str(messaging_event['message']['quick_reply']['payload'])
+                        #if the string starts with {, then don't add the { }
+                        if "{" in info[:1]:
+                            #dont add the ends
+                            pass
+                        else:
+                            #add the ends
+                            info = "{"+info+"}"
                         log(info)
                         json_acceptable_string = info.replace("'", "\"")
                         log(info)
