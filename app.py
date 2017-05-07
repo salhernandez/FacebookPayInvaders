@@ -938,9 +938,9 @@ def webhook():
                                 
                                 #     else:
                                 #         sendMsg.send_pay_who_message1()
-                                        break
+                                #        break
 
-                                if flow_info['flowState'] == 4: 
+                                if flow_info['flowState'] == 4:
                                     log("SPLIT == 4")
                                     #get amount, check if its a number, if it is, increase flow,
                                     #if not send error message to re-enter amount
