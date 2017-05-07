@@ -829,21 +829,21 @@ def webhook():
                                             #increase flow number
                                             aLink.update_flow(sender_id, "pay", 3)
                                 
-                                    else:
-                                        #let the user know that the person does not exist and to share the link
-                                        someUser = UserInfo.UserInfo("",sender_id)
-                                        anotherUser = UserInfo.UserInfo("","")
-                                        
-                                        #send share link message
-                                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
-                                        sendMsg.send_share_link_message()
-                                        
-                                        #deletes the flow state row
-                                        dbLink.delete_userID_state_info(sender_id)
-                                        
-                                        #reset flow state
-                                        aLink.update_flow(sender_id, "", 1)
-                                        break
+                                        else:
+                                            #let the user know that the person does not exist and to share the link
+                                            someUser = UserInfo.UserInfo("",sender_id)
+                                            anotherUser = UserInfo.UserInfo("","")
+                                            
+                                            #send share link message
+                                            sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+                                            sendMsg.send_share_link_message()
+                                            
+                                            #deletes the flow state row
+                                            dbLink.delete_userID_state_info(sender_id)
+                                            
+                                            #reset flow state
+                                            aLink.update_flow(sender_id, "", 1)
+                                            break
                                 
                                     else:
                                         sendMsg.send_pay_who_message1()
