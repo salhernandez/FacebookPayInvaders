@@ -434,7 +434,7 @@ def webhook():
 
                                 qrParser.getFlowState()
                                 
-                                if qrParser.flowTypeFromDB in "request":
+                                if flow_info['flowType'] in "request":
                                     dbLink = DBLink.DBLink()
                                     state_info = dbLink.get_state_info(sender_id)
                                     recipientID = state_info['recipientID']
@@ -553,7 +553,7 @@ def webhook():
                                         #updates the flow
                                         aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
                                         #updates the flow state
-                                        aLink.update_flow(sender_id, "split", 4)
+                                        aLink.update_flow(sender_id, "request", 4)
                                         #sends next flow state
                                         sendMsg.send_enter_amount()
                                         break
