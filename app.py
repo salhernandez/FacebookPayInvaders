@@ -435,6 +435,10 @@ def webhook():
                                 qrParser.getFlowState()
                                 
                                 if qrParser.flowTypeFromDB in "request":
+                                    dbLink = DBLink.DBLink()
+                                    state_info = dbLink.get_state_info(sender_id)
+                                    recipientID = state_info['recipientID']
+                                    
                                     qrParser.getFlowState()
 
                                     aLink.update_flow(sender_id, "", 0)
@@ -467,18 +471,7 @@ def webhook():
                                     
                                     break
                                 
-                                if qrParser.flowTypeFromDB in "request":
-                                    aLink.update_flow(sender_id, "", 0)
 
-                                    sendMsg.send_your_request_was_sent()
-                                    break
-                                
-                                if qrParser.flowTypeFromDB in "request":
-                                    aLink.update_flow(sender_id, "", 0)
-
-                                    sendMsg.send_your_request_was_sent()
-                                    break
-                                
                                 flow_info = aLink.get_flow_state(sender_id)
                                 
                                 #specific confirm for split
@@ -527,14 +520,16 @@ def webhook():
                                         #send share link message
                                         sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                         sendMsg.send_share_link_message()
-                                    #grab the id
-                                    #updates the flow
-                                    aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
-                                    #updates the flow state
-                                    aLink.update_flow(sender_id, "pay", 4)
-                                    #sends next flow state
-                                    sendMsg.send_enter_amount()
-                                    break
+                                        
+                                    else:
+                                        #grab the id
+                                        #updates the flow
+                                        aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
+                                        #updates the flow state
+                                        aLink.update_flow(sender_id, "pay", 4)
+                                        #sends next flow state
+                                        sendMsg.send_enter_amount()
+                                        break
                                     
                             elif flow_info['flowType'] in "request":
                                 if flow_info['flowState'] == 3:
@@ -552,14 +547,16 @@ def webhook():
                                         #send share link message
                                         sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                         sendMsg.send_share_link_message()
-                                    #grab the id
-                                    #updates the flow
-                                    aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
-                                    #updates the flow state
-                                    aLink.update_flow(sender_id, "split", 4)
-                                    #sends next flow state
-                                    sendMsg.send_enter_amount()
-                                    break
+                                        break
+                                    else:
+                                        #grab the id
+                                        #updates the flow
+                                        aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
+                                        #updates the flow state
+                                        aLink.update_flow(sender_id, "split", 4)
+                                        #sends next flow state
+                                        sendMsg.send_enter_amount()
+                                        break
                                 
                             elif flow_info['flowType'] in "split":
                                 if flow_info['flowState'] == 3:
@@ -577,14 +574,16 @@ def webhook():
                                         #send share link message
                                         sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                         sendMsg.send_share_link_message()
-                                    #grab the id
-                                    #updates the flow
-                                    aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
-                                    #updates the flow state
-                                    aLink.update_flow(sender_id, "split", 4)
-                                    #sends next flow state
-                                    sendMsg.send_enter_amount()
-                                    break
+                                        break
+                                    else:
+                                        #grab the id
+                                        #updates the flow
+                                        aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
+                                        #updates the flow state
+                                        aLink.update_flow(sender_id, "split", 4)
+                                        #sends next flow state
+                                        sendMsg.send_enter_amount()
+                                        break
                         
                         #if the response is yes or no
                         elif isYesNo is True:
