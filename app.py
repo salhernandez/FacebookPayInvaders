@@ -62,6 +62,10 @@ SENTINEL_FLOAT = -1.0
     
 #     return "cleanUsers"
 
+@app.route('/privacy', methods = ['POST', 'GET'])
+def privacy():
+    return "Privacy Policy: There is no data collected from you. We only access information that can be given to us through with out facebook page key. We do not handle any monteary transactions."
+
 @app.route('/saltest', methods = ['POST', 'GET'])
 def saltest():
     aReply = QuickReply.QuickReply()
