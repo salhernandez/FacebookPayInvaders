@@ -495,20 +495,24 @@ def webhook():
                                         log(deletedInfo)
                                         aLink.add_request(sender_id, deletedInfo['recipientID'], deletedInfo['amount'])
                                         #ask if they want to pay another person
-                                        aReply = QuickReply.QuickReply()
-                                        aReply.send_yesNo_quick_reply(sender_id)
                                         
                                         #send notifications
                                         someUser = UserInfo.UserInfo("",sender_id)
                                         
                                         anotherUser = UserInfo.UserInfo("",deletedInfo['recipientID'])
                                         
-                                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser, amount = float(deletedInfo['amount']))
-                                        sendMsg.notify_requestee_and_requester_of_request()
                                         
                                         #send venmo
                                         the_payment = PayGate(toUser = deletedInfo['recipientID'])
                                         the_payment.send_payment_gateway()
+                                        
+                                        #send message to requested perosn and requestee
+                                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser, amount = float(deletedInfo['amount']))
+                                        sendMsg.notify_requestee_and_requester_of_request()
+                                        
+                                        #add another person to pay?
+                                        aReply = QuickReply.QuickReply()
+                                        aReply.send_yesNo_quick_reply(sender_id)
                                         
                                         #increase flow
                                         aLink.update_flow(sender_id, "", 6)
