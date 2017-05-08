@@ -1041,20 +1041,32 @@ def webhook():
                                                             
                         else:
     
-                            payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
-                            sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
+                            # payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
+                            # sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
                             
 
-                            if(str(msgObj.number) == "-1"):
-                                sendMsg.send_get_number_to_signup()
-                            else:
-                                request_info = GraphRequests.GraphRequests()
-                                request_info.getUserInfo(messaging_event["sender"]["id"])
-                                
-                                sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(request_info.firstName))
-                                aLink = DBLink.DBLink()
-                                aLink.add_user(messaging_event["sender"]["id"], request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, str(msgObj.number))
-                                sendMsg.send_signedup()
+                            # if(str(msgObj.number) == "-1"):
+                            #     sendMsg.send_get_number_to_signup()
+                            # else:
+                            request_info = GraphRequests.GraphRequests()
+                            request_info.getUserInfo(messaging_event["sender"]["id"])
+                            
+                            sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(request_info.firstName))
+                            aLink = DBLink.DBLink()
+                            aLink.add_user(messaging_event["sender"]["id"], request_info.firstName, request_info.lastName, "unknown@gmail.com", request_info.profile_pic, str(msgObj.number))
+                            sendMsg.send_signedup()
+                            
+                            
+                            aReply = QuickReply.QuickReply()
+                            
+                            #add to flowstate table
+                            
+                            #init flow state
+                            aLink.init_state_info(messaging_event["sender"]["id"], "")
+                            #add to flow states
+                            aLink.init_flow_state(messaging_event["sender"]["id"])
+                            
+                            aReply.send_action_quick_reply(messaging_event["sender"]["id"])   
                                 
                     except KeyError:
                         #anotherUser = UserInfo.UserInfo("", messaging_event["sender"]["id"])
