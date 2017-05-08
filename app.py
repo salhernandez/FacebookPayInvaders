@@ -444,17 +444,40 @@ def webhook():
                                 
                                 if flow_info['flowType'] in "request":
                                     dbLink = DBLink.DBLink()
-                                    state_info = dbLink.get_state_info(sender_id)
-                                    recipientID = state_info['recipientID']
+                                    log("SPLIT FLOWSTATE == 5")
+                                    deletedInfo = aLink.delete_userID_state_info(sender_id)
+                                    #add the info to the pay table
+                                    time.sleep(1)
+                                    log(deletedInfo)
+                                    aLink.add_request(sender_id, deletedInfo['recipientID'], deletedInfo['amount'])
+                                    #ask if they want to pay another person
                                     
-                                    qrParser.getFlowState()
+                                    #send notifications
+                                    someUser = UserInfo.UserInfo("",sender_id)
+                                    
+                                    anotherUser = UserInfo.UserInfo("",deletedInfo['recipientID'])
 
-                                    aLink.update_flow(sender_id, "", 0)
-
+                                    #send venmo
+                                    the_payment = PayGate(toUser = deletedInfo['recipientID'])
+                                    the_payment.send_payment_gateway()
+                                    
+                                    #send message to requested perosn and requestee
+                                    sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser, amount = float(deletedInfo['amount']))
+                                    sendMsg.notify_requestee_and_requester_of_request()
+                                    
+                                    
+                                    aReply.send_action_quick_reply(deletedInfo['recipientID'])
+                                    
+                                    #add another person to pay?
+                                    aReply = QuickReply.QuickReply()
                                     sendMsg.send_your_request_was_sent()
-                                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])   
 
+                                    aReply.send_action_quick_reply(messaging_event["sender"]["id"])   
+                                    
+                                    #increase flow
+                                    aLink.update_flow(sender_id, "", 0)
                                     break
+                               
                                 
                                 if qrParser.flowTypeFromDB in "pay":
                                     aLink.update_flow(sender_id, "", 1)
