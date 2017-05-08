@@ -68,12 +68,12 @@ def saltest():
     dbLink = DBLink.DBLink()
     #record = aReply.send_yesNo_quick_reply("1596606567017003")
     
-    dbLink.init_flow_state("1596606567017003")
-    dbLink.init_flow_state("1204927079622878")
-    dbLink.init_flow_state("1207261099394590")
-    dbLink.init_flow_state("985245348244242")
+    someUser = UserInfo.UserInfo("SalOne","1596606567017003")
     
-    
+    anotherUser = UserInfo.UserInfo("SalTwo","1596606567017003")
+        
+    sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser, amount = 22.22)
+    sendMsg.notify_requestee_and_requester_of_request()
     
     #the_users = dbLink.get_all_user_in_db()
     
@@ -497,6 +497,19 @@ def webhook():
                                         #ask if they want to pay another person
                                         aReply = QuickReply.QuickReply()
                                         aReply.send_yesNo_quick_reply(sender_id)
+                                        
+                                        #send notifications
+                                        someUser = UserInfo.UserInfo("",sender_id)
+                                        
+                                        anotherUser = UserInfo.UserInfo("",deletedInfo['recipientID'])
+                                        
+                                        sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser, amount = float(deletedInfo['amount']))
+                                        sendMsg.notify_requestee_and_requester_of_request()
+                                        
+                                        #send venmo
+                                        the_payment = PayGate(toUser = deletedInfo['recipientID'])
+                                        the_payment.send_payment_gateway()
+                                        
                                         #increase flow
                                         aLink.update_flow(sender_id, "", 6)
                                         break
