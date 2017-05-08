@@ -536,6 +536,8 @@ def webhook():
                                         #send share link message
                                         sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
                                         sendMsg.send_share_link_message()
+                                        break
+                                    
                                     #grab the id
                                     #updates the flow
                                     aLink.update_state_info_recipient_ID(sender_id, valueFromResponse)
