@@ -836,6 +836,7 @@ def webhook():
                                             aReply.send_users_quick_reply(sender_id, the_users)
                                             #increase flow number
                                             aLink.update_flow(sender_id, "pay", 3)
+                                            break
                                 
                                         else:
                                             #let the user know that the person does not exist and to share the link
@@ -860,6 +861,7 @@ def webhook():
                                 if flow_info['flowState'] == 3:
                                     aLink.update_flow(sender_id, "pay", 4)
                                     sendMsg.send_how_much_message()
+                                    break
                                 
                                 elif flow_info['flowState'] == 4:
                                     log("SPLIT == 4")
@@ -879,6 +881,7 @@ def webhook():
                                         #send QR confirm/deny buttons
                                         aReply = QuickReply.QuickReply()
                                         aReply.send_confirmDeny_quick_reply(sender_id)
+                                        break
                                     else:
                                         #re-enter information
                                         someUser = UserInfo.UserInfo("",sender_id)
@@ -894,10 +897,12 @@ def webhook():
                                 if flow_info['flowState'] == 2:
                                     aLink.update_flow(sender_id, "request", 3)
                                     sendMsg.send_which_user()
+                                    break
                                 
                                 if flow_info['flowState'] == 3:
                                     aLink.update_flow(sender_id, "request", 4)
                                     sendMsg.send_how_much_message()
+                                    break
                                     
                                 if flow_info['flowState'] == 4: 
                                     m = re.search('\$(?!0\d)\d+(?:\.\d{2})?(?=\s|$)', msgObj.getMessage())
