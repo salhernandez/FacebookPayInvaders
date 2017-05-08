@@ -1041,8 +1041,8 @@ def webhook():
                                                             
                         else:
     
-                            # payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
-                            # sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
+                            payedUser = UserInfo.UserInfo("Unknown", messaging_event["sender"]["id"])
+                            sendMsg = MsgBuilder.MessageBuilder(fromUser = payedUser, toUser = payedUser, messageType="simple", amount = str(msgObj.number))
                             
 
                             # if(str(msgObj.number) == "-1"):
