@@ -411,7 +411,6 @@ def webhook():
                                     #increment flowState in DB
                                     a = aLink.update_flow(sender_id, "request", 2)
                                     #init state info
-                                    aLink.init_flow_state(sender_id)
                                     #send pay who message
                                     sendMsg.send_request_from_who_message()
                                     break
