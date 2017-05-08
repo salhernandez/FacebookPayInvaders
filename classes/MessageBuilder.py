@@ -134,7 +134,7 @@ class MessageBuilder(object):
         self.message_template_simple(self.fromID, "You requested $" + self.amount + " from " + self.toName)
 
     def send_request_made_message(self):
-        self.message_template_simple(self.toID, self.fromName + " requested $" + self.amount + " from you. Would you like to confirm this payment? (yes/no)")    
+        self.message_template_simple(self.toID, self.fromName + " requested $" + self.amount + " from you.")    
 
     def send_share_link_message(self):
         self.message_template_simple(self.fromID,
