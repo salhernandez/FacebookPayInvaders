@@ -463,7 +463,7 @@ def webhook():
                                     
                                     #send message to requested perosn and requestee
                                     sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser, amount = float(deletedInfo['amount']))
-                                    sendMsg.notify_requestee_and_requester_of_request()
+                                    sendMsg.send_split_made_message()
                                     
                                     
                                     aReply.send_action_quick_reply(deletedInfo['recipientID'])
