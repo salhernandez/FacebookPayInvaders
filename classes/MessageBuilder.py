@@ -136,10 +136,10 @@ class MessageBuilder(object):
     def send_request_made_message(self):
         self.message_template_simple(self.toID, self.fromName + " requested $" + str(self.amount) + " from you.")    
 
-    def send_share_link_message(self):
-        self.message_template_simple(self.fromID,
-                                     "Hm, it looks like this user isn't in my system. Make sure they interact with me at " +
-                                     "https://www.facebook.com/IAmPayBot/")
+    # def send_share_link_message(self):
+    #     self.message_template_simple(self.fromID,
+    #                                  "Hm, it looks like this user isn't in my system. Make sure they interact with me at " +
+    #                                  "https://www.facebook.com/IAmPayBot/")
 
     def send_split_with_who_message(self):
         self.message_template_simple(self.fromID, "Who would you like to split the bill with?")
@@ -165,6 +165,27 @@ class MessageBuilder(object):
     def notify_bill_splitters_of_request(self):
         self.send_split_made_message()
         self.send_split_log_message()
+        
+        
+    
+    def send_share_link_message(self):
+        params = {
+            "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+        }
+        headers = {
+            "Content-Type": "application/json"
+        }
+        
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Pay Invader Chat Bot","subtitle":"Hm, it looks like this user isn't in my system. Share the page so that your friends can also use Pay Invader.","image_url":"http://m.me/IAmPayBot/","buttons":[{"type":"element_share"}]}]}}}}"""
+        the_dict = json.loads(JSON_Datalist)
+        the_dict['recipient']['id'] = self.fromID
+        
+        data = json.dumps(the_dict)
+        #######################################
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+        if r.status_code != 200:
+            self.log(r.status_code)
+            self.log(r.text)
     ############################################################################
     def log(self, text):  # simple wrapper for __log__ging to stdout on heroku
         print str(text)

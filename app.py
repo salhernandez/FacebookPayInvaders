@@ -72,12 +72,12 @@ def saltest():
     dbLink = DBLink.DBLink()
     #record = aReply.send_yesNo_quick_reply("1596606567017003")
     
-    someUser = UserInfo.UserInfo("SalOne","1596606567017003")
-    
-    anotherUser = UserInfo.UserInfo("SalTwo","1596606567017003")
-        
-    sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser, amount = 22.22)
-    sendMsg.notify_requestee_and_requester_of_request()
+    someUser = UserInfo.UserInfo("","1596606567017003")
+    anotherUser = UserInfo.UserInfo("","")
+                                        
+                                        #send share link message
+    sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser)
+    sendMsg.send_share_link_message()
     
     #the_users = dbLink.get_all_user_in_db()
     
