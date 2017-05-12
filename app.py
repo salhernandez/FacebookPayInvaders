@@ -479,7 +479,7 @@ def webhook():
                                     aReply.send_action_quick_reply(messaging_event["sender"]["id"])   
                                     
                                     #increase flow
-                                    aLink.update_flow(sender_id, "", 0)
+                                    aLink.update_flow(sender_id, "", 1)
                                     break
                                
                                 
