@@ -176,7 +176,10 @@ class MessageBuilder(object):
             "Content-Type": "application/json"
         }
         
-        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Pay Invader Chat Bot","subtitle":"Hm, it looks like this user isn't in my system. Share the page so that your friends can also use Pay Invader.","image_url":"http://m.me/IAmPayBot/","buttons":[{"type":"element_share"}]}]}}}}"""
+        #JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Pay Invader Chat Bot","subtitle":"Hm, it looks like this user isn't in my system. Share the page so that your friends can also use Pay Invader.","image_url":"http://m.me/IAmPayBot/","buttons":[{"type":"element_share"}]}]}}}}"""
+        JSON_Datalist = """{"recipient":{"id":"USER_ID"},"message":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Pay Invader","subtitle":"Hm, it looks like this user isn't in my system. Share the page so that your friends can also use Pay Invader.","image_url":"https://scontent.xx.fbcdn.net/v/t1.0-9/16806700_657497514452088_5443457461210660192_n.png?oh=33343a93667d6605c1950d70883bfe77&oe=59BEEC56","default_action":{"type":"web_url","url":"http://m.me/IAmPayBot/"},"buttons":[{"type":"element_share"}]}]}}}}"""
+        #gets rid of white space
+        #JSON_Datalist = JSON_Datalist.replace(" ", "")
         the_dict = json.loads(JSON_Datalist)
         the_dict['recipient']['id'] = self.fromID
         
