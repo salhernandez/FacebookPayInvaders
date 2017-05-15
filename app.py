@@ -471,9 +471,6 @@ def webhook():
                                     sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser, amount = float(deletedInfo['amount']))
                                     sendMsg.send_split_made_message()
                                     
-                                    
-                                    aReply.send_action_quick_reply(deletedInfo['recipientID'])
-                                    
                                     #add another person to pay?
                                     aReply = QuickReply.QuickReply()
                                     sendMsg.send_your_request_was_sent()
