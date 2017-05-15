@@ -471,6 +471,9 @@ def webhook():
                                     sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser, amount = float(deletedInfo['amount']))
                                     sendMsg.send_split_made_message()
                                     
+                                    
+                                    aReply.send_action_quick_reply(deletedInfo['recipientID'])
+                                    
                                     #add another person to pay?
                                     aReply = QuickReply.QuickReply()
                                     sendMsg.send_your_request_was_sent()
@@ -527,7 +530,6 @@ def webhook():
                                         
                                         anotherUser = UserInfo.UserInfo("",deletedInfo['recipientID'])
                                         
-                                        
                                         #send venmo
                                         the_payment = PayGate(toUser = deletedInfo['recipientID'])
                                         the_payment.send_payment_gateway()
@@ -535,9 +537,6 @@ def webhook():
                                         #send message to requested perosn and requestee
                                         sendMsg = MsgBuilder.MessageBuilder(fromUser = someUser, toUser = anotherUser, amount = float(deletedInfo['amount']))
                                         sendMsg.notify_requestee_and_requester_of_request()
-                                        
-                                        
-                                        aReply.send_action_quick_reply(deletedInfo['recipientID'])
                                         
                                         #add another person to pay?
                                         aReply = QuickReply.QuickReply()
