@@ -1140,8 +1140,8 @@ Converts string with special charactes into proper strings that can be
 managed proprely by the program
 """
 def normString(data):
-    title = unicode(data, "utf-8")
-    finalStr = unicodedata.normalize('NFKD', title).encode('ascii','ignore')
+    #title = unicode(data, "utf-8")
+    finalStr = unicodedata.normalize('NFKD', data).encode('ascii','ignore')
     return finalStr
     
 if __name__ == '__main__':
