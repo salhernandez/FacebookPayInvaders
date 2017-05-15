@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+import unicodedata
 import os
 import sys
 import json
@@ -672,7 +674,8 @@ def webhook():
                 
                     # the message's text
                     try:
-                        message_text = messaging_event["message"]["text"]
+                        #normalizes string entered
+                        message_text = normString(messaging_event["message"]["text"])
                         
                         # the message's timestamp
                         #message_timestamp = messaging_event["timestamp"]  
@@ -1091,83 +1094,6 @@ def webhook():
                         log("The key and value are ({}) = ({})".format(key, value))
     return "ok", 200
 
-
-def send_message(recipient_id, message_text):
-
-    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
-    log("test2 {recipient}".format(recipient="derp"))
-
-    params = {
-        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
-    }
-    headers = {
-        "Content-Type": "application/json"
-    }
-    
-    # data = json.dumps({
-    #     "recipient": {
-    #         "id": recipient_id
-    #     },
-    #     "message": {
-    #         "text": message_text
-    #     }
-    # })
-    
-    #convert dict into json
-    #####################################
-    dataDict = {}
-    dataDict['recipient'] = {}
-    dataDict['message'] = {}
-    
-    dataDict['recipient']['id'] = str(recipient_id)
-    dataDict['message']['text'] = str(message_text)
-    
-    data = json.dumps(dataDict)
-    #######################################
-    
-    #send share button
-    #########################################
-    # dataDict = {}
-    # dataDict['recipient'] = {}
-    # dataDict['message'] = {}
-    
-    # dataDict['recipient']['id'] = str(recipient_id)
-    # dataDict['message']['attachment'] = {}
-    # dataDict['message']['attachment']['type'] =  "template"
-    # dataDict['message']['attachment']['payload'] = {}
-    # dataDict['message']['attachment']['payload']['template_type'] = "generic"
-    # dataDict['message']['attachment']['payload']['elements'] = {}
-    # dataDict['message']['attachment']['payload']['elements']['title'] = "teheee"
-    # dataDict['message']['attachment']['payload']['elements']['subtitle'] = "ayeee"
-    # dataDict['message']['attachment']['payload']['elements']['image_url'] = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
-    # dataDict['message']['attachment']['payload']['elements']['buttons'] = {}
-    # dataDict['message']['attachment']['payload']['elements']['buttons']['type'] = "element_share"
-    
-    #data = json.dumps(dataDict)
-
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
-    if r.status_code != 200:
-        log(r.status_code)
-        log(r.text)
-    
-def getUserInfo(anId):
-    params = {
-        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
-        
-    }
-    headers = {
-        "Content-Type": "application/json"
-    }
-    data = json.dumps({
-        str(anId)
-    })
-    r = requests.get("https://graph.facebook.com/v2.6/", params=params, headers=headers, data=data)
-    if r.status_code != 200:
-        log(r.status_code)
-        log(r.text)
-    else:
-        log("SUCCESS  "+r.text)
-
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
     sys.stdout.flush()
@@ -1208,6 +1134,15 @@ def __getAmountRe__(data):
         amount = None
     
     return amount
+
+"""
+Converts string with special charactes into proper strings that can be
+managed proprely by the program
+"""
+def normString(data):
+    #title = unicode(data, "utf-8")
+    finalStr = unicodedata.normalize('NFKD', data).encode('ascii','ignore')
+    return finalStr
     
 if __name__ == '__main__':
     app.run(
