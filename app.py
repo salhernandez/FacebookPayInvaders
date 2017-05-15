@@ -525,10 +525,13 @@ def webhook():
                                         aLink.add_request(sender_id, deletedInfo['recipientID'], deletedInfo['amount'])
                                         #ask if they want to pay another person
                                         
-                                        #send notifications
-                                        someUser = UserInfo.UserInfo("",sender_id)
+                                        #get users information from DB
+                                        mainUser = aLink.get_user_in_db(sender_id)
+                                        rUser = aLink.get_user_in_db(deletedInfo['recipientID'])
                                         
-                                        anotherUser = UserInfo.UserInfo("",deletedInfo['recipientID'])
+                                        #send notifications
+                                        someUser = UserInfo.UserInfo(mainUser['firstName'],sender_id)
+                                        anotherUser = UserInfo.UserInfo(rUser['firstName'],deletedInfo['recipientID'])
                                         
                                         #send venmo
                                         the_payment = PayGate(toUser = deletedInfo['recipientID'])
