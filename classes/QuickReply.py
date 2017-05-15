@@ -122,7 +122,7 @@ class QuickReply(object):
         JSON_Datalist = JSON_Datalist.replace(" ", "")
         the_dict = json.loads(JSON_Datalist)
         the_dict['recipient']['id'] = str(toID)
-        the_dict['message']['text'] = "What do you want to do?, Enter 'clear' to cleat the conversation and reset, or type 'help' for more information"
+        the_dict['message']['text'] = "What do you want to do?,\nEnter 'clear' to reset the conversation, or type 'help' for more information"
         
 
         data = json.dumps(the_dict)
